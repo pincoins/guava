@@ -1,7 +1,15 @@
-import './assets/tailwind.css'
-import React from 'react'
-import {createRoot} from 'react-dom/client'
+import './assets/tailwind.css';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { RouterProvider } from 'react-router-dom';
+import router from './router';
 
-const container = document.getElementById('root')!
-const root = createRoot(container)
-root.render(<h1 className="text-2xl font-bold text-red-600">Hello React!</h1>)
+const container = document.getElementById('root') as HTMLElement;
+
+const root = createRoot(container);
+
+root.render(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
+);
