@@ -2,8 +2,7 @@ const prod = process.env.NODE_ENV === 'production';
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const dotenv = require('dotenv');
-dotenv.config(); // .env 파일 파싱한 결과 객체를 process.env에 저장
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   mode: prod ? 'production' : 'development',
@@ -35,6 +34,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new Dotenv(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
       title: process.env.SITE_TITLE,

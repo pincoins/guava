@@ -81,7 +81,7 @@ const Root = () => {
     <div>
       <div className="flex flex-row justify-between">
         <div>
-          <Link to="/">핀코인 로고</Link>
+          <Link to="/">{process.env.SITE_TITLE} 로고</Link>
         </div>
         <div>
           <Link to="/auth/sign-in">로그인</Link>
