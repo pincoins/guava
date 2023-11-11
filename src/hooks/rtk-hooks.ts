@@ -1,7 +1,12 @@
 import { useCallback, useState } from 'react';
-import { AppDispatch } from '../store';
-import { useAppDispatch } from '../store/hooks';
+import type { TypedUseSelectorHook } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AsyncThunk } from '@reduxjs/toolkit';
+import type { AppDispatch, RootState } from '../store';
+
+export const useAppDispatch: () => AppDispatch = useDispatch;
+
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export const useThunk = (thunk: AsyncThunk<any[], any, any>) => {
   const [loading, setLoading] = useState(false);

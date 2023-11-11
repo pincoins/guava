@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
-import { useAppSelector } from '../../../store/hooks';
 import { fetchCategories } from '../../../store/thunks/fetchCategories';
 import { RootState } from '../../../store';
-import Category from '../../../store/models/Category';
-import { useThunk } from '../../../hooks/useThunk';
+import { Category } from '../../../store/models/interfaces';
+import { useAppSelector, useThunk } from '../../../hooks/rtk-hooks';
 
 const CategoryList = () => {
   const data = useAppSelector((state: RootState) => state.categories.data);
