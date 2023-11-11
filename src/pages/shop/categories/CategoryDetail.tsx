@@ -1,7 +1,10 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 const CategoryList = () => {
-  return <div>categories</div>;
+  let { category } = useParams();
+
+  return <div>{category}</div>;
 };
 
 export default CategoryList;

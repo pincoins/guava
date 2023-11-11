@@ -24,9 +24,7 @@ const LowerNavbar = () => {
   } else {
     content = data?.map((category: Category) => {
       return (
-        <Link to={`/shop/categories/${category.slug}/products`}>
-          {category.title}
-        </Link>
+        <Link to={`/shop/categories/${category.slug}`}>{category.title}</Link>
       );
     });
   }

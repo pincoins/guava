@@ -18,6 +18,8 @@ import SignUp from './pages/auth/SignUp';
 import Guide from './pages/help/Guide';
 import RootBoundary from './pages/RootBoundary';
 import { Counter } from './pages/misc/Counter';
+import CategoryDetail from './pages/shop/categories/CategoryDetail';
+import ProductDetail from './pages/shop/products/ProductDetail';
 
 const router = createBrowserRouter([
   {
@@ -34,11 +36,29 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'categories',
-            element: <CategoryList />,
+            children: [
+              {
+                index: true,
+                element: <CategoryList />,
+              },
+              {
+                path: ':category',
+                element: <CategoryDetail />,
+              },
+            ],
           },
           {
             path: 'products',
-            element: <ProductList />,
+            children: [
+              {
+                index: true,
+                element: <ProductList />,
+              },
+              {
+                path: ':product',
+                element: <ProductDetail />,
+              },
+            ],
           },
           {
             path: 'cart',
