@@ -16,13 +16,14 @@ import Privacy from './routes/help/Privacy';
 import Terms from './routes/help/Terms';
 import SignUp from './routes/auth/SignUp';
 import Guide from './routes/help/Guide';
+import RootBoundary from './routes/RootBoundary';
 import { Counter } from './routes/misc/Counter';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
-    errorElement: <div>404 not found</div>,
+    errorElement: <RootBoundary />,
     children: [
       {
         index: true,

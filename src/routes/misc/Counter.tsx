@@ -12,8 +12,6 @@ export function Counter() {
 
   const dispatch = useAppDispatch();
 
-  // omit rendering logic
-
   return (
     <>
       <h1>{count}</h1>
