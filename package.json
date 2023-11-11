@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.6",
+    "@types/dotenv-webpack": "^7.0.7",
     "@types/react": "^18.2.25",
     "@types/react-dom": "^18.2.11",
     "@types/react-router-dom": "^5.3.3",
@@ -20,6 +21,7 @@
     "autoprefixer": "^10.4.16",
     "css-loader": "^6.8.1",
     "dotenv": "^16.3.1",
+    "dotenv-webpack": "^8.0.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.3",
     "mini-css-extract-plugin": "^2.7.6",
@@ -36,6 +38,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@reduxjs/toolkit": "^1.9.7",
+    "axios": "^1.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.47.0",
