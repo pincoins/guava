@@ -8,13 +8,13 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export const useThunk = (thunk: AsyncThunk<any, any, any>) => {
+export const useThunk = (thunk: AsyncThunk<any, any | undefined, any>) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const dispatch = useAppDispatch();
 
   const runThunk = useCallback(
-    (arg: any) => {
+    (arg?: any) => {
       setLoading(true);
       dispatch(thunk(arg))
         .unwrap()
