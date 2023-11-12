@@ -20,10 +20,6 @@ const RootBoundary = () => {
       return <div>권한 없음</div>;
     }
 
-    if (error.status === 404) {
-      return <div>페이지 없음</div>;
-    }
-
     if (error.status === 409) {
       return <div>충돌</div>;
     }
