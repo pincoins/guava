@@ -5,7 +5,7 @@ import { Category } from '../../../store/models/interfaces';
 import { useAppSelector, useThunk } from '../../../hooks/rtk-hooks';
 
 const CategoryList = () => {
-  const data = useAppSelector((state: RootState) => state.categories.data);
+  const data = useAppSelector((state: RootState) => state.categoriesSlice.data);
 
   const [doFetchCategories, isLoadingCategories, loadingCategoryError] =
     useThunk(fetchCategories);

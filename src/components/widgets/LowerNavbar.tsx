@@ -1,25 +1,16 @@
 import { Link } from 'react-router-dom';
-import React, { useEffect } from 'react';
-import { useAppSelector, useThunk } from '../../hooks/rtk-hooks';
-import { RootState } from '../../store';
-import { fetchCategories } from '../../store/thunks/fetchCategories';
+import React from 'react';
 import { Category } from '../../store/models/interfaces';
+import { useFetchCategoriesQuery } from '../../store/apis/categoryApi';
 
 const LowerNavbar = () => {
-  const data = useAppSelector((state: RootState) => state.categories.data);
-
-  const [doFetchCategories, isLoadingCategories, loadingCategoryError] =
-    useThunk(fetchCategories);
-
-  useEffect(() => {
-    doFetchCategories();
-  }, [doFetchCategories]);
+  const { data, error, isFetching } = useFetchCategoriesQuery();
 
   let content;
 
-  if (isLoadingCategories) {
+  if (isFetching) {
     content = <div>Loading...</div>;
-  } else if (loadingCategoryError) {
+  } else if (error) {
     content = <div>error occurred.</div>;
   } else {
     content = data?.map((category: Category) => {
