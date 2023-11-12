@@ -6,7 +6,7 @@ interface AuthState {
   refreshToken: string | null;
   expiresIn: number | null;
   loading: boolean;
-  error: string | null;
+  error: any;
 }
 
 const initialState: AuthState = {
@@ -34,7 +34,7 @@ export const authSlice = createSlice({
       })
       .addCase(authenticate.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'something wrong';
+        state.error = action.payload;
       });
   },
 });

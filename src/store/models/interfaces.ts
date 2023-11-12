@@ -7,3 +7,10 @@ export interface Category {
   discountRate: number;
   status: string;
 }
+
+export interface ResponseDataType {
+  status: string;
+  message: string;
+  timestamp: Date;
+  errors: string[];
+}

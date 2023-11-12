@@ -2,8 +2,9 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useThunk } from '../../hooks/rtk-hooks';
 import { authenticate } from '../../store/thunks/authActions';
+import { useAppDispatch, useAppSelector } from '../../hooks/rtk-hooks';
+import { RootState } from '../../store';
 
 type Inputs = {
   email: string;
@@ -18,8 +19,9 @@ const schema = yup
   .required();
 
 const SignIn = () => {
-  const [doAuthenticate, isAuthenticating, authenticatingError] =
-    useThunk(authenticate);
+  const { error, loading } = useAppSelector((state: RootState) => state.auth);
+
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -30,9 +32,7 @@ const SignIn = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data.email);
-    console.log(data.password);
-    doAuthenticate({ email: data.email, password: data.password });
+    dispatch(authenticate({ email: data.email, password: data.password }));
   };
 
   return (
@@ -44,7 +44,8 @@ const SignIn = () => {
       <input type="password" className="border" {...register('password')} />
       {errors.password && <span>required</span>}
 
-      <input type="submit" className="border" />
+      <input type="submit" className="border" disabled={loading} />
+      {error}
     </form>
   );
 };

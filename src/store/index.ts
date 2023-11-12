@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { counterSlice } from './slices/counterSlice';
 import { categoryApi } from './apis/categoryApi';
-import { categorySlice } from './slices/categorySlice';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { authSlice } from './slices/authSlice';
 
@@ -9,7 +8,6 @@ export const store = configureStore({
   reducer: {
     counter: counterSlice.reducer,
     auth: authSlice.reducer,
-    categoriesSlice: categorySlice.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {

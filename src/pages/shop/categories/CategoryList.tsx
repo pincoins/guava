@@ -1,25 +1,15 @@
-import React, { useEffect } from 'react';
-import { fetchCategories } from '../../../store/thunks/categoryActions';
-import { RootState } from '../../../store';
+import React from 'react';
 import { Category } from '../../../store/models/interfaces';
-import { useAppSelector, useThunk } from '../../../hooks/rtk-hooks';
+import { useFetchCategoriesQuery } from '../../../store/apis/categoryApi';
 
 const CategoryList = () => {
-  const data = useAppSelector((state: RootState) => state.categoriesSlice.data);
-
-  const [doFetchCategories, isLoadingCategories, loadingCategoryError] =
-    useThunk(fetchCategories);
-
-  useEffect(() => {
-    // dispatched twice if React.StrictMode is on for development
-    doFetchCategories();
-  }, []);
+  const { data, error, isLoading } = useFetchCategoriesQuery();
 
   let content;
 
-  if (isLoadingCategories) {
+  if (isLoading) {
     content = <div>Loading...</div>;
-  } else if (loadingCategoryError) {
+  } else if (error) {
     content = <div>error occurred.</div>;
   } else {
     content = data?.map((i: Category) => {
