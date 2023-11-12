@@ -12,7 +12,7 @@ const CategoryList = () => {
 
   useEffect(() => {
     // dispatched twice if React.StrictMode is on for development
-    doFetchCategories({});
+    doFetchCategories();
   }, []);
 
   let content;
