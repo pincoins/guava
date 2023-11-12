@@ -8,9 +8,16 @@ export interface Category {
   status: string;
 }
 
-export interface ResponseDataType {
+export interface ErrorResponse {
   status: string;
   message: string;
   timestamp: Date;
   errors: string[];
+}
+
+export interface AccessTokenResponse {
+  accessToken: string;
+  tokenType: string;
+  expiresIn: number;
+  refreshToken: string;
 }
