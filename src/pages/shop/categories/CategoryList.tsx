@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { fetchCategories } from '../../../store/thunks/fetchCategories';
+import { fetchCategories } from '../../../store/thunks/categoryActions';
 import { RootState } from '../../../store';
 import { Category } from '../../../store/models/interfaces';
 import { useAppSelector, useThunk } from '../../../hooks/rtk-hooks';
@@ -11,8 +11,9 @@ const CategoryList = () => {
     useThunk(fetchCategories);
 
   useEffect(() => {
+    // dispatched twice if React.StrictMode is on for development
     doFetchCategories();
-  }, [doFetchCategories]);
+  }, []);
 
   let content;
 

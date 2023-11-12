@@ -20,6 +20,7 @@ import RootBoundary from './pages/RootBoundary';
 import { Counter } from './pages/misc/Counter';
 import CategoryDetail from './pages/shop/categories/CategoryDetail';
 import ProductDetail from './pages/shop/products/ProductDetail';
+import NotFound from './pages/NotFound';
 
 const router = createBrowserRouter([
   {
@@ -129,6 +130,7 @@ const router = createBrowserRouter([
           },
         ],
       },
+      { path: '*', element: <NotFound /> },
     ],
   },
 ]);

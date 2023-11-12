@@ -11,7 +11,7 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export const useThunk = (thunk: AsyncThunk<any[], any, any>) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const dispatch: AppDispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const runThunk = useCallback(
     (...arg: any[]) => {
