@@ -2,25 +2,25 @@ import React, { useEffect } from 'react';
 import { fetchCategories } from '../../../store/thunks/categoryActions';
 import { RootState } from '../../../store';
 import { Category } from '../../../store/models/interfaces';
-import { useAppSelector, useThunk } from '../../../hooks/rtk-hooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/rtk-hooks';
 
 const CategoryList = () => {
-  const data = useAppSelector((state: RootState) => state.categoriesSlice.data);
+  const { data, error, loading } = useAppSelector(
+    (state: RootState) => state.categoriesSlice
+  );
 
-  const [doFetchCategories, isLoadingCategories, loadingCategoryError] =
-    useThunk(fetchCategories);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // dispatched twice if React.StrictMode is on for development
-    doFetchCategories();
+    dispatch(fetchCategories());
   }, []);
 
   let content;
 
-  if (isLoadingCategories) {
+  if (loading) {
     content = <div>Loading...</div>;
-  } else if (loadingCategoryError) {
-    content = <div>error occurred.</div>;
+  } else if (error) {
+    content = <div>error occurred. {error}</div>;
   } else {
     content = data?.map((i: Category) => {
       return <div>{i.title}</div>;

@@ -5,7 +5,7 @@ import { Category } from '../models/interfaces';
 interface CategoryState {
   data: Category[];
   loading: boolean;
-  error: string | null;
+  error: any;
 }
 
 const initialState: CategoryState = {
@@ -29,7 +29,7 @@ export const categorySlice = createSlice({
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'something wrong';
+        state.error = action.payload;
       });
   },
 });
