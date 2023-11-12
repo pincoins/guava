@@ -1,4 +1,4 @@
-interface Category {
+export interface Category {
   categoryId: number;
   title: string;
   slug: string;
@@ -7,5 +7,3 @@ interface Category {
   discountRate: number;
   status: string;
 }
-
-export default Category;
