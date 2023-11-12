@@ -2,6 +2,8 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useThunk } from '../../hooks/rtk-hooks';
+import { authenticate } from '../../store/thunks/authActions';
 
 type Inputs = {
   email: string;
@@ -16,6 +18,9 @@ const schema = yup
   .required();
 
 const SignIn = () => {
+  const [doAuthenticate, isAuthenticating, authenticatingError] =
+    useThunk(authenticate);
+
   const {
     register,
     handleSubmit,
@@ -25,8 +30,9 @@ const SignIn = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-    console.log('dispatch login async thunk');
+    console.log(data.email);
+    console.log(data.password);
+    doAuthenticate({ email: data.email, password: data.password });
   };
 
   return (
