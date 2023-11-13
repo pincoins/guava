@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { AccessTokenResponse, ErrorResponse } from '../models/interfaces';
+import { ErrorResponse, TokenResponse } from '../models/interfaces';
 
 const authenticate = createAsyncThunk<
-  AccessTokenResponse,
+  TokenResponse,
   {
     email: string;
     password: string;
@@ -38,4 +38,41 @@ const authenticate = createAsyncThunk<
   }
 });
 
-export { authenticate };
+const signUp = createAsyncThunk<
+  any,
+  { username: string; fullName: string; email: string; password: string }
+>(
+  'auth/signUp',
+  async ({ username, fullName, email, password }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        '/members',
+        {
+          username,
+          fullName,
+          email,
+          password,
+        },
+        {
+          baseURL: process.env.API_URL,
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError<ErrorResponse, any>(error)) {
+        if (error?.response?.data) {
+          if (error.response.data.errors.length > 0) {
+            return rejectWithValue(error.response.data.errors);
+          } else {
+            return rejectWithValue(error.response?.data.message);
+          }
+        } else {
+          return rejectWithValue(error.message);
+        }
+      }
+    }
+  }
+);
+
+export { authenticate, signUp };

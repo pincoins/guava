@@ -6,10 +6,10 @@ import { authenticate } from '../../store/thunks/authActions';
 import { useAppDispatch, useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 
-type Inputs = {
+interface Inputs {
   email: string;
   password: string;
-};
+}
 
 const schema = yup
   .object({
@@ -37,16 +37,26 @@ const SignIn = () => {
 
   return (
     // "handleSubmit" validates your input before invoking "onSubmit"
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input type="text" className="border" {...register('email')} />
-      {errors.email && <span>invalid email address</span>}
-
-      <input type="password" className="border" {...register('password')} />
-      {errors.password && <span>required</span>}
-
-      <input type="submit" className="border" disabled={loading} />
-      {error}
-    </form>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {error && <div>{error}</div>}
+        <input
+          type="text"
+          placeholder="email"
+          className="border"
+          {...register('email')}
+        />
+        {errors.email && <span>invalid email address</span>}
+        <input
+          type="password"
+          placeholder="email"
+          className="border"
+          {...register('password')}
+        />
+        {errors.password && <span>required</span>}
+        <input type="submit" className="border" disabled={loading} />
+      </form>
+    </>
   );
 };
 

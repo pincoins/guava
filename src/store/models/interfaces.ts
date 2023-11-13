@@ -15,7 +15,7 @@ export interface ErrorResponse {
   errors: string[];
 }
 
-export interface AccessTokenResponse {
+export interface TokenResponse {
   accessToken: string;
   tokenType: string;
   expiresIn: number;

@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { authenticate } from '../thunks/authActions';
+import { authenticate, signUp } from '../thunks/authActions';
 
 interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   expiresIn: number | null;
+  registered: boolean;
   loading: boolean;
   error: any;
 }
@@ -13,6 +14,7 @@ const initialState: AuthState = {
   accessToken: null,
   refreshToken: null,
   expiresIn: null,
+  registered: false,
   loading: false,
   error: null,
 };
@@ -23,7 +25,7 @@ export const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(authenticate.pending, (state, action) => {
+      .addCase(authenticate.pending, (state) => {
         state.loading = true;
       })
       .addCase(authenticate.fulfilled, (state, action) => {
@@ -33,6 +35,19 @@ export const authSlice = createSlice({
         state.expiresIn = action.payload.expiresIn;
       })
       .addCase(authenticate.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+
+    builder
+      .addCase(signUp.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(signUp.fulfilled, (state) => {
+        state.loading = false;
+        state.registered = true;
+      })
+      .addCase(signUp.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
