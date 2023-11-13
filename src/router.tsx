@@ -20,6 +20,7 @@ import RootBoundary from './pages/RootBoundary';
 import CategoryDetail from './pages/shop/categories/CategoryDetail';
 import ProductDetail from './pages/shop/products/ProductDetail';
 import NotFound from './pages/NotFound';
+import ProtectedRoute from './pages/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,15 @@ const router = createBrowserRouter([
       {
         path: 'shop',
         children: [
+          {
+            element: <ProtectedRoute />,
+            children: [
+              {
+                path: 'orders',
+                element: <OrderList />,
+              },
+            ],
+          },
           {
             path: 'categories',
             children: [
@@ -64,15 +74,20 @@ const router = createBrowserRouter([
             path: 'cart',
             element: <Cart />,
           },
-          {
-            path: 'orders',
-            element: <OrderList />,
-          },
         ],
       },
       {
         path: 'auth',
         children: [
+          {
+            element: <ProtectedRoute />,
+            children: [
+              {
+                path: 'profile',
+                element: <Profile />,
+              },
+            ],
+          },
           {
             path: 'sign-up',
             element: <SignUp />,
@@ -80,10 +95,6 @@ const router = createBrowserRouter([
           {
             path: 'sign-in',
             element: <SignIn />,
-          },
-          {
-            path: 'profile',
-            element: <Profile />,
           },
           {
             path: 'sign-out',
@@ -95,16 +106,21 @@ const router = createBrowserRouter([
         path: 'help',
         children: [
           {
+            element: <ProtectedRoute />,
+            children: [
+              {
+                path: 'qna',
+                element: <Qna />,
+              },
+            ],
+          },
+          {
             path: 'faq',
             element: <Faq />,
           },
           {
             path: 'notice',
             element: <Notice />,
-          },
-          {
-            path: 'qna',
-            element: <Qna />,
           },
           {
             path: 'privacy',
