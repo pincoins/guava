@@ -1,6 +1,6 @@
 import React from 'react';
 import { Category } from '../../../store/models/interfaces';
-import { useFetchCategoriesQuery } from '../../../store/apis/categoryApi';
+import { useFetchCategoriesQuery } from '../../../store/services/categoryApi';
 
 const CategoryList = () => {
   const { data, error, isLoading } = useFetchCategoriesQuery();

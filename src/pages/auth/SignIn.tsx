@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
-import { useSignInMutation } from '../../store/apis/authApi';
+import { useSignInMutation } from '../../store/services/authApi';
 
 interface Inputs {
   email: string;
