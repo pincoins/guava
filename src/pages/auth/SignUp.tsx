@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { signUp } from '../../store/thunks/authActions';
-import { useAppDispatch, useAppSelector } from '../../hooks/rtk-hooks';
+import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import { useSignUpMutation } from '../../store/apis/authApi';
 
 interface Inputs {
   username: string;
@@ -24,46 +24,57 @@ const schema = yup
   .required();
 
 const SignUp = () => {
-  const { error, loading, accessToken, registered } = useAppSelector(
-    (state: RootState) => state.auth
-  );
+  const { accessToken } = useAppSelector((state: RootState) => state.auth);
 
-  const dispatch = useAppDispatch();
+  const [signUp, { isLoading, isError, error, isSuccess }] =
+    useSignUpMutation();
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (registered) {
-      navigate('/auth/sign-in');
-    }
-
-    if (accessToken) {
-      navigate('/');
-    }
-  }, [registered, accessToken]);
-
   const {
     register,
+    reset,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
   } = useForm<Inputs>({
     resolver: yupResolver(schema),
   });
 
+  useEffect(() => {
+    if (accessToken) {
+      navigate('/');
+    }
+
+    if (isSuccess) {
+      navigate('/auth/sign-in');
+    }
+
+    if (isError) {
+      if (Array.isArray((error as any).data.error)) {
+        (error as any).data.error.forEach((el: any) => console.log(el.message));
+      } else {
+        console.log((error as any).data.message);
+      }
+    }
+  }, [isLoading, accessToken]);
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful]);
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    dispatch(
-      signUp({
-        username: data.username,
-        fullName: data.fullName,
-        email: data.email,
-        password: data.password,
-      })
-    );
+    signUp({
+      username: data.username,
+      fullName: data.fullName,
+      email: data.email,
+      password: data.password,
+    });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {error && <div>{error}</div>}
       <input
         type="text"
         placeholder="username"
@@ -92,7 +103,7 @@ const SignUp = () => {
         {...register('password')}
       />
       {errors.password && <span>required</span>}
-      <input type="submit" className="border" disabled={loading} />
+      <input type="submit" className="border" disabled={isLoading} />
     </form>
   );
 };
