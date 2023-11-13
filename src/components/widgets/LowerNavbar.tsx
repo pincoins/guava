@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
 import { Category } from '../../store/models/interfaces';
-import { useFetchCategoriesQuery } from '../../store/apis/categoryApi';
+import { useFetchCategoriesQuery } from '../../store/services/categoryApi';
 
 const LowerNavbar = () => {
   const { data, error, isFetching } = useFetchCategoriesQuery();

@@ -5,7 +5,7 @@ import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
-import { useSignUpMutation } from '../../store/apis/authApi';
+import { useSignUpMutation } from '../../store/services/authApi';
 
 interface Inputs {
   username: string;
