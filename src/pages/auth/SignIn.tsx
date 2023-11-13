@@ -2,10 +2,8 @@ import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { signIn } from '../../store/thunks/authActions';
-import { useAppDispatch, useAppSelector } from '../../hooks/rtk-hooks';
-import { RootState } from '../../store';
 import { useNavigate } from 'react-router-dom';
+import { useSignInMutation } from '../../store/apis/authApi';
 
 interface Inputs {
   email: string;
@@ -20,37 +18,47 @@ const schema = yup
   .required();
 
 const SignIn = () => {
-  const { error, loading, accessToken } = useAppSelector(
-    (state: RootState) => state.auth
-  );
-
-  const dispatch = useAppDispatch();
+  const [signIn, { isLoading, isError, error, isSuccess }] =
+    useSignInMutation();
 
   const navigate = useNavigate();
 
   const {
     register,
+    reset,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
   } = useForm<Inputs>({
     resolver: yupResolver(schema),
   });
 
   useEffect(() => {
-    if (accessToken) {
+    if (isSuccess) {
       navigate('/');
     }
-  }, [accessToken]);
+
+    if (isError) {
+      if (Array.isArray((error as any).data.error)) {
+        (error as any).data.error.forEach((el: any) => console.log(el.message));
+      } else {
+        console.log((error as any).data.message);
+      }
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful]);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    dispatch(signIn({ email: data.email, password: data.password }));
+    signIn({ email: data.email, password: data.password });
   };
 
   return (
-    // "handleSubmit" validates your input before invoking "onSubmit"
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {error && <div>{error}</div>}
         <input
           type="text"
           placeholder="email"
@@ -65,7 +73,7 @@ const SignIn = () => {
           {...register('password')}
         />
         {errors.password && <span>required</span>}
-        <input type="submit" className="border" disabled={loading} />
+        <input type="submit" className="border" disabled={isLoading} />
       </form>
     </>
   );
