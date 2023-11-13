@@ -1,11 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { signIn, signUp } from '../thunks/authActions';
 
-const accessToken = localStorage.getItem('accessToken');
-
 interface AuthState {
   accessToken: string | null;
-  refreshToken: string | null;
   expiresIn: number | null;
   registered: boolean;
   loading: boolean;
@@ -13,8 +10,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  accessToken: accessToken,
-  refreshToken: null,
+  accessToken: null,
   expiresIn: null,
   registered: false,
   loading: false,
@@ -27,10 +23,9 @@ export const authSlice = createSlice({
   reducers: {
     signOut: (state) => {
       // not async action
-      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
 
       state.accessToken = null;
-      state.refreshToken = null;
       state.expiresIn = null;
       state.registered = false;
       state.loading = false;
@@ -45,7 +40,6 @@ export const authSlice = createSlice({
       .addCase(signIn.fulfilled, (state, action) => {
         state.loading = false;
         state.accessToken = action.payload.accessToken;
-        state.refreshToken = action.payload.refreshToken;
         state.expiresIn = action.payload.expiresIn;
       })
       .addCase(signIn.rejected, (state, action) => {

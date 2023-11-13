@@ -19,10 +19,14 @@ const signIn = createAsyncThunk<
       },
       {
         baseURL: process.env.API_URL,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }
     );
 
-    localStorage.setItem('accessToken', response.data.accessToken);
+    // save refreshToken in local storage, but accessToken in memory (XSS)
+    localStorage.setItem('refreshToken', response.data.refreshToken);
 
     return response.data;
   } catch (error) {
@@ -57,6 +61,9 @@ const signUp = createAsyncThunk<
         },
         {
           baseURL: process.env.API_URL,
+          headers: {
+            'Content-Type': 'application/json',
+          },
         }
       );
 
