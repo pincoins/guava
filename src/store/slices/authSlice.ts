@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { authenticate, signUp } from '../thunks/authActions';
+import { signIn, signUp } from '../thunks/authActions';
+
+const accessToken = localStorage.getItem('accessToken');
 
 interface AuthState {
   accessToken: string | null;
@@ -11,7 +13,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  accessToken: null,
+  accessToken: accessToken,
   refreshToken: null,
   expiresIn: null,
   registered: false,
@@ -22,19 +24,31 @@ const initialState: AuthState = {
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    signOut: (state) => {
+      // not async action
+      localStorage.removeItem('accessToken');
+
+      state.accessToken = null;
+      state.refreshToken = null;
+      state.expiresIn = null;
+      state.registered = false;
+      state.loading = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(authenticate.pending, (state) => {
+      .addCase(signIn.pending, (state) => {
         state.loading = true;
       })
-      .addCase(authenticate.fulfilled, (state, action) => {
+      .addCase(signIn.fulfilled, (state, action) => {
         state.loading = false;
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
         state.expiresIn = action.payload.expiresIn;
       })
-      .addCase(authenticate.rejected, (state, action) => {
+      .addCase(signIn.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
@@ -53,5 +67,7 @@ export const authSlice = createSlice({
       });
   },
 });
+
+export const { signOut } = authSlice.actions;
 
 export default authSlice.reducer;

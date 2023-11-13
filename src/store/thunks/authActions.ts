@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { ErrorResponse, TokenResponse } from '../models/interfaces';
 
-const authenticate = createAsyncThunk<
+const signIn = createAsyncThunk<
   TokenResponse,
   {
     email: string;
@@ -21,6 +21,8 @@ const authenticate = createAsyncThunk<
         baseURL: process.env.API_URL,
       }
     );
+
+    localStorage.setItem('accessToken', response.data.accessToken);
 
     return response.data;
   } catch (error) {
@@ -75,4 +77,4 @@ const signUp = createAsyncThunk<
   }
 );
 
-export { authenticate, signUp };
+export { signIn, signUp };

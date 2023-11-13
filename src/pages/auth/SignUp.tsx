@@ -5,7 +5,7 @@ import { signUp } from '../../store/thunks/authActions';
 import { useAppDispatch, useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import * as yup from 'yup';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface Inputs {
   username: string;
@@ -24,17 +24,23 @@ const schema = yup
   .required();
 
 const SignUp = () => {
-  const { error, loading, registered } = useAppSelector(
+  const { error, loading, accessToken, registered } = useAppSelector(
     (state: RootState) => state.auth
   );
 
   const dispatch = useAppDispatch();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (registered) {
-      redirect('/auth/sign-in');
+      navigate('/auth/sign-in');
     }
-  }, [registered]);
+
+    if (accessToken) {
+      navigate('/');
+    }
+  }, [registered, accessToken]);
 
   const {
     register,
@@ -45,7 +51,6 @@ const SignUp = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
     dispatch(
       signUp({
         username: data.username,
