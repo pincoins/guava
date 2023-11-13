@@ -22,7 +22,7 @@ export const authSlice = createSlice({
       state.expiresIn = action.payload.expiresIn;
     },
     signOut: (state) => {
-      // localStorage.removeItem('refreshToken');
+      localStorage.removeItem('refreshToken');
 
       state.accessToken = null;
       state.expiresIn = null;

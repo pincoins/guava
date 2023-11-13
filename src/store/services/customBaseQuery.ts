@@ -9,7 +9,7 @@ import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { setCredentials, signOut } from '../slices/authSlice';
 import { RootState } from '../index';
 
-const baseQuery = fetchBaseQuery({
+const baseQueryWithToken = fetchBaseQuery({
   baseUrl: process.env.API_URL,
   prepareHeaders: (headers, { getState }) => {
     const accessToken = (getState() as RootState).auth.accessToken;
@@ -22,7 +22,7 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const baseQuery1 = fetchBaseQuery({
+const baseQueryForRefresh = fetchBaseQuery({
   baseUrl: process.env.API_URL,
 });
 
@@ -31,12 +31,9 @@ const baseQueryWithRetry: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  let result = await baseQuery(args, api, extraOptions);
+  let result = await baseQueryWithToken(args, api, extraOptions);
 
-  if (
-    result.error &&
-    (result.error.status === 401 || result.error.status === 403)
-  ) {
+  if (result.error && [401, 403].includes(result.error.status as number)) {
     const refreshToken = localStorage.getItem('refreshToken');
 
     if (refreshToken) {
@@ -44,7 +41,7 @@ const baseQueryWithRetry: BaseQueryFn<
         any,
         FetchBaseQueryError,
         FetchBaseQueryMeta
-      > = await baseQuery1(
+      > = await baseQueryForRefresh(
         {
           url: '/auth/refresh',
           method: 'POST',
@@ -69,13 +66,13 @@ const baseQueryWithRetry: BaseQueryFn<
             expiresIn,
           })
         );
-        result = await baseQuery(args, api, extraOptions);
+        result = await baseQueryWithToken(args, api, extraOptions);
         return result;
+      } else {
+        api.dispatch(signOut());
       }
     }
   }
-
-  api.dispatch(signOut());
   return result;
 };
 
