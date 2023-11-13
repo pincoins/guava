@@ -1,14 +1,11 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { TokenResponse } from '../models/interfaces';
 import { setCredentials } from '../slices/authSlice';
+import customBaseQuery from './customBaseQuery';
 
 const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: process.env.API_URL,
-    headers: { 'Content-Type': 'application/json' },
-  }),
+  baseQuery: customBaseQuery,
   endpoints: (builder) => ({
     signUp: builder.mutation<
       any,
