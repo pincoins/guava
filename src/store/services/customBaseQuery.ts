@@ -14,6 +14,7 @@ const mutex = new Mutex();
 
 const baseQueryWithToken = fetchBaseQuery({
   baseUrl: process.env.API_URL,
+  credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const accessToken = (getState() as RootState).auth.accessToken;
 
@@ -81,6 +82,7 @@ const baseQueryWithRetry: BaseQueryFn<
             result = await baseQueryWithToken(args, api, extraOptions);
             return result;
           } else {
+            // refresh token is also expired or invalid.
             api.dispatch(signOut());
           }
         }
