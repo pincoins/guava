@@ -16,13 +16,13 @@ export const authSlice = createSlice({
   reducers: {
     // not async action
     setCredentials: (state, action) => {
-      localStorage.setItem('refreshToken', action.payload.refreshToken);
+      // localStorage.setItem('refreshToken', action.payload.refreshToken);
 
       state.accessToken = action.payload.accessToken;
       state.expiresIn = action.payload.expiresIn;
     },
     signOut: (state) => {
-      localStorage.removeItem('refreshToken');
+      // localStorage.removeItem('refreshToken');
 
       state.accessToken = null;
       state.expiresIn = null;

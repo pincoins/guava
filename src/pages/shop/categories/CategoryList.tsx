@@ -13,7 +13,7 @@ const CategoryList = () => {
     content = <div>error occurred.</div>;
   } else {
     content = data?.map((i: Category) => {
-      return <div>{i.title}</div>;
+      return <div key={i.slug}>{i.title}</div>;
     });
   }
 

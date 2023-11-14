@@ -11,6 +11,9 @@ const UpperNavbar = () => {
       <div>
         <Link to="/">{process.env.SITE_TITLE} 로고</Link>
       </div>
+      <div>
+        <Link to="/shop/categories">카테고리</Link>
+      </div>
       {!accessToken && (
         <>
           <div>
