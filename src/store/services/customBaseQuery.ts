@@ -46,46 +46,42 @@ const baseQueryWithRetry: BaseQueryFn<
       const release = await mutex.acquire();
 
       try {
-        const refreshToken = localStorage.getItem('refreshToken');
+        // const refreshToken = localStorage.getItem('refreshToken');
 
-        if (refreshToken) {
-          const response: QueryReturnValue<
-            any,
-            FetchBaseQueryError,
-            FetchBaseQueryMeta
-          > = await baseQueryForRefresh(
-            {
-              url: '/auth/refresh',
-              method: 'POST',
-              body: {
-                grantType: 'refresh_token',
-                refreshToken,
-              },
+        const response: QueryReturnValue<
+          any,
+          FetchBaseQueryError,
+          FetchBaseQueryMeta
+        > = await baseQueryForRefresh(
+          {
+            url: '/auth/refresh',
+            method: 'POST',
+            body: {
+              grantType: 'refresh_token',
             },
-            api,
-            extraOptions
+          },
+          api,
+          extraOptions
+        );
+        if (response.data) {
+          const {
+            data: { accessToken, refreshToken, expiresIn },
+          } = response;
+
+          api.dispatch(
+            setCredentials({
+              accessToken,
+              refreshToken,
+              expiresIn,
+            })
           );
 
-          if (response.data) {
-            const {
-              data: { accessToken, refreshToken, expiresIn },
-            } = response;
-
-            api.dispatch(
-              setCredentials({
-                accessToken,
-                refreshToken,
-                expiresIn,
-              })
-            );
-
-            // retry the initial query
-            result = await baseQueryWithToken(args, api, extraOptions);
-            return result;
-          } else {
-            // refresh token is also expired or invalid.
-            api.dispatch(signOut());
-          }
+          // retry the initial query
+          result = await baseQueryWithToken(args, api, extraOptions);
+          return result;
+        } else {
+          // refresh token is also expired or invalid.
+          api.dispatch(signOut());
         }
       } finally {
         // release must be called once the mutex should be released again.
