@@ -28,6 +28,7 @@ const baseQueryWithToken = fetchBaseQuery({
 
 const baseQueryForRefresh = fetchBaseQuery({
   baseUrl: process.env.API_URL,
+  credentials: 'include',
 });
 
 const baseQueryWithRetry: BaseQueryFn<
