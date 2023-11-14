@@ -25,7 +25,7 @@ module.exports = {
         resolve: {
           extensions: ['.ts', '.tsx', '.js', '.json'],
         },
-        use: ['ts-loader'],
+        use: ['babel-loader'],
       },
       {
         test: /\.css$/i,
