@@ -7,7 +7,8 @@
     "moduleResolution": "node",
     // node, classic
     "esModuleInterop": true,
-    "jsx": "react-jsx", // as of React-17
+    "jsx": "react-jsx",
+    // as of React-17
     // react, react-native, preserve
     "strict": true,
     // noImplicitAny, noImplicitThis, alwaysStrict,
