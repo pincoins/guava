@@ -1,4 +1,8 @@
-import { createBrowserRouter } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+} from 'react-router-dom';
 import Home from './pages/Home';
 import CategoryList from './pages/shop/categories/CategoryList';
 import ProductList from './pages/shop/products/ProductList';
@@ -21,129 +25,55 @@ import CategoryDetail from './pages/shop/categories/CategoryDetail';
 import ProductDetail from './pages/shop/products/ProductDetail';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './pages/ProtectedRoute';
+import OrderDetail from './pages/shop/orders/OrderDetail';
 
 const ROLE_ALL = Array.of('SYSADMIN', 'STAFF', 'MEMBER');
 const ROLE_SYSADMIN = Array.of('SYSADMIN');
 const ROLE_MANAGER = Array.of('SYSADMIN', 'STAFF');
 const ROLE_MEMBER = Array.of('MEMBER');
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Root />,
-    errorElement: <RootBoundary />,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: 'shop',
-        children: [
-          {
-            element: <ProtectedRoute roles={ROLE_ALL} />,
-            children: [
-              {
-                path: 'orders',
-                element: <OrderList />,
-              },
-            ],
-          },
-          {
-            path: 'categories',
-            children: [
-              {
-                index: true,
-                element: <CategoryList />,
-              },
-              {
-                path: ':category',
-                element: <CategoryDetail />,
-              },
-            ],
-          },
-          {
-            path: 'products',
-            children: [
-              {
-                index: true,
-                element: <ProductList />,
-              },
-              {
-                path: ':product',
-                element: <ProductDetail />,
-              },
-            ],
-          },
-          {
-            path: 'cart',
-            element: <Cart />,
-          },
-        ],
-      },
-      {
-        path: 'auth',
-        children: [
-          {
-            element: <ProtectedRoute roles={ROLE_ALL} />,
-            children: [
-              {
-                path: 'profile',
-                element: <Profile />,
-              },
-            ],
-          },
-          {
-            path: 'sign-up',
-            element: <SignUp />,
-          },
-          {
-            path: 'sign-in',
-            element: <SignIn />,
-          },
-          {
-            path: 'sign-out',
-            element: <SignOut />,
-          },
-        ],
-      },
-      {
-        path: 'help',
-        children: [
-          {
-            element: <ProtectedRoute roles={ROLE_ALL} />,
-            children: [
-              {
-                path: 'qna',
-                element: <Qna />,
-              },
-            ],
-          },
-          {
-            path: 'faq',
-            element: <Faq />,
-          },
-          {
-            path: 'notice',
-            element: <Notice />,
-          },
-          {
-            path: 'privacy',
-            element: <Privacy />,
-          },
-          {
-            path: 'terms',
-            element: <Terms />,
-          },
-          {
-            path: 'guide',
-            element: <Guide />,
-          },
-        ],
-      },
-      { path: '*', element: <NotFound /> },
-    ],
-  },
-]);
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Root />} errorElement={<RootBoundary />}>
+      <Route index={true} element={<Home />} />
+      <Route path="auth">
+        <Route element={<ProtectedRoute roles={ROLE_ALL} />}>
+          <Route path="profile" element={<Profile />} />
+        </Route>
+        <Route path="sign-up" element={<SignUp />} />
+        <Route path="sign-in" element={<SignIn />} />
+        <Route path="sign-out" element={<SignOut />} />
+      </Route>
+      <Route path="shop">
+        <Route element={<ProtectedRoute roles={ROLE_ALL} />}>
+          <Route path="orders">
+            <Route index={true} element={<OrderList />} />
+            <Route path=":order" element={<OrderDetail />} />
+          </Route>
+        </Route>
+        <Route path="categories">
+          <Route index={true} element={<CategoryList />} />
+          <Route path=":category" element={<CategoryDetail />} />
+        </Route>
+        <Route path="products">
+          <Route index={true} element={<ProductList />} />
+          <Route path=":product" element={<ProductDetail />} />
+        </Route>
+        <Route path="cart" element={<Cart />} />
+      </Route>
+      <Route path="help">
+        <Route element={<ProtectedRoute roles={ROLE_ALL} />}>
+          <Route path="qna" element={<Qna />} />
+        </Route>
+        <Route path="faq" element={<Faq />} />
+        <Route path="notice" element={<Notice />} />
+        <Route path="privacy" element={<Privacy />} />
+        <Route path="terms" element={<Terms />} />
+        <Route path="guide" element={<Guide />} />
+      </Route>
+      <Route path="*" element={<NotFound />} />
+    </Route>
+  )
+);
 
 export default router;
