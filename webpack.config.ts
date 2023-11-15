@@ -42,6 +42,7 @@ const config: webpack.Configuration = {
     // dotenv + Webpack.DefinePlugin = dotenv-webpack
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(dotenv.config().parsed),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     }),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
