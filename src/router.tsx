@@ -10,12 +10,12 @@ import OrderList from './pages/shop/orders/OrderList';
 import Profile from './pages/auth/Profile';
 import SignIn from './pages/auth/SignIn';
 import SignOut from './pages/auth/SignOut';
-import React from 'react';
+import React, { Suspense } from 'react';
 import Root from './pages/Root';
 import Cart from './pages/shop/Cart';
 import Faq from './pages/help/Faq';
 import Notice from './pages/help/Notice';
-import Qna from './pages/help/Qna';
+// import Qna from './pages/help/Qna';
 import Privacy from './pages/help/Privacy';
 import Terms from './pages/help/Terms';
 import SignUp from './pages/auth/SignUp';
@@ -31,6 +31,8 @@ const ROLE_ALL = Array.of('SYSADMIN', 'STAFF', 'MEMBER');
 const ROLE_SYSADMIN = Array.of('SYSADMIN');
 const ROLE_MANAGER = Array.of('SYSADMIN', 'STAFF');
 const ROLE_MEMBER = Array.of('MEMBER');
+
+const Qna = React.lazy(() => import('./pages/help/Qna'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -63,13 +65,23 @@ const router = createBrowserRouter(
       </Route>
       <Route path="help">
         <Route element={<ProtectedRoute roles={ROLE_ALL} />}>
-          <Route path="qna" element={<Qna />} />
+          <Route
+            path="qna"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Qna />
+              </Suspense>
+            }
+          />
         </Route>
         <Route path="faq" element={<Faq />} />
         <Route path="notice" element={<Notice />} />
         <Route path="privacy" element={<Privacy />} />
         <Route path="terms" element={<Terms />} />
         <Route path="guide" element={<Guide />} />
+      </Route>
+      <Route path="dashboard" element={<ProtectedRoute roles={ROLE_MANAGER} />}>
+        <Route index={true} element={<Home />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>
