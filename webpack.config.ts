@@ -17,6 +17,8 @@ const config: webpack.Configuration = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/', // nested routes in react-router
+    filename: '[name].js?id=[chunkhash]', // fast deployment
+    clean: true,
   },
   module: {
     rules: [
@@ -54,7 +56,7 @@ const config: webpack.Configuration = {
     port: 3000,
     hot: true,
     compress: true,
-    historyApiFallback: true,
+    historyApiFallback: true, // react-router
     open: true,
   },
 };
