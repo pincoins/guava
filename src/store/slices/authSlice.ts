@@ -1,13 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { parseJwt } from '../../utils/parseJwt';
 
 interface AuthState {
   accessToken: string | null;
   expiresIn: number | null;
+  role: string | null;
+  username: string | null;
 }
 
 const initialState: AuthState = {
   accessToken: null,
   expiresIn: null,
+  role: null,
+  username: null,
 };
 
 export const authSlice = createSlice({
@@ -20,6 +25,11 @@ export const authSlice = createSlice({
 
       state.accessToken = action.payload.accessToken;
       state.expiresIn = action.payload.expiresIn;
+
+      const jwt = parseJwt(action.payload.accessToken);
+
+      state.role = jwt.role;
+      state.username = jwt.username;
     },
     signOut: (state) => {
       // localStorage.removeItem('refreshToken');

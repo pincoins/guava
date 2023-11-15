@@ -22,6 +22,11 @@ import ProductDetail from './pages/shop/products/ProductDetail';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './pages/ProtectedRoute';
 
+const ROLE_ALL = Array.of('SYSADMIN', 'STAFF', 'MEMBER');
+const ROLE_SYSADMIN = Array.of('SYSADMIN');
+const ROLE_MANAGER = Array.of('SYSADMIN', 'STAFF');
+const ROLE_MEMBER = Array.of('MEMBER');
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -36,7 +41,7 @@ const router = createBrowserRouter([
         path: 'shop',
         children: [
           {
-            element: <ProtectedRoute />,
+            element: <ProtectedRoute roles={ROLE_ALL} />,
             children: [
               {
                 path: 'orders',
@@ -80,7 +85,7 @@ const router = createBrowserRouter([
         path: 'auth',
         children: [
           {
-            element: <ProtectedRoute />,
+            element: <ProtectedRoute roles={ROLE_ALL} />,
             children: [
               {
                 path: 'profile',
@@ -106,7 +111,7 @@ const router = createBrowserRouter([
         path: 'help',
         children: [
           {
-            element: <ProtectedRoute />,
+            element: <ProtectedRoute roles={ROLE_ALL} />,
             children: [
               {
                 path: 'qna',
