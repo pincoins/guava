@@ -1,17 +1,22 @@
+import path from 'path';
+
+import webpack from 'webpack';
+import dotenv from 'dotenv';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+
+import 'webpack-dev-server';
+
 const prod = process.env.NODE_ENV === 'production';
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const Dotenv = require('dotenv-webpack');
-
-module.exports = {
+const config: webpack.Configuration = {
   mode: prod ? 'production' : 'development',
   devtool: prod ? undefined : 'source-map',
 
   entry: './src/index.tsx',
   output: {
-    path: __dirname + '/dist/',
-    publicPath: '/', // react-router 중첩라우팅 설정
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/', // nested routes in react-router
   },
   module: {
     rules: [
@@ -34,7 +39,10 @@ module.exports = {
     ],
   },
   plugins: [
-    new Dotenv(),
+    // dotenv + Webpack.DefinePlugin = dotenv-webpack
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(dotenv.config().parsed),
+    }),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
       title: process.env.SITE_TITLE,
@@ -49,3 +57,5 @@ module.exports = {
     open: true,
   },
 };
+
+export default config;
