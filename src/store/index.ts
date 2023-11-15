@@ -17,11 +17,6 @@ export const store = configureStore({
   },
 });
 
-if (process.env.NODE_ENV === 'development') {
-  // redux store debug mode
-  (window as any).store = store;
-}
-
 setupListeners(store.dispatch); // optional, but for refetch behaviors
 
 export type RootState = ReturnType<typeof store.getState>;
