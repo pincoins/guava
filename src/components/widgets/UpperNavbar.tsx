@@ -14,6 +14,9 @@ const UpperNavbar = () => {
       <div>
         <Link to="/shop/categories">카테고리</Link>
       </div>
+      <div>
+        <Link to="/help/qna">고객문의</Link>
+      </div>
       {!accessToken && (
         <>
           <div>
