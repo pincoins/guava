@@ -33,8 +33,7 @@ const SignIn = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful, isValid, isDirty },
-    setError,
+    formState: { errors, isSubmitSuccessful },
     clearErrors,
     reset,
   } = useForm<SignInForm>({
@@ -52,7 +51,7 @@ const SignIn = () => {
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      reset();
+      reset(); // 폼 전송 완료 후 필드 초기화
     }
   }, [isSubmitSuccessful]);
 
@@ -68,6 +67,11 @@ const SignIn = () => {
           placeholder="email"
           className="border"
           {...register('email')}
+          onChange={() => {
+            if (errors.email) {
+              clearErrors('email');
+            }
+          }}
         />
         {errors.email && <span>{errors.email.message}</span>}
         <input
@@ -75,6 +79,11 @@ const SignIn = () => {
           placeholder="password"
           className="border"
           {...register('password')}
+          onChange={() => {
+            if (errors.email) {
+              clearErrors('email');
+            }
+          }}
         />
         {errors.password && <span>{errors.password.message}</span>}
         <input type="submit" className="border" disabled={isLoading} />

@@ -36,7 +36,10 @@ const schema = yup
         '비밀번호는 숫자, 영문 대문자, 소문자, 특수문자를 포함한 8글자 이상이어야 합니다.'
       )
       .required('필수'),
-    passwordRepeat: yup.string().required('필수'),
+    passwordRepeat: yup
+      .string()
+      .oneOf([yup.ref('password')], 'Passwords do not match')
+      .required('필수'),
   })
   .required();
 
@@ -51,8 +54,7 @@ const SignUp = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful, isValid, isDirty },
-    setError,
+    formState: { errors, isSubmitSuccessful },
     clearErrors,
     reset,
   } = useForm<SignUpForm>({
@@ -74,21 +76,11 @@ const SignUp = () => {
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      // 폼 전송 완료 후 필드 초기화
-      reset();
+      reset(); // 폼 전송 완료 후 필드 초기화
     }
   }, [isSubmitSuccessful]);
 
   const onValid: SubmitHandler<SignUpForm> = (data, _) => {
-    if (data.password !== data.passwordRepeat) {
-      setError(
-        'passwordRepeat',
-        { message: '비밀번호가 일치하지 않습니다.' },
-        { shouldFocus: true }
-      );
-      return;
-    }
-
     signUp({
       username: data.username,
       fullName: data.fullName,
@@ -152,6 +144,11 @@ const SignUp = () => {
         placeholder="password repeat"
         className="border"
         {...register('passwordRepeat')}
+        onChange={() => {
+          if (errors.passwordRepeat) {
+            clearErrors('passwordRepeat');
+          }
+        }}
       />
       {errors.passwordRepeat && <span>{errors.passwordRepeat.message}</span>}
       <input type="submit" className="border" disabled={isLoading} />
