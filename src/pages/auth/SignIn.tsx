@@ -4,16 +4,23 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import { useSignInMutation } from '../../store/services/authApi';
+import { useQueryMutationError } from '../../hooks/rtk-hooks';
 
-interface Inputs {
+interface SignInForm {
   email: string;
   password: string;
 }
 
 const schema = yup
   .object({
-    email: yup.string().email().required(),
-    password: yup.string().required(),
+    email: yup
+      .string()
+      .email('이메일 주소가 올바르지 않습니다.')
+      .required('필수'),
+    password: yup
+      .string()
+      .min(5, '비밀번호는 최소 5자입니다.')
+      .required('필수'),
   })
   .required();
 
@@ -25,10 +32,12 @@ const SignIn = () => {
 
   const {
     register,
-    reset,
     handleSubmit,
     formState: { errors, isSubmitSuccessful },
-  } = useForm<Inputs>({
+    clearErrors,
+    reset,
+  } = useForm<SignInForm>({
+    mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
@@ -37,42 +46,46 @@ const SignIn = () => {
       navigate('/');
     }
 
-    if (isError) {
-      if (Array.isArray((error as any).data.error)) {
-        (error as any).data.error.forEach((el: any) => console.log(el.message));
-      } else {
-        console.log((error as any).data.message);
-      }
-    }
+    useQueryMutationError(isError, error);
   }, [isLoading]);
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      reset();
+      reset(); // 폼 전송 완료 후 필드 초기화
     }
   }, [isSubmitSuccessful]);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onValid: SubmitHandler<SignInForm> = (data) => {
     signIn({ email: data.email, password: data.password });
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onValid)}>
         <input
           type="text"
           placeholder="email"
           className="border"
           {...register('email')}
+          onChange={() => {
+            if (errors.email) {
+              clearErrors('email');
+            }
+          }}
         />
-        {errors.email && <span>invalid email address</span>}
+        {errors.email && <span>{errors.email.message}</span>}
         <input
           type="password"
           placeholder="password"
           className="border"
           {...register('password')}
+          onChange={() => {
+            if (errors.email) {
+              clearErrors('email');
+            }
+          }}
         />
-        {errors.password && <span>required</span>}
+        {errors.password && <span>{errors.password.message}</span>}
         <input type="submit" className="border" disabled={isLoading} />
       </form>
     </>

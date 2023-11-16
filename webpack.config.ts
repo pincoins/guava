@@ -11,7 +11,7 @@ const prod = process.env.NODE_ENV === 'production';
 
 const config: webpack.Configuration = {
   mode: prod ? 'production' : 'development',
-  devtool: prod ? undefined : 'source-map',
+  devtool: prod ? false : 'source-map', // source-map bloats bundle size
 
   entry: './src/index.tsx',
   output: {
@@ -19,6 +19,12 @@ const config: webpack.Configuration = {
     publicPath: '/', // nested routes in react-router
     filename: '[name].js?id=[chunkhash]', // fast deployment
     clean: true,
+  },
+  optimization: {
+    minimize: true,
+    splitChunks: {
+      chunks: 'all', // include all types of chunks
+    },
   },
   module: {
     rules: [

@@ -1,25 +1,45 @@
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAppSelector } from '../../hooks/rtk-hooks';
+import { useAppSelector, useQueryMutationError } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from '../../store/services/authApi';
 
-interface Inputs {
+interface SignUpForm {
   username: string;
   fullName: string;
   email: string;
   password: string;
+  passwordRepeat: string;
 }
 
 const schema = yup
   .object({
-    username: yup.string().required(),
-    fullName: yup.string().required(),
-    email: yup.string().email().required(),
-    password: yup.string().required(),
+    username: yup
+      .string()
+      .matches(
+        /^(?=.{3,32}$)(?![._-])(?!.*[._-]{2})[a-zA-Z0-9._-]+(?<![_.])$/,
+        '아이디 형식이 올바르지 않습니다.'
+      )
+      .required('필수'),
+    fullName: yup.string().required('필수'),
+    email: yup
+      .string()
+      .email('이메일 주소가 올바르지 않습니다.')
+      .required('필수'),
+    password: yup
+      .string()
+      .matches(
+        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+        '비밀번호는 숫자, 영문 대문자, 소문자, 특수문자를 포함한 8글자 이상이어야 합니다.'
+      )
+      .required('필수'),
+    passwordRepeat: yup
+      .string()
+      .oneOf([yup.ref('password')], 'Passwords do not match')
+      .required('필수'),
   })
   .required();
 
@@ -33,10 +53,12 @@ const SignUp = () => {
 
   const {
     register,
-    reset,
     handleSubmit,
     formState: { errors, isSubmitSuccessful },
-  } = useForm<Inputs>({
+    clearErrors,
+    reset,
+  } = useForm<SignUpForm>({
+    mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
@@ -49,22 +71,16 @@ const SignUp = () => {
       navigate('/auth/sign-in');
     }
 
-    if (isError) {
-      if (Array.isArray((error as any).data.error)) {
-        (error as any).data.error.forEach((el: any) => console.log(el.message));
-      } else {
-        console.log((error as any).data.message);
-      }
-    }
+    useQueryMutationError(isError, error);
   }, [isLoading, accessToken]);
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      reset();
+      reset(); // 폼 전송 완료 후 필드 초기화
     }
   }, [isSubmitSuccessful]);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onValid: SubmitHandler<SignUpForm> = (data, _) => {
     signUp({
       username: data.username,
       fullName: data.fullName,
@@ -74,35 +90,67 @@ const SignUp = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onValid)}>
       <input
         type="text"
         placeholder="username"
         className="border"
         {...register('username')}
+        onChange={() => {
+          if (errors.username) {
+            clearErrors('username');
+          }
+        }}
       />
-      {errors.username && <span>invalid username</span>}
+      {errors.username && <span>{errors.username.message}</span>}
       <input
         type="text"
         placeholder="fullName"
         className="border"
         {...register('fullName')}
+        onChange={() => {
+          if (errors.fullName) {
+            clearErrors('fullName');
+          }
+        }}
       />
-      {errors.fullName && <span>invalid email address</span>}
+      {errors.fullName && <span>{errors.fullName.message}</span>}
       <input
         type="text"
         placeholder="email"
         className="border"
         {...register('email')}
+        onChange={() => {
+          if (errors.email) {
+            clearErrors('email');
+          }
+        }}
       />
-      {errors.email && <span>invalid email address</span>}
+      {errors.email && <span>{errors.email.message}</span>}
       <input
         type="password"
         placeholder="password"
         className="border"
         {...register('password')}
+        onChange={() => {
+          if (errors.password) {
+            clearErrors('password');
+          }
+        }}
       />
-      {errors.password && <span>required</span>}
+      {errors.password && <span>{errors.password.message}</span>}
+      <input
+        type="password"
+        placeholder="password repeat"
+        className="border"
+        {...register('passwordRepeat')}
+        onChange={() => {
+          if (errors.passwordRepeat) {
+            clearErrors('passwordRepeat');
+          }
+        }}
+      />
+      {errors.passwordRepeat && <span>{errors.passwordRepeat.message}</span>}
       <input type="submit" className="border" disabled={isLoading} />
     </form>
   );

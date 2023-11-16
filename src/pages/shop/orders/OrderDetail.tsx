@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 const OrderList = () => {
-  return <div>orders</div>;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <div>orders</div>
+    </Suspense>
+  );
 };
 
 export default OrderList;
