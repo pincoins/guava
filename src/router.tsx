@@ -40,10 +40,10 @@ const router = createBrowserRouter(
       <Route path="auth">
         <Route element={<ProtectedRoute roles={ROLE_ALL} />}>
           <Route path="profile" element={<Profile />} />
+          <Route path="sign-out" element={<SignOut />} />
         </Route>
         <Route path="sign-up" element={<SignUp />} />
         <Route path="sign-in" element={<SignIn />} />
-        <Route path="sign-out" element={<SignOut />} />
       </Route>
       <Route path="shop">
         <Route element={<ProtectedRoute roles={ROLE_ALL} />}>

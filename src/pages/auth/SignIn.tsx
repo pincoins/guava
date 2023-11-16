@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import { useSignInMutation } from '../../store/services/authApi';
+import { useQueryError } from '../../hooks/rtk-hooks';
 
 interface Inputs {
   email: string;
@@ -12,8 +13,14 @@ interface Inputs {
 
 const schema = yup
   .object({
-    email: yup.string().email().required(),
-    password: yup.string().required(),
+    email: yup
+      .string()
+      .email('이메일 주소가 올바르지 않습니다.')
+      .required('필수'),
+    password: yup
+      .string()
+      .min(5, '비밀번호는 최소 5자입니다.')
+      .required('필수'),
   })
   .required();
 
@@ -25,10 +32,13 @@ const SignIn = () => {
 
   const {
     register,
-    reset,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors, isSubmitSuccessful, isValid, isDirty },
+    setError,
+    clearErrors,
+    reset,
   } = useForm<Inputs>({
+    mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
@@ -37,13 +47,7 @@ const SignIn = () => {
       navigate('/');
     }
 
-    if (isError) {
-      if (Array.isArray((error as any).data.error)) {
-        (error as any).data.error.forEach((el: any) => console.log(el.message));
-      } else {
-        console.log((error as any).data.message);
-      }
-    }
+    useQueryError(isError, error);
   }, [isLoading]);
 
   useEffect(() => {
@@ -65,14 +69,14 @@ const SignIn = () => {
           className="border"
           {...register('email')}
         />
-        {errors.email && <span>invalid email address</span>}
+        {errors.email && <span>{errors.email.message}</span>}
         <input
           type="password"
           placeholder="password"
           className="border"
           {...register('password')}
         />
-        {errors.password && <span>required</span>}
+        {errors.password && <span>{errors.password.message}</span>}
         <input type="submit" className="border" disabled={isLoading} />
       </form>
     </>
