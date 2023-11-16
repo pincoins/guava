@@ -4,9 +4,9 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import { useSignInMutation } from '../../store/services/authApi';
-import { useQueryError } from '../../hooks/rtk-hooks';
+import { useQueryMutationError } from '../../hooks/rtk-hooks';
 
-interface Inputs {
+interface SignInForm {
   email: string;
   password: string;
 }
@@ -37,7 +37,7 @@ const SignIn = () => {
     setError,
     clearErrors,
     reset,
-  } = useForm<Inputs>({
+  } = useForm<SignInForm>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
@@ -47,7 +47,7 @@ const SignIn = () => {
       navigate('/');
     }
 
-    useQueryError(isError, error);
+    useQueryMutationError(isError, error);
   }, [isLoading]);
 
   useEffect(() => {
@@ -56,13 +56,13 @@ const SignIn = () => {
     }
   }, [isSubmitSuccessful]);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onValid: SubmitHandler<SignInForm> = (data) => {
     signIn({ email: data.email, password: data.password });
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onValid)}>
         <input
           type="text"
           placeholder="email"
