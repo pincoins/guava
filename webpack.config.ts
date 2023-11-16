@@ -20,6 +20,12 @@ const config: webpack.Configuration = {
     filename: '[name].js?id=[chunkhash]', // fast deployment
     clean: true,
   },
+  optimization: {
+    minimize: true,
+    splitChunks: {
+      chunks: 'all', // include all types of chunks
+    },
+  },
   module: {
     rules: [
       {
