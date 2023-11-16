@@ -11,7 +11,7 @@ const prod = process.env.NODE_ENV === 'production';
 
 const config: webpack.Configuration = {
   mode: prod ? 'production' : 'development',
-  devtool: prod ? undefined : 'source-map',
+  devtool: prod ? false : 'source-map', // source-map bloats bundle size
 
   entry: './src/index.tsx',
   output: {

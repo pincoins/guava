@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 const Privacy = () => {
-  return <div>Privacy</div>;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <div>Privacy</div>
+    </Suspense>
+  );
 };
 
 export default Privacy;

@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 const Profile = () => {
-  return <div>profile</div>;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <div>profile</div>
+    </Suspense>
+  );
 };
 
 export default Profile;

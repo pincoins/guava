@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 const Qna = () => {
-  return <div>qna</div>;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <div>qna</div>
+    </Suspense>
+  );
 };
 
 export default Qna;
