@@ -6,7 +6,7 @@ import { RootState } from '../../store';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from '../../store/services/authApi';
-import { pause } from '../../utils/pause';
+import { TbLoader2 } from 'react-icons/tb';
 
 interface SignUpForm {
   username: string;
@@ -75,13 +75,11 @@ const SignUp = () => {
   }, [accessToken, isSuccess, isError]);
 
   const onValid: SubmitHandler<SignUpForm> = async (data, _) => {
-    signUp({
+    await signUp({
       username: data.username,
       fullName: data.fullName,
       password: data.password,
     });
-
-    await pause(1800);
   };
 
   return (
@@ -144,10 +142,11 @@ const SignUp = () => {
       {errors.passwordRepeat && <span>{errors.passwordRepeat.message}</span>}
       <button
         type="submit"
-        className="border bg-blue-500 disabled:opacity-25"
+        className="border inline-flex items-center"
         disabled={isSubmitting}
       >
-        회원가입
+        {isSubmitting && <TbLoader2 className="-mt-1 animate-spin" />}
+        <span className="ml-1">회원가입</span>
       </button>
     </form>
   );

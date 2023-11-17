@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSignInMutation } from '../../store/services/authApi';
 import { useAppSelector, useQueryMutationError } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
-import { pause } from '../../utils/pause';
+import { TbLoader2 } from 'react-icons/tb';
 
 interface SignInForm {
   username: string;
@@ -60,9 +60,7 @@ const SignIn = () => {
   }, [accessToken, isSuccess, isError]);
 
   const onValid: SubmitHandler<SignInForm> = async (data, _) => {
-    signIn({ username: data.username, password: data.password });
-    // isSubmitSuccessful true && isSuccess false 상태 시간 "로그인 하는 중 표시"
-    await pause(1800);
+    await signIn({ username: data.username, password: data.password });
   };
 
   return (
@@ -97,10 +95,11 @@ const SignIn = () => {
       {errors.password && <span>{errors.password.message}</span>}
       <button
         type="submit"
-        className="border bg-blue-500 disabled:opacity-25"
+        className="border inline-flex items-center"
         disabled={isSubmitting}
       >
-        로그인
+        {isSubmitting && <TbLoader2 className="-mt-1 animate-spin" />}
+        <span className="ml-1">로그인</span>
       </button>
     </form>
   );
