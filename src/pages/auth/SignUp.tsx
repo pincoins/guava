@@ -51,13 +51,12 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
-  const [signUp, { isLoading, isError, error, isSuccess }] =
-    useSignUpMutation();
+  const [signUp, { isError, error, isSuccess }] = useSignUpMutation();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors, isSubmitSuccessful, isSubmitting },
     clearErrors,
     reset,
   } = useForm<SignUpForm>({
@@ -172,7 +171,7 @@ const SignUp = () => {
         })}
       />
       {errors.passwordRepeat && <span>{errors.passwordRepeat.message}</span>}
-      <button type="submit" className="border" disabled={isLoading}>
+      <button type="submit" className="border" disabled={isSubmitting}>
         회원가입
       </button>
     </form>

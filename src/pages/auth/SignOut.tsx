@@ -5,7 +5,10 @@ import { useSignOutMutation } from '../../store/services/authApi';
 const SignOut = () => {
   const [signOut] = useSignOutMutation();
 
-  const { handleSubmit } = useForm<{}>({});
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<{}>({});
 
   const onValid: SubmitHandler<{}> = () => {
     signOut();
@@ -14,7 +17,7 @@ const SignOut = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(onValid)}>
-        <button type="submit" className="border">
+        <button type="submit" className="border" disabled={isSubmitting}>
           로그아웃
         </button>
       </form>

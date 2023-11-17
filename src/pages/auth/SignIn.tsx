@@ -30,13 +30,12 @@ const SignIn = () => {
 
   const navigate = useNavigate();
 
-  const [signIn, { isLoading, isError, error, isSuccess }] =
-    useSignInMutation();
+  const [signIn, { isError, error, isSuccess }] = useSignInMutation();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors, isSubmitSuccessful, isSubmitting },
     clearErrors,
     reset,
   } = useForm<SignInForm>({
@@ -100,9 +99,8 @@ const SignIn = () => {
         })}
       />
       {errors.password && <span>{errors.password.message}</span>}
-      <button type="submit" className="border" disabled={isLoading}>
-        {isLoading && '로그인하는 중'}
-        {!isLoading && '로그인'}
+      <button type="submit" className="border" disabled={isSubmitting}>
+        로그인
       </button>
     </form>
   );
