@@ -1,32 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../hooks/rtk-hooks';
-import { useNavigate } from 'react-router-dom';
-import { signOut } from '../../store/slices/authSlice';
-import { RootState } from '../../store';
+import { useSignOutMutation } from '../../store/services/authApi';
 
 const SignOut = () => {
-  const { accessToken } = useAppSelector((state: RootState) => state.auth);
-
-  const dispatch = useAppDispatch();
-
-  const navigate = useNavigate();
+  const [signOut] = useSignOutMutation();
 
   const { handleSubmit } = useForm<{}>({});
 
-  useEffect(() => {
-    if (!accessToken) {
-      navigate('/auth/sign-in');
-    }
-  }, [accessToken]);
-
-  const onSubmit: SubmitHandler<{}> = () => {
-    dispatch(signOut());
+  const onValid: SubmitHandler<{}> = () => {
+    signOut();
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onValid)}>
         <button type="submit" className="border">
           로그아웃
         </button>

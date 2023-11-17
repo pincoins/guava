@@ -41,6 +41,7 @@ const baseQueryWithRetry: BaseQueryFn<
 
   let result = await baseQueryWithToken(args, api, extraOptions);
 
+  // if refreshed, forbidden = 403 occurs.
   if (result.error && [401, 403].includes(result.error.status as number)) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
