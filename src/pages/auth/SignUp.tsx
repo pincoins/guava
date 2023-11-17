@@ -59,6 +59,13 @@ const SignUp = () => {
     reset,
   } = useForm<SignUpForm>({
     mode: 'onBlur',
+    defaultValues: {
+      username: '',
+      fullName: '',
+      email: '',
+      password: '',
+      passwordRepeat: '',
+    },
     resolver: yupResolver(schema),
   });
 
@@ -80,6 +87,12 @@ const SignUp = () => {
     }
   }, [isSubmitSuccessful]);
 
+  const username = register('username', { required: true });
+  const fullName = register('fullName', { required: true });
+  const email = register('email', { required: true });
+  const password = register('password', { required: true });
+  const passwordRepeat = register('passwordRepeat', { required: true });
+
   const onValid: SubmitHandler<SignUpForm> = (data, _) => {
     signUp({
       username: data.username,
@@ -95,23 +108,28 @@ const SignUp = () => {
         type="text"
         placeholder="username"
         className="border"
-        {...register('username')}
-        onChange={() => {
-          if (errors.username) {
-            clearErrors('username');
-          }
+        {...username}
+        onChange={(e) => {
+          username.onChange(e).then((_) => {
+            if (errors.username) {
+              clearErrors('username');
+            }
+          });
         }}
       />
       {errors.username && <span>{errors.username.message}</span>}
+      <button type="button">중복확인</button>
       <input
         type="text"
         placeholder="fullName"
         className="border"
-        {...register('fullName')}
-        onChange={() => {
-          if (errors.fullName) {
-            clearErrors('fullName');
-          }
+        {...fullName}
+        onChange={(e) => {
+          email.onChange(e).then((_) => {
+            if (errors.fullName) {
+              clearErrors('fullName');
+            }
+          });
         }}
       />
       {errors.fullName && <span>{errors.fullName.message}</span>}
@@ -119,11 +137,13 @@ const SignUp = () => {
         type="text"
         placeholder="email"
         className="border"
-        {...register('email')}
-        onChange={() => {
-          if (errors.email) {
-            clearErrors('email');
-          }
+        {...email}
+        onChange={(e) => {
+          email.onChange(e).then((_) => {
+            if (errors.email) {
+              clearErrors('email');
+            }
+          });
         }}
       />
       {errors.email && <span>{errors.email.message}</span>}
@@ -131,11 +151,13 @@ const SignUp = () => {
         type="password"
         placeholder="password"
         className="border"
-        {...register('password')}
-        onChange={() => {
-          if (errors.password) {
-            clearErrors('password');
-          }
+        {...password}
+        onChange={(e) => {
+          password.onChange(e).then((_) => {
+            if (errors.password) {
+              clearErrors('password');
+            }
+          });
         }}
       />
       {errors.password && <span>{errors.password.message}</span>}
@@ -143,11 +165,13 @@ const SignUp = () => {
         type="password"
         placeholder="password repeat"
         className="border"
-        {...register('passwordRepeat')}
-        onChange={() => {
-          if (errors.passwordRepeat) {
-            clearErrors('passwordRepeat');
-          }
+        {...passwordRepeat}
+        onChange={(e) => {
+          passwordRepeat.onChange(e).then((_) => {
+            if (errors.passwordRepeat) {
+              clearErrors('passwordRepeat');
+            }
+          });
         }}
       />
       {errors.passwordRepeat && <span>{errors.passwordRepeat.message}</span>}
