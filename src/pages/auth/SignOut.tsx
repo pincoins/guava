@@ -10,7 +10,7 @@ const SignOut = () => {
     formState: { isSubmitting },
   } = useForm<{}>({});
 
-  const onValid: SubmitHandler<{}> = () => {
+  const onValid: SubmitHandler<{}> = async () => {
     signOut();
   };
 

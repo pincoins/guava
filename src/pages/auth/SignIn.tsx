@@ -6,15 +6,16 @@ import { useNavigate } from 'react-router-dom';
 import { useSignInMutation } from '../../store/services/authApi';
 import { useAppSelector, useQueryMutationError } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
+import { pause } from '../../utils/pause';
 
 interface SignInForm {
-  email: string;
+  username: string;
   password: string;
 }
 
 const schema = yup
   .object({
-    email: yup
+    username: yup
       .string()
       .email('이메일 주소가 올바르지 않습니다.')
       .required('필수'),
@@ -35,13 +36,12 @@ const SignIn = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful, isSubmitting },
+    formState: { errors, isSubmitting },
     clearErrors,
-    reset,
   } = useForm<SignInForm>({
     mode: 'onBlur',
     defaultValues: {
-      email: '',
+      username: '',
       password: '',
     },
     resolver: yupResolver(schema),
@@ -57,37 +57,33 @@ const SignIn = () => {
     }
 
     useQueryMutationError(isError, error);
-  }, [accessToken, isSuccess]);
+  }, [accessToken, isSuccess, isError]);
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset(); // 폼 전송 완료 후 필드 초기화
-    }
-  }, [isSubmitSuccessful]);
-
-  const onValid: SubmitHandler<SignInForm> = (data, _) => {
-    signIn({ email: data.email, password: data.password });
+  const onValid: SubmitHandler<SignInForm> = async (data, _) => {
+    signIn({ username: data.username, password: data.password });
+    // isSubmitSuccessful true && isSuccess false 상태 시간 "로그인 하는 중 표시"
+    await pause(1800);
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
       <input
         type="text"
-        placeholder="email"
+        placeholder="이메일"
         className="border"
-        {...register('email', {
+        {...register('username', {
           required: true,
           onChange: (_) => {
-            if (errors.email) {
-              clearErrors('email');
+            if (errors.username) {
+              clearErrors('username');
             }
           },
         })}
       />
-      {errors.email && <span>{errors.email.message}</span>}
+      {errors.username && <span>{errors.username.message}</span>}
       <input
         type="password"
-        placeholder="password"
+        placeholder="비밀번호"
         className="border"
         {...register('password', {
           required: true,
@@ -99,7 +95,11 @@ const SignIn = () => {
         })}
       />
       {errors.password && <span>{errors.password.message}</span>}
-      <button type="submit" className="border" disabled={isSubmitting}>
+      <button
+        type="submit"
+        className="border bg-blue-500 disabled:opacity-25"
+        disabled={isSubmitting}
+      >
         로그인
       </button>
     </form>

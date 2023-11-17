@@ -9,7 +9,7 @@ const authApi = createApi({
   endpoints: (builder) => ({
     signUp: builder.mutation<
       any,
-      { username: string; fullName: string; email: string; password: string }
+      { username: string; fullName: string; password: string }
     >({
       query: (data) => {
         return {
@@ -22,7 +22,7 @@ const authApi = createApi({
     signIn: builder.mutation<
       TokenResponse,
       {
-        email: string;
+        username: string;
         password: string;
       }
     >({
