@@ -24,7 +24,10 @@ const schema = yup
         '아이디 형식이 올바르지 않습니다.'
       )
       .required('필수'),
-    fullName: yup.string().required('필수'),
+    fullName: yup
+      .string()
+      .min(2, '최소 2자 이상 입력해주세요.')
+      .required('필수'),
     email: yup
       .string()
       .email('이메일 주소가 올바르지 않습니다.')
@@ -38,7 +41,7 @@ const schema = yup
       .required('필수'),
     passwordRepeat: yup
       .string()
-      .oneOf([yup.ref('password')], 'Passwords do not match')
+      .oneOf([yup.ref('password')], '확인 비밀번호가 일치하지 않습니다.')
       .required('필수'),
   })
   .required();
@@ -87,12 +90,6 @@ const SignUp = () => {
     }
   }, [isSubmitSuccessful]);
 
-  const username = register('username', { required: true });
-  const fullName = register('fullName', { required: true });
-  const email = register('email', { required: true });
-  const password = register('password', { required: true });
-  const passwordRepeat = register('passwordRepeat', { required: true });
-
   const onValid: SubmitHandler<SignUpForm> = (data, _) => {
     signUp({
       username: data.username,
@@ -108,14 +105,14 @@ const SignUp = () => {
         type="text"
         placeholder="username"
         className="border"
-        {...username}
-        onChange={(e) => {
-          username.onChange(e).then((_) => {
+        {...register('username', {
+          required: true,
+          onChange: (_) => {
             if (errors.username) {
               clearErrors('username');
             }
-          });
-        }}
+          },
+        })}
       />
       {errors.username && <span>{errors.username.message}</span>}
       <button type="button">중복확인</button>
@@ -123,56 +120,56 @@ const SignUp = () => {
         type="text"
         placeholder="fullName"
         className="border"
-        {...fullName}
-        onChange={(e) => {
-          email.onChange(e).then((_) => {
+        {...register('fullName', {
+          required: true,
+          onChange: (_) => {
             if (errors.fullName) {
               clearErrors('fullName');
             }
-          });
-        }}
+          },
+        })}
       />
       {errors.fullName && <span>{errors.fullName.message}</span>}
       <input
         type="text"
         placeholder="email"
         className="border"
-        {...email}
-        onChange={(e) => {
-          email.onChange(e).then((_) => {
+        {...register('email', {
+          required: true,
+          onChange: (_) => {
             if (errors.email) {
               clearErrors('email');
             }
-          });
-        }}
+          },
+        })}
       />
       {errors.email && <span>{errors.email.message}</span>}
       <input
         type="password"
         placeholder="password"
         className="border"
-        {...password}
-        onChange={(e) => {
-          password.onChange(e).then((_) => {
+        {...register('password', {
+          required: true,
+          onChange: (_) => {
             if (errors.password) {
               clearErrors('password');
             }
-          });
-        }}
+          },
+        })}
       />
       {errors.password && <span>{errors.password.message}</span>}
       <input
         type="password"
         placeholder="password repeat"
         className="border"
-        {...passwordRepeat}
-        onChange={(e) => {
-          passwordRepeat.onChange(e).then((_) => {
+        {...register('passwordRepeat', {
+          required: true,
+          onChange: (_) => {
             if (errors.passwordRepeat) {
               clearErrors('passwordRepeat');
             }
-          });
-        }}
+          },
+        })}
       />
       {errors.passwordRepeat && <span>{errors.passwordRepeat.message}</span>}
       <input type="submit" className="border" disabled={isLoading} />

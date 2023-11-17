@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
@@ -66,46 +66,38 @@ const SignIn = () => {
     }
   }, [isSubmitSuccessful]);
 
-  // onChange 이벤트 커스터마이징 위해서 별도로 분리
-  const email = register('email', { required: true });
-  const password = register('password', { required: true });
-
   const onValid: SubmitHandler<SignInForm> = (data, _) => {
     signIn({ email: data.email, password: data.password });
   };
 
-  const onInvalid: SubmitErrorHandler<SignInForm> = (errors, event) => {
-    console.log('why?', errors, event);
-  };
-
   return (
-    <form onSubmit={handleSubmit(onValid, onInvalid)}>
+    <form onSubmit={handleSubmit(onValid)}>
       <input
         type="text"
         placeholder="email"
         className="border"
-        {...email}
-        onChange={(e) => {
-          email.onChange(e).then((_) => {
+        {...register('email', {
+          required: true,
+          onChange: (_) => {
             if (errors.email) {
               clearErrors('email');
             }
-          });
-        }}
+          },
+        })}
       />
       {errors.email && <span>{errors.email.message}</span>}
       <input
         type="password"
         placeholder="password"
         className="border"
-        {...password}
-        onChange={(e) => {
-          password.onChange(e).then((_) => {
+        {...register('password', {
+          required: true,
+          onChange: (_) => {
             if (errors.password) {
               clearErrors('password');
             }
-          });
-        }}
+          },
+        })}
       />
       {errors.password && <span>{errors.password.message}</span>}
       <button type="submit" className="border" disabled={isLoading}>
