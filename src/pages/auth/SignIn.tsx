@@ -28,10 +28,10 @@ const schema = yup
 const SignIn = () => {
   const { accessToken } = useAppSelector((state: RootState) => state.auth);
 
+  const navigate = useNavigate();
+
   const [signIn, { isLoading, isError, error, isSuccess }] =
     useSignInMutation();
-
-  const navigate = useNavigate();
 
   const {
     register,
@@ -58,7 +58,7 @@ const SignIn = () => {
     }
 
     useQueryMutationError(isError, error);
-  }, [isLoading]);
+  }, [accessToken, isSuccess]);
 
   useEffect(() => {
     if (isSubmitSuccessful) {

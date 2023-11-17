@@ -49,10 +49,10 @@ const schema = yup
 const SignUp = () => {
   const { accessToken } = useAppSelector((state: RootState) => state.auth);
 
+  const navigate = useNavigate();
+
   const [signUp, { isLoading, isError, error, isSuccess }] =
     useSignUpMutation();
-
-  const navigate = useNavigate();
 
   const {
     register,
@@ -82,7 +82,7 @@ const SignUp = () => {
     }
 
     useQueryMutationError(isError, error);
-  }, [isLoading, accessToken]);
+  }, [accessToken, isSuccess]);
 
   useEffect(() => {
     if (isSubmitSuccessful) {
@@ -172,7 +172,9 @@ const SignUp = () => {
         })}
       />
       {errors.passwordRepeat && <span>{errors.passwordRepeat.message}</span>}
-      <input type="submit" className="border" disabled={isLoading} />
+      <button type="submit" className="border" disabled={isLoading}>
+        회원가입
+      </button>
     </form>
   );
 };
