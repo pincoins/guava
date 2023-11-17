@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { TokenResponse } from '../models/interfaces';
-import { setCredentials } from '../slices/authSlice';
+import { setCredentials, signOut } from '../slices/authSlice';
 import customBaseQuery from './customBaseQuery';
 
 const authApi = createApi({
@@ -49,9 +49,23 @@ const authApi = createApi({
         } catch (error) {}
       },
     }),
+    signOut: builder.mutation<void, void>({
+      query: () => {
+        return {
+          url: '/auth/refresh',
+          method: 'DELETE',
+        };
+      },
+      async onQueryStarted(args, { dispatch }) {
+        try {
+          dispatch(signOut());
+        } catch (error) {}
+      },
+    }),
   }),
 });
 
-export const { useSignUpMutation, useSignInMutation } = authApi;
+export const { useSignUpMutation, useSignInMutation, useSignOutMutation } =
+  authApi;
 
 export { authApi };
