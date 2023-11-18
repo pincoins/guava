@@ -24,6 +24,7 @@ const authApi = createApi({
       {
         username: string;
         password: string;
+        captcha: string;
       }
     >({
       query: (data) => {

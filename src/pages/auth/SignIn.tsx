@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,6 +7,7 @@ import { useSignInMutation } from '../../store/services/authApi';
 import { useAppSelector, useQueryMutationError } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import { TbLoader2 } from 'react-icons/tb';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 interface SignInForm {
   username: string;
@@ -47,6 +48,9 @@ const SignIn = () => {
     resolver: yupResolver(schema),
   });
 
+  const reCaptcha = useRef<ReCAPTCHA>(null);
+  const siteKey: string = process.env.GOOGLE_RECAPTCHA_SITE_KEY as string;
+
   useEffect(() => {
     if (accessToken) {
       navigate('/');
@@ -60,7 +64,17 @@ const SignIn = () => {
   }, [accessToken, isSuccess, isError]);
 
   const onValid: SubmitHandler<SignInForm> = async (data, _) => {
-    await signIn({ username: data.username, password: data.password });
+    if (reCaptcha && reCaptcha.current) {
+      const captcha = await reCaptcha.current.executeAsync();
+
+      if (captcha) {
+        await signIn({
+          username: data.username,
+          password: data.password,
+          captcha,
+        });
+      }
+    }
   };
 
   return (
@@ -101,6 +115,11 @@ const SignIn = () => {
         {isSubmitting && <TbLoader2 className="-mt-1 animate-spin" />}
         <span className="ml-1">로그인</span>
       </button>
+      <ReCAPTCHA
+        ref={reCaptcha}
+        size="invisible" // v3
+        sitekey={siteKey}
+      />
     </form>
   );
 };
