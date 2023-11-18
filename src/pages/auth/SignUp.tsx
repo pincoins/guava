@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppSelector, useQueryMutationError } from '../../hooks/rtk-hooks';
@@ -6,11 +6,12 @@ import { RootState } from '../../store';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from '../../store/services/authApi';
+import { TbLoader2 } from 'react-icons/tb';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 interface SignUpForm {
   username: string;
   fullName: string;
-  email: string;
   password: string;
   passwordRepeat: string;
 }
@@ -19,18 +20,11 @@ const schema = yup
   .object({
     username: yup
       .string()
-      .matches(
-        /^(?=.{3,32}$)(?![._-])(?!.*[._-]{2})[a-zA-Z0-9._-]+(?<![_.])$/,
-        '아이디 형식이 올바르지 않습니다.'
-      )
+      .email('이메일 주소가 올바르지 않습니다.')
       .required('필수'),
     fullName: yup
       .string()
       .min(2, '최소 2자 이상 입력해주세요.')
-      .required('필수'),
-    email: yup
-      .string()
-      .email('이메일 주소가 올바르지 않습니다.')
       .required('필수'),
     password: yup
       .string()
@@ -49,28 +43,28 @@ const schema = yup
 const SignUp = () => {
   const { accessToken } = useAppSelector((state: RootState) => state.auth);
 
-  const [signUp, { isLoading, isError, error, isSuccess }] =
-    useSignUpMutation();
-
   const navigate = useNavigate();
+
+  const [signUp, { isError, error, isSuccess }] = useSignUpMutation();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
     clearErrors,
-    reset,
   } = useForm<SignUpForm>({
     mode: 'onBlur',
     defaultValues: {
       username: '',
       fullName: '',
-      email: '',
       password: '',
       passwordRepeat: '',
     },
     resolver: yupResolver(schema),
   });
+
+  const reCaptcha = useRef<ReCAPTCHA>(null);
+  const siteKey: string = process.env.GOOGLE_RECAPTCHA_SITE_KEY as string;
 
   useEffect(() => {
     if (accessToken) {
@@ -82,43 +76,28 @@ const SignUp = () => {
     }
 
     useQueryMutationError(isError, error);
-  }, [isLoading, accessToken]);
+  }, [accessToken, isSuccess, isError]);
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset(); // 폼 전송 완료 후 필드 초기화
+  const onValid: SubmitHandler<SignUpForm> = async (data, _) => {
+    if (reCaptcha && reCaptcha.current) {
+      const captcha = await reCaptcha.current.executeAsync();
+
+      if (captcha) {
+        await signUp({
+          username: data.username,
+          fullName: data.fullName,
+          password: data.password,
+          captcha,
+        });
+      }
     }
-  }, [isSubmitSuccessful]);
-
-  const onValid: SubmitHandler<SignUpForm> = (data, _) => {
-    signUp({
-      username: data.username,
-      fullName: data.fullName,
-      email: data.email,
-      password: data.password,
-    });
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
       <input
         type="text"
-        placeholder="username"
-        className="border"
-        {...register('username', {
-          required: true,
-          onChange: (_) => {
-            if (errors.username) {
-              clearErrors('username');
-            }
-          },
-        })}
-      />
-      {errors.username && <span>{errors.username.message}</span>}
-      <button type="button">중복확인</button>
-      <input
-        type="text"
-        placeholder="fullName"
+        placeholder="이름"
         className="border"
         {...register('fullName', {
           required: true,
@@ -132,21 +111,21 @@ const SignUp = () => {
       {errors.fullName && <span>{errors.fullName.message}</span>}
       <input
         type="text"
-        placeholder="email"
+        placeholder="이메일"
         className="border"
-        {...register('email', {
+        {...register('username', {
           required: true,
           onChange: (_) => {
-            if (errors.email) {
-              clearErrors('email');
+            if (errors.username) {
+              clearErrors('username');
             }
           },
         })}
       />
-      {errors.email && <span>{errors.email.message}</span>}
+      {errors.username && <span>{errors.username.message}</span>}
       <input
         type="password"
-        placeholder="password"
+        placeholder="비밀번호"
         className="border"
         {...register('password', {
           required: true,
@@ -160,7 +139,7 @@ const SignUp = () => {
       {errors.password && <span>{errors.password.message}</span>}
       <input
         type="password"
-        placeholder="password repeat"
+        placeholder="비밀번호 확인"
         className="border"
         {...register('passwordRepeat', {
           required: true,
@@ -172,7 +151,19 @@ const SignUp = () => {
         })}
       />
       {errors.passwordRepeat && <span>{errors.passwordRepeat.message}</span>}
-      <input type="submit" className="border" disabled={isLoading} />
+      <button
+        type="submit"
+        className="border inline-flex items-center"
+        disabled={isSubmitting}
+      >
+        {isSubmitting && <TbLoader2 className="-mt-1 animate-spin" />}
+        <span className="ml-1">회원가입</span>
+        <ReCAPTCHA
+          ref={reCaptcha}
+          size="invisible" // v3
+          sitekey={siteKey}
+        />
+      </button>
     </form>
   );
 };

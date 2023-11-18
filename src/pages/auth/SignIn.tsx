@@ -1,20 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { useSignInMutation } from '../../store/services/authApi';
 import { useAppSelector, useQueryMutationError } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
+import { TbLoader2 } from 'react-icons/tb';
 
 interface SignInForm {
-  email: string;
+  username: string;
   password: string;
 }
 
 const schema = yup
   .object({
-    email: yup
+    username: yup
       .string()
       .email('이메일 주소가 올바르지 않습니다.')
       .required('필수'),
@@ -28,25 +30,26 @@ const schema = yup
 const SignIn = () => {
   const { accessToken } = useAppSelector((state: RootState) => state.auth);
 
-  const [signIn, { isLoading, isError, error, isSuccess }] =
-    useSignInMutation();
-
   const navigate = useNavigate();
+
+  const [signIn, { isError, error, isSuccess }] = useSignInMutation();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
     clearErrors,
-    reset,
   } = useForm<SignInForm>({
     mode: 'onBlur',
     defaultValues: {
-      email: '',
+      username: '',
       password: '',
     },
     resolver: yupResolver(schema),
   });
+
+  const reCaptcha = useRef<ReCAPTCHA>(null);
+  const siteKey: string = process.env.GOOGLE_RECAPTCHA_SITE_KEY as string;
 
   useEffect(() => {
     if (accessToken) {
@@ -58,37 +61,41 @@ const SignIn = () => {
     }
 
     useQueryMutationError(isError, error);
-  }, [isLoading]);
+  }, [accessToken, isSuccess, isError]);
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset(); // 폼 전송 완료 후 필드 초기화
+  const onValid: SubmitHandler<SignInForm> = async (data, _) => {
+    if (reCaptcha && reCaptcha.current) {
+      const captcha = await reCaptcha.current.executeAsync();
+
+      if (captcha) {
+        await signIn({
+          username: data.username,
+          password: data.password,
+          captcha,
+        });
+      }
     }
-  }, [isSubmitSuccessful]);
-
-  const onValid: SubmitHandler<SignInForm> = (data, _) => {
-    signIn({ email: data.email, password: data.password });
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
       <input
         type="text"
-        placeholder="email"
+        placeholder="이메일"
         className="border"
-        {...register('email', {
+        {...register('username', {
           required: true,
           onChange: (_) => {
-            if (errors.email) {
-              clearErrors('email');
+            if (errors.username) {
+              clearErrors('username');
             }
           },
         })}
       />
-      {errors.email && <span>{errors.email.message}</span>}
+      {errors.username && <span>{errors.username.message}</span>}
       <input
         type="password"
-        placeholder="password"
+        placeholder="비밀번호"
         className="border"
         {...register('password', {
           required: true,
@@ -100,10 +107,19 @@ const SignIn = () => {
         })}
       />
       {errors.password && <span>{errors.password.message}</span>}
-      <button type="submit" className="border" disabled={isLoading}>
-        {isLoading && '로그인하는 중'}
-        {!isLoading && '로그인'}
+      <button
+        type="submit"
+        className="border inline-flex items-center"
+        disabled={isSubmitting}
+      >
+        {isSubmitting && <TbLoader2 className="-mt-1 animate-spin" />}
+        <span className="ml-1">로그인</span>
       </button>
+      <ReCAPTCHA
+        ref={reCaptcha}
+        size="invisible" // v3
+        sitekey={siteKey}
+      />
     </form>
   );
 };

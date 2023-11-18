@@ -6,6 +6,7 @@ import router from './router';
 import store from './store';
 
 import './assets/tailwind.css';
+import './assets/google-recaptcha.css';
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
