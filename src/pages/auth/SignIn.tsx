@@ -3,11 +3,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { useSignInMutation } from '../../store/services/authApi';
 import { useAppSelector, useQueryMutationError } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import { TbLoader2 } from 'react-icons/tb';
-import ReCAPTCHA from 'react-google-recaptcha';
 
 interface SignInForm {
   username: string;
