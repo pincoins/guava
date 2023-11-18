@@ -13,6 +13,7 @@
   - IP address when authenticated = IP address when refreshed
   - Refresh page -> Renew access token -> Set timeout 1 hour to auto-logout
   - Role-based protected router: 401 (invalid access token) / 403 (invalid role)
+  - Google reCAPTCHA for sign-in and sign-up
 
   - Trusted devices & Login from multiple places
   - Login attempt n-times failure: CAPTCHA

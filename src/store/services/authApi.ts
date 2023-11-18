@@ -9,7 +9,7 @@ const authApi = createApi({
   endpoints: (builder) => ({
     signUp: builder.mutation<
       any,
-      { username: string; fullName: string; password: string }
+      { username: string; fullName: string; password: string; captcha: string }
     >({
       query: (data) => {
         return {
