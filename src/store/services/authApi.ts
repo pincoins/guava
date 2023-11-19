@@ -63,10 +63,28 @@ const authApi = createApi({
         } catch (error) {}
       },
     }),
+    sendVerificationEmail: builder.mutation<
+      {
+        success: boolean;
+      },
+      { username: string; captcha: string }
+    >({
+      query: (data) => {
+        return {
+          url: '/members/send-email-verification',
+          method: 'POST',
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
-export const { useSignUpMutation, useSignInMutation, useSignOutMutation } =
-  authApi;
+export const {
+  useSignUpMutation,
+  useSignInMutation,
+  useSignOutMutation,
+  useSendVerificationEmailMutation,
+} = authApi;
 
 export { authApi };

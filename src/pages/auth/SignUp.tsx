@@ -1,13 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppSelector, useQueryMutationError } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
-import { useSignUpMutation } from '../../store/services/authApi';
+import {
+  useSendVerificationEmailMutation,
+  useSignUpMutation,
+} from '../../store/services/authApi';
 import { TbLoader2 } from 'react-icons/tb';
-import ReCAPTCHA from 'react-google-recaptcha';
+import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 
 interface SignUpForm {
   username: string;
@@ -45,10 +48,24 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
-  const [signUp, { isError, error, isSuccess }] = useSignUpMutation();
+  const [
+    signUp,
+    { isError: signUpIsError, error: signUpError, isSuccess: signUpIsSuccess },
+  ] = useSignUpMutation();
+
+  const [
+    sendVerificationEmail,
+    {
+      isError: sendVerificationEmailIsError,
+      error: sendVerificationEmailError,
+      isSuccess: sendVerificationEmailIsSuccess,
+    },
+  ] = useSendVerificationEmailMutation();
 
   const {
     register,
+    getValues,
+    getFieldState,
     handleSubmit,
     formState: { errors, isSubmitting },
     clearErrors,
@@ -63,20 +80,26 @@ const SignUp = () => {
     resolver: yupResolver(schema),
   });
 
-  const reCaptcha = useRef<ReCAPTCHA>(null);
-  const siteKey: string = process.env.GOOGLE_RECAPTCHA_SITE_KEY as string;
+  const [reCaptcha, reCaptchaElement] = useGoogleRecaptcha();
+
+  // pending, sent(duplicated, expired, invalid) completed
+  const [emailVerification, setEmailVerification] = useState('pending');
+  // sent but error occurred: duplicated, expired, invalid
+  const [emailVerificationError, setEmailVerificationError] = useState<
+    string | null
+  >(null);
 
   useEffect(() => {
     if (accessToken) {
       navigate('/');
     }
 
-    if (isSuccess) {
+    if (signUpIsSuccess) {
       navigate('/auth/sign-in');
     }
 
-    useQueryMutationError(isError, error);
-  }, [accessToken, isSuccess, isError]);
+    useQueryMutationError(signUpIsError, signUpError);
+  }, [accessToken, signUpIsSuccess, signUpIsError]);
 
   const onValid: SubmitHandler<SignUpForm> = async (data, _) => {
     if (reCaptcha && reCaptcha.current) {
@@ -91,6 +114,39 @@ const SignUp = () => {
         });
       }
     }
+  };
+
+  const handleSendEmailVerification = async (
+    _: React.MouseEvent<HTMLElement>
+  ) => {
+    const { invalid, isDirty, isTouched } = getFieldState('username');
+
+    if (!isDirty || !isTouched || invalid) {
+      return; // clicked but invalid email address
+    }
+
+    const username = getValues('username');
+
+    if (!reCaptcha || !reCaptcha.current) {
+      return; // google recaptcha element not found
+    }
+
+    const captcha = await reCaptcha.current.executeAsync();
+
+    if (!captcha) {
+      return; // failed to get google recaptcha code
+    }
+
+    await sendVerificationEmail({ username, captcha });
+
+    // 3분이 지나면 만료 처리
+
+    if (sendVerificationEmailIsSuccess) {
+      setEmailVerification('completed');
+      setEmailVerificationError(null);
+    }
+
+    return;
   };
 
   return (
@@ -120,9 +176,39 @@ const SignUp = () => {
               clearErrors('username');
             }
           },
+          validate: {
+            duplicated: (_) => {
+              return (
+                (emailVerification !== 'completed' &&
+                  emailVerificationError === 'duplicated') ||
+                '이미 등록된 이메일 주소입니다.'
+              );
+            },
+            expired: (_) => {
+              return (
+                (emailVerification !== 'completed' &&
+                  emailVerificationError === 'expired') ||
+                '인증번호 입력 시간이 초과되었습니다.'
+              );
+            },
+            invalid: (_) => {
+              return (
+                (emailVerification !== 'completed' &&
+                  emailVerificationError === 'invalid') ||
+                '인증번호가 올바르지 않습니다.'
+              );
+            },
+          },
         })}
       />
       {errors.username && <span>{errors.username.message}</span>}
+      <button
+        type="button"
+        onClick={handleSendEmailVerification}
+        disabled={emailVerification !== 'pending'}
+      >
+        인증메일 발송
+      </button>
       <input
         type="password"
         placeholder="비밀번호"
@@ -158,12 +244,8 @@ const SignUp = () => {
       >
         {isSubmitting && <TbLoader2 className="-mt-1 animate-spin" />}
         <span className="ml-1">회원가입</span>
-        <ReCAPTCHA
-          ref={reCaptcha}
-          size="invisible" // v3
-          sitekey={siteKey}
-        />
       </button>
+      {reCaptchaElement}
     </form>
   );
 };
