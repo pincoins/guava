@@ -18,15 +18,15 @@ import ProductDetail from './pages/shop/products/ProductDetail';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './pages/ProtectedRoute';
 
-const Profile = React.lazy(() => import('./pages/auth/Profile'));
-const OrderList = React.lazy(() => import('./pages/shop/orders/OrderList'));
-const OrderDetail = React.lazy(() => import('./pages/shop/orders/OrderDetail'));
-const Qna = React.lazy(() => import('./pages/help/Qna'));
-const Faq = React.lazy(() => import('./pages/help/Faq'));
-const Notice = React.lazy(() => import('./pages/help/Notice'));
-const Privacy = React.lazy(() => import('./pages/help/Privacy'));
-const Terms = React.lazy(() => import('./pages/help/Terms'));
-const Guide = React.lazy(() => import('./pages/help/Guide'));
+import Profile from './pages/auth/Profile';
+import OrderList from './pages/shop/orders/OrderList';
+import OrderDetail from './pages/shop/orders/OrderDetail';
+import Qna from './pages/help/Qna';
+import Faq from './pages/help/Faq';
+import Notice from './pages/help/Notice';
+import Privacy from './pages/help/Privacy';
+import Terms from './pages/help/Terms';
+import Guide from './pages/help/Guide';
 
 const ROLE_ALL = Array.of('SYSADMIN', 'STAFF', 'MEMBER');
 const ROLE_SYSADMIN = Array.of('SYSADMIN');
