@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppSelector, useQueryMutationError } from '../../hooks/rtk-hooks';
@@ -10,7 +10,7 @@ import {
   useSignUpMutation,
 } from '../../store/services/authApi';
 import { TbLoader2 } from 'react-icons/tb';
-import ReCAPTCHA from 'react-google-recaptcha';
+import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 
 interface SignUpForm {
   username: string;
@@ -80,8 +80,7 @@ const SignUp = () => {
     resolver: yupResolver(schema),
   });
 
-  const reCaptcha = useRef<ReCAPTCHA>(null);
-  const siteKey: string = process.env.GOOGLE_RECAPTCHA_SITE_KEY as string;
+  const [reCaptcha, reCaptchaElement] = useGoogleRecaptcha();
 
   // pending, sent(duplicated, expired, invalid) completed
   const [emailVerification, setEmailVerification] = useState('pending');
@@ -178,21 +177,21 @@ const SignUp = () => {
             }
           },
           validate: {
-            duplicated: (value) => {
+            duplicated: (_) => {
               return (
                 (emailVerification !== 'completed' &&
                   emailVerificationError === 'duplicated') ||
                 '이미 등록된 이메일 주소입니다.'
               );
             },
-            expired: (value) => {
+            expired: (_) => {
               return (
                 (emailVerification !== 'completed' &&
                   emailVerificationError === 'expired') ||
                 '인증번호 입력 시간이 초과되었습니다.'
               );
             },
-            invalid: (value) => {
+            invalid: (_) => {
               return (
                 (emailVerification !== 'completed' &&
                   emailVerificationError === 'invalid') ||
@@ -246,11 +245,7 @@ const SignUp = () => {
         {isSubmitting && <TbLoader2 className="-mt-1 animate-spin" />}
         <span className="ml-1">회원가입</span>
       </button>
-      <ReCAPTCHA
-        ref={reCaptcha}
-        size="invisible" // v3
-        sitekey={siteKey}
-      />
+      {reCaptchaElement}
     </form>
   );
 };

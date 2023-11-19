@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { useSignInMutation } from '../../store/services/authApi';
 import { useAppSelector, useQueryMutationError } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import { TbLoader2 } from 'react-icons/tb';
+import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 
 interface SignInForm {
   username: string;
@@ -48,8 +48,7 @@ const SignIn = () => {
     resolver: yupResolver(schema),
   });
 
-  const reCaptcha = useRef<ReCAPTCHA>(null);
-  const siteKey: string = process.env.GOOGLE_RECAPTCHA_SITE_KEY as string;
+  const [reCaptcha, reCaptchaElement] = useGoogleRecaptcha();
 
   useEffect(() => {
     if (accessToken) {
@@ -115,11 +114,7 @@ const SignIn = () => {
         {isSubmitting && <TbLoader2 className="-mt-1 animate-spin" />}
         <span className="ml-1">로그인</span>
       </button>
-      <ReCAPTCHA
-        ref={reCaptcha}
-        size="invisible" // v3
-        sitekey={siteKey}
-      />
+      {reCaptchaElement}
     </form>
   );
 };
