@@ -54,7 +54,7 @@ const SignIn = () => {
 
   const [reCaptcha, reCaptchaElement] = useGoogleRecaptcha();
 
-  // 5. 주요 상태 선언
+  // 5. 주요 상태 선언 (useState, useReducer 및 훅)
 
   // 6. onValid 폼 제출 핸들러
   const onValid: SubmitHandler<SignInForm> = async (data, _) => {
