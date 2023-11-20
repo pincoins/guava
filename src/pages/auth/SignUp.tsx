@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAppSelector, useQueryMutationError } from '../../hooks/rtk-hooks';
+import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import {
 } from '../../store/services/authApi';
 import { TbLoader2 } from 'react-icons/tb';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
+import useEmailVerification from '../../hooks/useEmailVerification';
 
 interface SignUpForm {
   username: string;
@@ -44,24 +45,18 @@ const schema = yup
   .required();
 
 const SignUp = () => {
+  // 1. 리덕스 스토어 객체 가져오기
   const { accessToken } = useAppSelector((state: RootState) => state.auth);
 
+  // 2. 리액트 라우터 네비게이션 객체 가져오기
   const navigate = useNavigate();
 
-  const [
-    signUp,
-    { isError: signUpIsError, error: signUpError, isSuccess: signUpIsSuccess },
-  ] = useSignUpMutation();
+  // 3. RTK Query 객체 가져오기
+  const [signUp] = useSignUpMutation();
 
-  const [
-    sendVerificationEmail,
-    {
-      isError: sendVerificationEmailIsError,
-      error: sendVerificationEmailError,
-      isSuccess: sendVerificationEmailIsSuccess,
-    },
-  ] = useSendVerificationEmailMutation();
+  const [sendVerificationEmail] = useSendVerificationEmailMutation();
 
+  // 4. 리액트 훅 폼 정의
   const {
     register,
     getValues,
@@ -80,42 +75,44 @@ const SignUp = () => {
     resolver: yupResolver(schema),
   });
 
+  // 5. 주요 상태 선언 (useState, useReducer 및 훅)
   const [reCaptcha, reCaptchaElement] = useGoogleRecaptcha();
 
-  // pending, sent(duplicated, expired, invalid) completed
-  const [emailVerification, setEmailVerification] = useState('pending');
-  // sent but error occurred: duplicated, expired, invalid
-  const [emailVerificationError, setEmailVerificationError] = useState<
-    string | null
-  >(null);
+  const [emailVerification, dispatchEmailVerification] = useEmailVerification();
 
-  useEffect(() => {
-    if (accessToken) {
-      navigate('/');
-    }
-
-    if (signUpIsSuccess) {
-      navigate('/auth/sign-in');
-    }
-
-    useQueryMutationError(signUpIsError, signUpError);
-  }, [accessToken, signUpIsSuccess, signUpIsError]);
-
+  // 6. onValid 폼 제출 핸들러
   const onValid: SubmitHandler<SignUpForm> = async (data, _) => {
     if (reCaptcha && reCaptcha.current) {
       const captcha = await reCaptcha.current.executeAsync();
 
       if (captcha) {
-        await signUp({
+        signUp({
           username: data.username,
           fullName: data.fullName,
           password: data.password,
           captcha,
-        });
+        })
+          .unwrap()
+          .then((fulfilled) => {
+            console.log(fulfilled);
+
+            navigate('/auth/sign-in');
+          })
+          .catch((rejected) => {
+            console.error(rejected);
+          });
       }
     }
   };
 
+  // 7. useEffect
+  useEffect(() => {
+    if (accessToken) {
+      navigate('/');
+    }
+  }, [accessToken]);
+
+  // 8. 이벤트 핸들러
   const handleSendEmailVerification = async (
     _: React.MouseEvent<HTMLElement>
   ) => {
@@ -137,20 +134,38 @@ const SignUp = () => {
       return; // failed to get google recaptcha code
     }
 
-    await sendVerificationEmail({ username, captcha });
+    sendVerificationEmail({ username, captcha })
+      .unwrap()
+      .then((fulfilled) => {
+        console.log(fulfilled);
+        dispatchEmailVerification({ type: 'SENT' });
+      })
+      .catch((rejected) => {
+        if (rejected.data.message === 'Invalid reCAPTCHA') {
+          dispatchEmailVerification({
+            type: 'ERROR',
+            error: 'INVALID_RECAPTCHA',
+          });
+        } else if (rejected.data.message === 'Duplicated email address') {
+          dispatchEmailVerification({
+            type: 'ERROR',
+            error: 'DUPLICATED',
+          });
+        } else if (rejected.data.message === 'Email already sent') {
+          dispatchEmailVerification({
+            type: 'ERROR',
+            error: 'ALREADY_SENT',
+          });
+        }
+      });
 
     // 3분이 지나면 만료 처리
-
-    if (sendVerificationEmailIsSuccess) {
-      setEmailVerification('completed');
-      setEmailVerificationError(null);
-    }
-
     return;
   };
 
+  // 9. JSX 반환
   return (
-    <form onSubmit={handleSubmit(onValid)}>
+    <form onSubmit={handleSubmit(onValid)} className="flex flex-col w-1/2">
       <input
         type="text"
         placeholder="이름"
@@ -177,26 +192,21 @@ const SignUp = () => {
             }
           },
           validate: {
-            duplicated: (_) => {
-              return (
-                (emailVerification !== 'completed' &&
-                  emailVerificationError === 'duplicated') ||
-                '이미 등록된 이메일 주소입니다.'
-              );
-            },
-            expired: (_) => {
-              return (
-                (emailVerification !== 'completed' &&
-                  emailVerificationError === 'expired') ||
-                '인증번호 입력 시간이 초과되었습니다.'
-              );
-            },
-            invalid: (_) => {
-              return (
-                (emailVerification !== 'completed' &&
-                  emailVerificationError === 'invalid') ||
-                '인증번호가 올바르지 않습니다.'
-              );
+            error: (_) => {
+              if (emailVerification.value !== 'COMPLETED') {
+                switch (emailVerification.error) {
+                  case 'INVALID_RECAPTCHA':
+                    return '다른 브라우저에서 시도해주세요.';
+                  case 'DUPLICATED':
+                    return '이미 등록된 이메일 주소입니다.';
+                  case 'ALREADY_SENT':
+                    return '인증메일이 이미 발송되었습니다.';
+                  case 'EXPIRED':
+                    return '인증번호 입력 시간이 초과되었습니다.';
+                  case 'INVALID_CODE':
+                    return '인증번호가 올바르지 않습니다.';
+                }
+              }
             },
           },
         })}
@@ -205,10 +215,29 @@ const SignUp = () => {
       <button
         type="button"
         onClick={handleSendEmailVerification}
-        disabled={emailVerification !== 'pending'}
+        disabled={emailVerification.value !== 'PENDING'}
       >
         인증메일 발송
       </button>
+
+      <input
+        type="text"
+        name="emailVerificationCode"
+        value={emailVerification.code}
+        placeholder="000000"
+        onChange={(e) => {
+          dispatchEmailVerification({
+            type: 'CODE',
+            code: e.target.value,
+          });
+        }}
+      />
+      <button type="button">인증번호 입력</button>
+      <p>
+        오류메시지: / emailVerification: {emailVerification.value} /
+        emailVerificationError: {emailVerification.error}
+      </p>
+
       <input
         type="password"
         placeholder="비밀번호"

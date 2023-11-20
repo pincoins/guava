@@ -12,7 +12,10 @@ const SignOut = () => {
   } = useForm<{}>({});
 
   const onValid: SubmitHandler<{}> = async () => {
-    await signOut();
+    signOut()
+      .unwrap()
+      .then((_) => {})
+      .catch((_) => {});
   };
 
   return (
