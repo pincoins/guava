@@ -52,9 +52,8 @@ const SignIn = () => {
     resolver: yupResolver(schema),
   });
 
+  // 5. 주요 상태 선언 (useState, useReducer 및 커스텀 훅)
   const [reCaptcha, reCaptchaElement] = useGoogleRecaptcha();
-
-  // 5. 주요 상태 선언 (useState, useReducer 및 훅)
 
   // 6. onValid 폼 제출 핸들러
   const onValid: SubmitHandler<SignInForm> = async (data, _) => {
