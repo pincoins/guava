@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import { useSignInMutation } from '../../store/services/authApi';
-import { useAppSelector, useQueryMutationError } from '../../hooks/rtk-hooks';
+import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import { TbLoader2 } from 'react-icons/tb';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
@@ -28,12 +28,16 @@ const schema = yup
   .required();
 
 const SignIn = () => {
+  // 1. 리덕스 스토어 객체 가져오기
   const { accessToken } = useAppSelector((state: RootState) => state.auth);
 
+  // 2. 리액트 라우터 네비게이션 객체 가져오기
   const navigate = useNavigate();
 
-  const [signIn, { isError, error, isSuccess }] = useSignInMutation();
+  // 3. RTK Query 객체 가져오기
+  const [signIn] = useSignInMutation();
 
+  // 4. 리액트 훅 폼 정의
   const {
     register,
     handleSubmit,
@@ -50,32 +54,40 @@ const SignIn = () => {
 
   const [reCaptcha, reCaptchaElement] = useGoogleRecaptcha();
 
-  useEffect(() => {
-    if (accessToken) {
-      navigate('/');
-    }
+  // 5. 주요 상태 선언
 
-    if (isSuccess) {
-      navigate('/');
-    }
-
-    useQueryMutationError(isError, error);
-  }, [accessToken, isSuccess, isError]);
-
+  // 6. onValid 폼 제출 핸들러
   const onValid: SubmitHandler<SignInForm> = async (data, _) => {
     if (reCaptcha && reCaptcha.current) {
       const captcha = await reCaptcha.current.executeAsync();
 
       if (captcha) {
-        await signIn({
+        signIn({
           username: data.username,
           password: data.password,
           captcha,
-        });
+        })
+          .unwrap()
+          .then((_) => {
+            navigate('/');
+          })
+          .catch((rejected) => {
+            console.error(rejected);
+          });
       }
     }
   };
 
+  // 7. useEffect
+  useEffect(() => {
+    if (accessToken) {
+      navigate('/');
+    }
+  }, [accessToken]);
+
+  // 8. 이벤트 핸들러
+
+  // 9. JSX 반환
   return (
     <form onSubmit={handleSubmit(onValid)}>
       <input
