@@ -13,7 +13,7 @@ import { Mutex } from 'async-mutex';
 const mutex = new Mutex();
 
 const baseQueryWithToken = fetchBaseQuery({
-  baseUrl: process.env.API_URL,
+  baseUrl: process.env.API_ENDPOINT_URL,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const accessToken = (getState() as RootState).auth.accessToken;
@@ -27,7 +27,7 @@ const baseQueryWithToken = fetchBaseQuery({
 });
 
 const baseQueryForRefresh = fetchBaseQuery({
-  baseUrl: process.env.API_URL,
+  baseUrl: process.env.API_ENDPOINT_URL,
   credentials: 'include',
 });
 
