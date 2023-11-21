@@ -73,6 +73,7 @@ const reducer = (
         return {
           ...state,
           status: 'SENT',
+          error: null,
           code: action.code,
         };
       }
