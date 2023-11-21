@@ -39,13 +39,11 @@ const reducer = (
 ): VerificationState => {
   switch (action.type) {
     case 'SENT':
-      if (state.status === 'PENDING') {
-        return {
-          ...state,
-          status: 'SENT',
-        };
-      }
-      return state;
+      return {
+        ...state,
+        status: 'SENT',
+        error: null,
+      };
 
     case 'COMPLETED':
       return {
@@ -67,18 +65,12 @@ const reducer = (
       return initialState;
 
     case 'CODE':
-      if (
-        state.status === 'SENT' ||
-        (state.status === 'ERROR' && state.error === 'INVALID_CODE')
-      ) {
-        return {
-          ...state,
-          status: 'SENT',
-          error: null,
-          code: action.code,
-        };
-      }
-      return state;
+      return {
+        ...state,
+        status: 'SENT',
+        error: null,
+        code: action.code,
+      };
 
     case 'ERROR':
       return {
