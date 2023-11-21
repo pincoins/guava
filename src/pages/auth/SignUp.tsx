@@ -65,6 +65,7 @@ const SignUp = () => {
   const {
     register,
     getValues,
+    setValue,
     getFieldState,
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -89,14 +90,17 @@ const SignUp = () => {
     remaining: timerRemaining,
     status: timerStatus,
     start: timerStart,
+    terminate: timerTerminate,
   } = useInterval({
-    initialRemaining: 5,
-    lap: 1000,
+    initialRemaining: parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`),
+    lap: parseInt(`${process.env.EMAIL_VERIFICATION_LAP}`),
     endTask: () => {
-      dispatchEmailVerification({
-        type: 'ERROR',
-        error: 'EXPIRED',
-      });
+      if (emailVerification.status === 'SENT' && timerRemaining <= 0) {
+        dispatchEmailVerification({
+          type: 'ERROR',
+          error: 'EXPIRED',
+        });
+      }
     },
   });
 
@@ -130,6 +134,37 @@ const SignUp = () => {
     }
   }, [accessToken]);
 
+  useEffect(() => {
+    const emailVerification = sessionStorage.getItem('emailVerification');
+
+    const emailVerificationExpired = sessionStorage.getItem(
+      'emailVerificationExpired'
+    );
+
+    if (emailVerification && emailVerificationExpired) {
+      const expired = new Date(emailVerificationExpired);
+      const now = new Date();
+      const duration = Math.floor((expired.getTime() - now.getTime()) / 1000);
+
+      console.log(expired, now, duration);
+
+      if (duration < parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`)) {
+        setValue('username', emailVerification, {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        });
+
+        dispatchEmailVerification({
+          type: 'RELOADED',
+          timeout: duration,
+        });
+
+        timerStart(duration);
+      }
+    }
+  }, []);
+
   // 8. 이벤트 핸들러
   const handleSendEmailVerification = async (
     _: React.MouseEvent<HTMLElement>
@@ -144,7 +179,21 @@ const SignUp = () => {
           .then(({ success }) => {
             if (success) {
               dispatchEmailVerification({ type: 'SENT' });
+
               timerStart();
+
+              const expired = new Date();
+              expired.setSeconds(
+                expired.getSeconds() +
+                  parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`)
+              );
+
+              sessionStorage.setItem('emailVerification', username);
+
+              sessionStorage.setItem(
+                'emailVerificationExpired',
+                expired.toISOString()
+              );
             }
           })
           .catch(({ data }) => {
@@ -190,6 +239,11 @@ const SignUp = () => {
           .then(({ success }) => {
             if (success) {
               dispatchEmailVerification({ type: 'COMPLETED' });
+
+              timerTerminate();
+
+              sessionStorage.removeItem('emailVerification');
+              sessionStorage.removeItem('emailVerificationExpired');
             }
           })
           .catch(({ data }) => {

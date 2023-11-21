@@ -22,6 +22,7 @@ export type VerificationAction =
   | { type: 'SENT' }
   | { type: 'COMPLETED' }
   | { type: 'RESET' }
+  | { type: 'RELOADED'; timeout: number }
   | { type: 'CODE'; code: string }
   | { type: 'ERROR'; error: Error };
 
@@ -55,6 +56,13 @@ const reducer = (
         };
       }
       return state;
+    case 'RELOADED':
+      return {
+        status: 'SENT',
+        error: null,
+        code: '',
+        timeout: action.timeout,
+      };
     case 'RESET':
       return initialState;
     case 'CODE':
