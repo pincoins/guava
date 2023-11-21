@@ -1,8 +1,8 @@
 import { useReducer } from 'react';
 
-type State = 'PENDING' | 'SENT' | 'COMPLETED';
+export type Status = 'PENDING' | 'SENT' | 'COMPLETED' | 'ERROR';
 
-type Error =
+export type Error =
   | 'INVALID_EMAIL'
   | 'INVALID_RECAPTCHA'
   | 'ALREADY_SENT'
@@ -11,52 +11,71 @@ type Error =
   | 'INVALID_CODE'
   | null;
 
-type VerificationState = {
-  value: State;
+export type VerificationState = {
+  status: Status;
   error: Error;
   code: string;
+  timeout: number;
 };
 
-type VerificationAction =
+export type VerificationAction =
   | { type: 'SENT' }
+  | { type: 'COMPLETED' }
+  | { type: 'RESET' }
   | { type: 'CODE'; code: string }
-  | { type: 'ERROR'; error: Error }
-  | { type: 'RESET' };
+  | { type: 'ERROR'; error: Error };
 
 const initialState: VerificationState = {
-  value: 'PENDING',
+  status: 'PENDING',
   error: null,
   code: '',
+  timeout: 300,
 };
 
-function reducer(
+const reducer = (
   state: VerificationState,
   action: VerificationAction
-): VerificationState {
+): VerificationState => {
   switch (action.type) {
     case 'SENT':
-      return {
-        ...state,
-        value: 'SENT',
-      };
+      if (state.status === 'PENDING') {
+        return {
+          ...state,
+          status: 'SENT',
+        };
+      }
+      return state;
+    case 'COMPLETED':
+      if (state.status === 'SENT') {
+        return {
+          ...state,
+          status: 'COMPLETED',
+          error: null,
+          code: '',
+        };
+      }
+      return state;
+    case 'RESET':
+      return initialState;
     case 'CODE':
-      return {
-        ...state,
-        value: 'SENT',
-        code: action.code,
-      };
+      if (state.status === 'SENT' || state.status === 'ERROR') {
+        return {
+          ...state,
+          status: 'SENT',
+          code: action.code,
+        };
+      }
+      return state;
     case 'ERROR':
       return {
         ...state,
-        value: 'SENT',
+        status: 'ERROR',
         error: action.error,
       };
-    case 'RESET':
-      return initialState;
     default:
       return state;
   }
-}
+};
 
 const UseEmailVerification = () => {
   const [state, dispatch] = useReducer(reducer, initialState);

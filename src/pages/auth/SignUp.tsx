@@ -13,6 +13,7 @@ import {
 import { TbLoader2 } from 'react-icons/tb';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 import useEmailVerification from '../../hooks/useEmailVerification';
+import EmailVerification from '../../components/widgets/EmailVerification';
 
 interface SignUpForm {
   username: string;
@@ -96,9 +97,7 @@ const SignUp = () => {
           captcha,
         })
           .unwrap()
-          .then((fulfilled) => {
-            console.log(fulfilled);
-
+          .then((_) => {
             navigate('/auth/sign-in');
           })
           .catch((rejected) => {
@@ -126,22 +125,23 @@ const SignUp = () => {
           captcha,
         })
           .unwrap()
-          .then((fulfilled) => {
-            console.log(fulfilled);
-            dispatchEmailVerification({ type: 'SENT' });
+          .then(({ success }) => {
+            if (success) {
+              dispatchEmailVerification({ type: 'SENT' });
+            }
           })
-          .catch((rejected) => {
-            if (rejected.data.message === 'Invalid reCAPTCHA') {
+          .catch(({ data }) => {
+            if (data.message === 'Invalid reCAPTCHA') {
               dispatchEmailVerification({
                 type: 'ERROR',
                 error: 'INVALID_RECAPTCHA',
               });
-            } else if (rejected.data.message === 'Duplicated email address') {
+            } else if (data.message === 'Duplicated email address') {
               dispatchEmailVerification({
                 type: 'ERROR',
                 error: 'DUPLICATED',
               });
-            } else if (rejected.data.message === 'Email already sent') {
+            } else if (data.message === 'Email already sent') {
               dispatchEmailVerification({
                 type: 'ERROR',
                 error: 'ALREADY_SENT',
@@ -150,20 +150,45 @@ const SignUp = () => {
           });
       })
       .catch((error) => {
-        console.log(error.message);
+        console.error(error.message);
       });
 
     // 3분이 지나면 만료 처리
   };
 
   const handleSendEmailCode = async (_: React.MouseEvent<HTMLElement>) => {
+    if (!emailVerification.code.trim().match(/^[0-9]{6}$/)) {
+      console.log(emailVerification.code);
+      dispatchEmailVerification({
+        type: 'ERROR',
+        error: 'INVALID_CODE',
+      });
+    }
+
     await validateUsernameAndCaptcha()
       .then(({ username, captcha }) => {
-        console.log(username);
-        console.log(captcha);
+        sendEmailCode({
+          username,
+          captcha,
+          code: emailVerification.code,
+        })
+          .unwrap()
+          .then(({ success }) => {
+            if (success) {
+              dispatchEmailVerification({ type: 'COMPLETED' });
+            }
+          })
+          .catch(({ data }) => {
+            if (data.message === 'Invalid code') {
+              dispatchEmailVerification({
+                type: 'ERROR',
+                error: 'INVALID_CODE',
+              });
+            }
+          });
       })
       .catch((error) => {
-        console.log(error.message);
+        console.error(error.message);
       });
   };
 
@@ -218,16 +243,22 @@ const SignUp = () => {
         type="text"
         placeholder="이메일"
         className="border"
+        readOnly={emailVerification.status === 'SENT'}
         {...register('username', {
           required: true,
+
           onChange: (_) => {
             if (errors.username) {
               clearErrors('username');
             }
+
+            dispatchEmailVerification({
+              type: 'RESET',
+            });
           },
           validate: {
             error: (_) => {
-              if (emailVerification.value !== 'COMPLETED') {
+              if (emailVerification.status !== 'COMPLETED') {
                 switch (emailVerification.error) {
                   case 'INVALID_RECAPTCHA':
                     return '다른 브라우저에서 시도해주세요.';
@@ -249,29 +280,21 @@ const SignUp = () => {
       <button
         type="button"
         onClick={handleSendEmailVerification}
-        disabled={emailVerification.value !== 'PENDING'}
+        disabled={emailVerification.status === 'SENT'}
       >
         인증메일 발송
       </button>
 
-      <input
-        type="text"
-        name="emailVerificationCode"
-        value={emailVerification.code}
-        placeholder="000000"
-        onChange={(e) => {
-          dispatchEmailVerification({
-            type: 'CODE',
-            code: e.target.value,
-          });
-        }}
+      <EmailVerification
+        code={emailVerification.code}
+        dispatch={dispatchEmailVerification}
+        onClick={handleSendEmailCode}
       />
-      <button type="button" onClick={handleSendEmailCode}>
-        인증번호 입력
-      </button>
+
       <p>
-        오류메시지: / value: {emailVerification.value} / error:
-        {emailVerification.error} / code: {emailVerification.code}
+        오류메시지: / status: <span>{emailVerification.status}</span>/ error:
+        <span>{emailVerification.error}</span> / code:
+        <span>{emailVerification.code}</span>
       </p>
 
       <input
