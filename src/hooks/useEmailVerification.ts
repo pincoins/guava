@@ -46,16 +46,15 @@ const reducer = (
         };
       }
       return state;
+
     case 'COMPLETED':
-      if (state.status === 'SENT') {
-        return {
-          ...state,
-          status: 'COMPLETED',
-          error: null,
-          code: '',
-        };
-      }
-      return state;
+      return {
+        ...state,
+        status: 'COMPLETED',
+        error: null,
+        code: '',
+      };
+
     case 'RELOADED':
       return {
         status: 'SENT',
@@ -63,8 +62,10 @@ const reducer = (
         code: '',
         timeout: action.timeout,
       };
+
     case 'RESET':
       return initialState;
+
     case 'CODE':
       if (
         state.status === 'SENT' ||
@@ -78,12 +79,14 @@ const reducer = (
         };
       }
       return state;
+
     case 'ERROR':
       return {
         ...state,
         status: 'ERROR',
         error: action.error,
       };
+
     default:
       return state;
   }

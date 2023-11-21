@@ -24,59 +24,65 @@ const reducer = (
 ): IntervalState => {
   const { status, remaining } = state;
 
-  if (action.type === 'START') {
-    if (status === 'READY') {
-      return {
-        ...state,
-        status: 'RUNNING',
-        remaining: action.remaining,
-      };
-    }
-    return state;
-  } else if (action.type === 'PAUSE') {
-    if (status === 'RUNNING') {
-      return {
-        ...state,
-        status: 'PAUSED',
-      };
-    }
-    return state;
-  } else if (action.type === 'RESUME') {
-    if (status === 'PAUSED') {
-      return {
-        ...state,
-        status: 'RUNNING',
-      };
-    }
-    return state;
-  } else if (action.type === 'TERMINATE') {
-    if (status === 'RUNNING' || status === 'PAUSED') {
-      return {
-        ...state,
-        status: 'READY',
-        remaining: DEFAULT_TERMINATE,
-      };
-    }
-    return state;
-  } else if (action.type === 'TICK') {
-    if (status === 'RUNNING') {
-      if (remaining < 1) {
-        // 타임아웃 종료조건
+  switch (action.type) {
+    case 'START':
+      if (status === 'READY') {
+        return {
+          ...state,
+          status: 'RUNNING',
+          remaining: action.remaining,
+        };
+      }
+      return state;
+
+    case 'PAUSE':
+      if (status === 'RUNNING') {
+        return {
+          ...state,
+          status: 'PAUSED',
+        };
+      }
+      return state;
+
+    case 'RESUME':
+      if (status === 'PAUSED') {
+        return {
+          ...state,
+          status: 'RUNNING',
+        };
+      }
+      return state;
+
+    case 'TERMINATE':
+      if (status === 'RUNNING' || status === 'PAUSED') {
         return {
           ...state,
           status: 'READY',
           remaining: DEFAULT_TERMINATE,
         };
-      } else {
-        return {
-          ...state,
-          remaining: remaining - 1,
-        };
       }
-    }
-    return state;
-  } else {
-    throw new Error();
+      return state;
+
+    case 'TICK':
+      if (status === 'RUNNING') {
+        if (remaining < 1) {
+          // 타임아웃 종료조건
+          return {
+            ...state,
+            status: 'READY',
+            remaining: DEFAULT_TERMINATE,
+          };
+        } else {
+          return {
+            ...state,
+            remaining: remaining - 1,
+          };
+        }
+      }
+      return state;
+
+    default:
+      throw new Error();
   }
 };
 

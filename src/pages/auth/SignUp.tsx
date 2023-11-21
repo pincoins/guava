@@ -141,7 +141,20 @@ const SignUp = () => {
       'emailVerificationExpired'
     );
 
-    if (emailVerification && emailVerificationExpired) {
+    const emailVerified = sessionStorage.getItem('emailVerified');
+
+    if (emailVerified) {
+      console.log(emailVerified);
+      setValue('username', emailVerified, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+
+      dispatchEmailVerification({
+        type: 'COMPLETED',
+      });
+    } else if (emailVerification && emailVerificationExpired) {
       const expired = new Date(emailVerificationExpired);
       const now = new Date();
       const duration = Math.floor((expired.getTime() - now.getTime()) / 1000);
@@ -244,6 +257,8 @@ const SignUp = () => {
 
               sessionStorage.removeItem('emailVerification');
               sessionStorage.removeItem('emailVerificationExpired');
+
+              sessionStorage.setItem('emailVerified', username);
             }
           })
           .catch(({ data }) => {
@@ -328,6 +343,8 @@ const SignUp = () => {
             error: (_) => {
               if (emailVerification.status !== 'COMPLETED') {
                 switch (emailVerification.error) {
+                  case 'INVALID_EMAIL':
+                    return '이메일 형식이 올바르지 않습니다.';
                   case 'INVALID_RECAPTCHA':
                     return '다른 브라우저에서 시도해주세요.';
                   case 'DUPLICATED':
