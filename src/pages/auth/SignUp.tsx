@@ -119,13 +119,20 @@ const SignUp = () => {
   const handleSendEmailVerification = async (
     _: React.MouseEvent<HTMLElement>
   ) => {
-    const { username, captcha } = await validateUsernameAndCaptcha();
+    const results = await validateUsernameAndCaptcha();
 
-    if (!username || !captcha) {
+    if (results === false) {
       return;
     }
 
-    sendEmailVerification({ username, captcha })
+    console.log(emailVerification.code);
+    console.log(results.username);
+    console.log(results.captcha);
+
+    sendEmailVerification({
+      username: results.username,
+      captcha: results.captcha,
+    })
       .unwrap()
       .then((fulfilled) => {
         console.log(fulfilled);
@@ -155,30 +162,30 @@ const SignUp = () => {
   };
 
   const handleSendEmailCode = async (_: React.MouseEvent<HTMLElement>) => {
-    const { username, captcha } = await validateUsernameAndCaptcha();
+    const results = await validateUsernameAndCaptcha();
 
-    if (!username || !captcha) {
+    if (results === false) {
       return;
     }
 
     console.log(emailVerification.code);
-    console.log(username);
-    console.log(captcha);
+    console.log(results.username);
+    console.log(results.captcha);
   };
 
   const validateUsernameAndCaptcha: () => Promise<
-    { captcha: null; username: null } | { captcha: string; username: string }
+    false | { captcha: string; username: string }
   > = async () => {
     const { invalid, isDirty, isTouched } = getFieldState('username');
 
     if (!isDirty || !isTouched || invalid) {
-      return { username: null, captcha: null }; // clicked but invalid email address
+      return false; // clicked but invalid email address
     }
 
     const username = getValues('username');
 
     if (!reCaptcha || !reCaptcha.current) {
-      return { username: null, captcha: null }; // google recaptcha element not found
+      return false; // google recaptcha element not found
     }
 
     const captcha = await reCaptcha.current.executeAsync();
@@ -188,7 +195,7 @@ const SignUp = () => {
         type: 'ERROR',
         error: 'INVALID_RECAPTCHA',
       });
-      return { username: null, captcha: null }; // failed to get google recaptcha code
+      return false; // failed to get google recaptcha code
     }
 
     return { username, captcha };
