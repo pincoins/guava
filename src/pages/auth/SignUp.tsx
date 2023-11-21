@@ -183,25 +183,18 @@ const SignUp = () => {
 
     const username = getValues('username');
 
-    if (!reCaptcha || !reCaptcha.current) {
-      dispatchEmailVerification({
-        type: 'ERROR',
-        error: 'INVALID_RECAPTCHA',
-      });
-      throw new Error('Google reCAPTCHA element not found');
+    if (reCaptcha && reCaptcha.current) {
+      const captcha = await reCaptcha.current.executeAsync();
+      if (captcha) {
+        return { username, captcha };
+      }
     }
 
-    const captcha = await reCaptcha.current.executeAsync();
-
-    if (!captcha) {
-      dispatchEmailVerification({
-        type: 'ERROR',
-        error: 'INVALID_RECAPTCHA',
-      });
-      throw new Error('Google reCAPTCHA code not found');
-    }
-
-    return { username, captcha };
+    dispatchEmailVerification({
+      type: 'ERROR',
+      error: 'INVALID_RECAPTCHA',
+    });
+    throw new Error('Google reCAPTCHA element not found');
   };
 
   // 9. JSX 반환
