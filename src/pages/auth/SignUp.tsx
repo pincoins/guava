@@ -118,6 +118,8 @@ const SignUp = () => {
         })
           .unwrap()
           .then((_) => {
+            sessionStorage.removeItem('emailVerified');
+
             navigate('/auth/sign-in');
           })
           .catch((rejected) => {
@@ -144,7 +146,6 @@ const SignUp = () => {
     const emailVerified = sessionStorage.getItem('emailVerified');
 
     if (emailVerified) {
-      console.log(emailVerified);
       setValue('username', emailVerified, {
         shouldValidate: true,
         shouldDirty: true,
@@ -191,7 +192,9 @@ const SignUp = () => {
           .unwrap()
           .then(({ success }) => {
             if (success) {
-              dispatchEmailVerification({ type: 'SENT' });
+              if (emailVerification.status === 'PENDING') {
+                dispatchEmailVerification({ type: 'SENT' });
+              }
 
               timerStart();
 
@@ -251,7 +254,9 @@ const SignUp = () => {
           .unwrap()
           .then(({ success }) => {
             if (success) {
-              dispatchEmailVerification({ type: 'COMPLETED' });
+              if (emailVerification.status === 'SENT') {
+                dispatchEmailVerification({ type: 'COMPLETED' });
+              }
 
               timerTerminate();
 
@@ -259,15 +264,15 @@ const SignUp = () => {
               sessionStorage.removeItem('emailVerificationExpired');
 
               sessionStorage.setItem('emailVerified', username);
-            }
-          })
-          .catch(({ data }) => {
-            if (data.message === 'Invalid code') {
+            } else {
               dispatchEmailVerification({
                 type: 'ERROR',
                 error: 'INVALID_CODE',
               });
             }
+          })
+          .catch(({ data }) => {
+            console.error(data);
           });
       })
       .catch((error) => {
@@ -335,14 +340,12 @@ const SignUp = () => {
               clearErrors('username');
             }
 
-            if (emailVerification.status === 'COMPLETED') {
-              sessionStorage.removeItem('emailVerified');
-            }
-
             if (
               emailVerification.status === 'COMPLETED' ||
               emailVerification.status === 'ERROR'
             ) {
+              sessionStorage.removeItem('emailVerified');
+
               dispatchEmailVerification({
                 type: 'RESET',
               });
@@ -382,8 +385,7 @@ const SignUp = () => {
       {(emailVerification.status === 'SENT' ||
         emailVerification.status === 'ERROR') && (
         <EmailVerification
-          status={emailVerification.status}
-          code={emailVerification.code}
+          state={emailVerification}
           dispatch={dispatchEmailVerification}
           onClick={handleSendEmailCode}
         />
