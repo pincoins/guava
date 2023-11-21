@@ -58,7 +58,10 @@ const reducer = (
     case 'RESET':
       return initialState;
     case 'CODE':
-      if (state.status === 'SENT' || state.status === 'ERROR') {
+      if (
+        state.status === 'SENT' ||
+        (state.status === 'ERROR' && state.error === 'INVALID_CODE')
+      ) {
         return {
           ...state,
           status: 'SENT',
