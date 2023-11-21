@@ -14,6 +14,7 @@ import { TbLoader2 } from 'react-icons/tb';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 import useEmailVerification from '../../hooks/useEmailVerification';
 import EmailVerification from '../../components/widgets/EmailVerification';
+import useInterval from '../../hooks/useInterval';
 
 interface SignUpForm {
   username: string;
@@ -84,6 +85,21 @@ const SignUp = () => {
 
   const [emailVerification, dispatchEmailVerification] = useEmailVerification();
 
+  const {
+    remaining: timerRemaining,
+    status: timerStatus,
+    start: timerStart,
+  } = useInterval({
+    initialRemaining: 5,
+    lap: 1000,
+    endTask: () => {
+      dispatchEmailVerification({
+        type: 'ERROR',
+        error: 'EXPIRED',
+      });
+    },
+  });
+
   // 6. onValid 폼 제출 핸들러
   const onValid: SubmitHandler<SignUpForm> = async (data, _) => {
     if (reCaptcha && reCaptcha.current) {
@@ -128,6 +144,7 @@ const SignUp = () => {
           .then(({ success }) => {
             if (success) {
               dispatchEmailVerification({ type: 'SENT' });
+              timerStart();
             }
           })
           .catch(({ data }) => {
@@ -152,13 +169,10 @@ const SignUp = () => {
       .catch((error) => {
         console.error(error.message);
       });
-
-    // 3분이 지나면 만료 처리
   };
 
   const handleSendEmailCode = async (_: React.MouseEvent<HTMLElement>) => {
     if (!emailVerification.code.trim().match(/^[0-9]{6}$/)) {
-      console.log(emailVerification.code);
       dispatchEmailVerification({
         type: 'ERROR',
         error: 'INVALID_CODE',
@@ -292,7 +306,8 @@ const SignUp = () => {
       />
 
       <p>
-        오류메시지: / status: <span>{emailVerification.status}</span>/ error:
+        오류메시지: timer: {timerStatus} / {timerRemaining} / status:
+        <span>{emailVerification.status}</span>/ error:
         <span>{emailVerification.error}</span> / code:
         <span>{emailVerification.code}</span>
       </p>
