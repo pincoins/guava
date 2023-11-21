@@ -335,9 +335,18 @@ const SignUp = () => {
               clearErrors('username');
             }
 
-            dispatchEmailVerification({
-              type: 'RESET',
-            });
+            if (emailVerification.status === 'COMPLETED') {
+              sessionStorage.removeItem('emailVerified');
+            }
+
+            if (
+              emailVerification.status === 'COMPLETED' ||
+              emailVerification.status === 'ERROR'
+            ) {
+              dispatchEmailVerification({
+                type: 'RESET',
+              });
+            }
           },
           validate: {
             error: (_) => {
@@ -365,24 +374,26 @@ const SignUp = () => {
       <button
         type="button"
         onClick={handleSendEmailVerification}
-        disabled={emailVerification.status === 'SENT'}
+        disabled={emailVerification.status !== 'PENDING'}
       >
         인증메일 발송
       </button>
 
-      <EmailVerification
-        code={emailVerification.code}
-        dispatch={dispatchEmailVerification}
-        onClick={handleSendEmailCode}
-      />
-
+      {(emailVerification.status === 'SENT' ||
+        emailVerification.status === 'ERROR') && (
+        <EmailVerification
+          status={emailVerification.status}
+          code={emailVerification.code}
+          dispatch={dispatchEmailVerification}
+          onClick={handleSendEmailCode}
+        />
+      )}
       <p>
         오류메시지: timer: {timerStatus} / {timerRemaining} / status:
         <span>{emailVerification.status}</span>/ error:
         <span>{emailVerification.error}</span> / code:
         <span>{emailVerification.code}</span>
       </p>
-
       <input
         type="password"
         placeholder="비밀번호"
