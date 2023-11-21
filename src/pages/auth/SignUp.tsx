@@ -141,7 +141,20 @@ const SignUp = () => {
       'emailVerificationExpired'
     );
 
-    if (emailVerification && emailVerificationExpired) {
+    const emailVerified = sessionStorage.getItem('emailVerified');
+
+    if (emailVerified) {
+      console.log(emailVerified);
+      setValue('username', emailVerified, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+
+      dispatchEmailVerification({
+        type: 'COMPLETED',
+      });
+    } else if (emailVerification && emailVerificationExpired) {
       const expired = new Date(emailVerificationExpired);
       const now = new Date();
       const duration = Math.floor((expired.getTime() - now.getTime()) / 1000);
@@ -244,6 +257,8 @@ const SignUp = () => {
 
               sessionStorage.removeItem('emailVerification');
               sessionStorage.removeItem('emailVerificationExpired');
+
+              sessionStorage.setItem('emailVerified', username);
             }
           })
           .catch(({ data }) => {
@@ -320,14 +335,25 @@ const SignUp = () => {
               clearErrors('username');
             }
 
-            dispatchEmailVerification({
-              type: 'RESET',
-            });
+            if (emailVerification.status === 'COMPLETED') {
+              sessionStorage.removeItem('emailVerified');
+            }
+
+            if (
+              emailVerification.status === 'COMPLETED' ||
+              emailVerification.status === 'ERROR'
+            ) {
+              dispatchEmailVerification({
+                type: 'RESET',
+              });
+            }
           },
           validate: {
             error: (_) => {
               if (emailVerification.status !== 'COMPLETED') {
                 switch (emailVerification.error) {
+                  case 'INVALID_EMAIL':
+                    return '이메일 형식이 올바르지 않습니다.';
                   case 'INVALID_RECAPTCHA':
                     return '다른 브라우저에서 시도해주세요.';
                   case 'DUPLICATED':
@@ -348,24 +374,26 @@ const SignUp = () => {
       <button
         type="button"
         onClick={handleSendEmailVerification}
-        disabled={emailVerification.status === 'SENT'}
+        disabled={emailVerification.status !== 'PENDING'}
       >
         인증메일 발송
       </button>
 
-      <EmailVerification
-        code={emailVerification.code}
-        dispatch={dispatchEmailVerification}
-        onClick={handleSendEmailCode}
-      />
-
+      {(emailVerification.status === 'SENT' ||
+        emailVerification.status === 'ERROR') && (
+        <EmailVerification
+          status={emailVerification.status}
+          code={emailVerification.code}
+          dispatch={dispatchEmailVerification}
+          onClick={handleSendEmailCode}
+        />
+      )}
       <p>
         오류메시지: timer: {timerStatus} / {timerRemaining} / status:
         <span>{emailVerification.status}</span>/ error:
         <span>{emailVerification.error}</span> / code:
         <span>{emailVerification.code}</span>
       </p>
-
       <input
         type="password"
         placeholder="비밀번호"
