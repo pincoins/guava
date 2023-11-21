@@ -3,6 +3,7 @@ import { useReducer } from 'react';
 type State = 'PENDING' | 'SENT' | 'COMPLETED';
 
 type Error =
+  | 'INVALID_EMAIL'
   | 'INVALID_RECAPTCHA'
   | 'ALREADY_SENT'
   | 'DUPLICATED'

@@ -119,73 +119,76 @@ const SignUp = () => {
   const handleSendEmailVerification = async (
     _: React.MouseEvent<HTMLElement>
   ) => {
-    const results = await validateUsernameAndCaptcha();
-
-    if (results === false) {
-      return;
-    }
-
-    console.log(emailVerification.code);
-    console.log(results.username);
-    console.log(results.captcha);
-
-    sendEmailVerification({
-      username: results.username,
-      captcha: results.captcha,
-    })
-      .unwrap()
-      .then((fulfilled) => {
-        console.log(fulfilled);
-        dispatchEmailVerification({ type: 'SENT' });
+    await validateUsernameAndCaptcha()
+      .then(({ username, captcha }) => {
+        sendEmailVerification({
+          username,
+          captcha,
+        })
+          .unwrap()
+          .then((fulfilled) => {
+            console.log(fulfilled);
+            dispatchEmailVerification({ type: 'SENT' });
+          })
+          .catch((rejected) => {
+            if (rejected.data.message === 'Invalid reCAPTCHA') {
+              dispatchEmailVerification({
+                type: 'ERROR',
+                error: 'INVALID_RECAPTCHA',
+              });
+            } else if (rejected.data.message === 'Duplicated email address') {
+              dispatchEmailVerification({
+                type: 'ERROR',
+                error: 'DUPLICATED',
+              });
+            } else if (rejected.data.message === 'Email already sent') {
+              dispatchEmailVerification({
+                type: 'ERROR',
+                error: 'ALREADY_SENT',
+              });
+            }
+          });
       })
-      .catch((rejected) => {
-        if (rejected.data.message === 'Invalid reCAPTCHA') {
-          dispatchEmailVerification({
-            type: 'ERROR',
-            error: 'INVALID_RECAPTCHA',
-          });
-        } else if (rejected.data.message === 'Duplicated email address') {
-          dispatchEmailVerification({
-            type: 'ERROR',
-            error: 'DUPLICATED',
-          });
-        } else if (rejected.data.message === 'Email already sent') {
-          dispatchEmailVerification({
-            type: 'ERROR',
-            error: 'ALREADY_SENT',
-          });
-        }
+      .catch((error) => {
+        console.log(error.message);
       });
 
     // 3분이 지나면 만료 처리
-    return;
   };
 
   const handleSendEmailCode = async (_: React.MouseEvent<HTMLElement>) => {
-    const results = await validateUsernameAndCaptcha();
-
-    if (results === false) {
-      return;
-    }
-
-    console.log(emailVerification.code);
-    console.log(results.username);
-    console.log(results.captcha);
+    await validateUsernameAndCaptcha()
+      .then(({ username, captcha }) => {
+        console.log(username);
+        console.log(captcha);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
-  const validateUsernameAndCaptcha: () => Promise<
-    false | { captcha: string; username: string }
-  > = async () => {
+  const validateUsernameAndCaptcha: () => Promise<{
+    captcha: string;
+    username: string;
+  }> = async () => {
     const { invalid, isDirty, isTouched } = getFieldState('username');
 
     if (!isDirty || !isTouched || invalid) {
-      return false; // clicked but invalid email address
+      dispatchEmailVerification({
+        type: 'ERROR',
+        error: 'INVALID_EMAIL',
+      });
+      throw new Error('Invalid email address');
     }
 
     const username = getValues('username');
 
     if (!reCaptcha || !reCaptcha.current) {
-      return false; // google recaptcha element not found
+      dispatchEmailVerification({
+        type: 'ERROR',
+        error: 'INVALID_RECAPTCHA',
+      });
+      throw new Error('Google reCAPTCHA element not found');
     }
 
     const captcha = await reCaptcha.current.executeAsync();
@@ -195,7 +198,7 @@ const SignUp = () => {
         type: 'ERROR',
         error: 'INVALID_RECAPTCHA',
       });
-      return false; // failed to get google recaptcha code
+      throw new Error('Google reCAPTCHA code not found');
     }
 
     return { username, captcha };
