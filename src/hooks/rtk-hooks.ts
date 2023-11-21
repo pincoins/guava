@@ -13,16 +13,16 @@ export const useQueryMutationError = (
   error: FetchBaseQueryError | SerializedError | undefined
 ) => {
   if (isError && error) {
-    console.log(error);
+    console.error(error);
     if ('status' in error) {
       // `FetchBaseQueryError`: ERR_CONNECTION_REFUSED; FETCH_ERROR;
-      console.log(error.status);
+      console.error(error.status);
     } else if (Array.isArray((error as any).data?.error)) {
       // `ApiErrorResponse` from backend
-      (error as any).data.error.forEach((el: any) => console.log(el.message));
+      (error as any).data.error.forEach((el: any) => console.error(el.message));
     } else {
       // SerializedError`
-      console.log(error.message);
+      console.error(error.message);
     }
   }
 };

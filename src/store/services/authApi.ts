@@ -63,7 +63,7 @@ const authApi = createApi({
         } catch (error) {}
       },
     }),
-    sendVerificationEmail: builder.mutation<
+    sendEmailVerification: builder.mutation<
       {
         success: boolean;
       },
@@ -77,6 +77,20 @@ const authApi = createApi({
         };
       },
     }),
+    sendEmailCode: builder.mutation<
+      {
+        success: boolean;
+      },
+      { username: string; code: string; captcha: string }
+    >({
+      query: (data) => {
+        return {
+          url: '/members/send-email-code',
+          method: 'POST',
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
@@ -84,7 +98,8 @@ export const {
   useSignUpMutation,
   useSignInMutation,
   useSignOutMutation,
-  useSendVerificationEmailMutation,
+  useSendEmailVerificationMutation,
+  useSendEmailCodeMutation,
 } = authApi;
 
 export { authApi };
