@@ -6,7 +6,8 @@ import { RootState } from '../../store';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import {
-  useSendVerificationEmailMutation,
+  useSendEmailCodeMutation,
+  useSendEmailVerificationMutation,
   useSignUpMutation,
 } from '../../store/services/authApi';
 import { TbLoader2 } from 'react-icons/tb';
@@ -54,7 +55,9 @@ const SignUp = () => {
   // 3. RTK Query 객체 가져오기
   const [signUp] = useSignUpMutation();
 
-  const [sendVerificationEmail] = useSendVerificationEmailMutation();
+  const [sendEmailVerification] = useSendEmailVerificationMutation();
+
+  const [sendEmailCode] = useSendEmailCodeMutation();
 
   // 4. 리액트 훅 폼 정의
   const {
@@ -75,7 +78,7 @@ const SignUp = () => {
     resolver: yupResolver(schema),
   });
 
-  // 5. 주요 상태 선언 (useState, useReducer 및 훅)
+  // 5. 주요 상태 선언 (useState, useReducer 및 커스텀 훅)
   const [reCaptcha, reCaptchaElement] = useGoogleRecaptcha();
 
   const [emailVerification, dispatchEmailVerification] = useEmailVerification();
@@ -116,25 +119,13 @@ const SignUp = () => {
   const handleSendEmailVerification = async (
     _: React.MouseEvent<HTMLElement>
   ) => {
-    const { invalid, isDirty, isTouched } = getFieldState('username');
+    const { username, captcha } = await validateUsernameAndCaptcha();
 
-    if (!isDirty || !isTouched || invalid) {
-      return; // clicked but invalid email address
+    if (!username || !captcha) {
+      return;
     }
 
-    const username = getValues('username');
-
-    if (!reCaptcha || !reCaptcha.current) {
-      return; // google recaptcha element not found
-    }
-
-    const captcha = await reCaptcha.current.executeAsync();
-
-    if (!captcha) {
-      return; // failed to get google recaptcha code
-    }
-
-    sendVerificationEmail({ username, captcha })
+    sendEmailVerification({ username, captcha })
       .unwrap()
       .then((fulfilled) => {
         console.log(fulfilled);
@@ -161,6 +152,46 @@ const SignUp = () => {
 
     // 3분이 지나면 만료 처리
     return;
+  };
+
+  const handleSendEmailCode = async (_: React.MouseEvent<HTMLElement>) => {
+    const { username, captcha } = await validateUsernameAndCaptcha();
+
+    if (!username || !captcha) {
+      return;
+    }
+
+    console.log(emailVerification.code);
+    console.log(username);
+    console.log(captcha);
+  };
+
+  const validateUsernameAndCaptcha: () => Promise<
+    { captcha: null; username: null } | { captcha: string; username: string }
+  > = async () => {
+    const { invalid, isDirty, isTouched } = getFieldState('username');
+
+    if (!isDirty || !isTouched || invalid) {
+      return { username: null, captcha: null }; // clicked but invalid email address
+    }
+
+    const username = getValues('username');
+
+    if (!reCaptcha || !reCaptcha.current) {
+      return { username: null, captcha: null }; // google recaptcha element not found
+    }
+
+    const captcha = await reCaptcha.current.executeAsync();
+
+    if (!captcha) {
+      dispatchEmailVerification({
+        type: 'ERROR',
+        error: 'INVALID_RECAPTCHA',
+      });
+      return { username: null, captcha: null }; // failed to get google recaptcha code
+    }
+
+    return { username, captcha };
   };
 
   // 9. JSX 반환
@@ -232,10 +263,12 @@ const SignUp = () => {
           });
         }}
       />
-      <button type="button">인증번호 입력</button>
+      <button type="button" onClick={handleSendEmailCode}>
+        인증번호 입력
+      </button>
       <p>
-        오류메시지: / emailVerification: {emailVerification.value} /
-        emailVerificationError: {emailVerification.error}
+        오류메시지: / value: {emailVerification.value} / error:
+        {emailVerification.error} / code: {emailVerification.code}
       </p>
 
       <input
