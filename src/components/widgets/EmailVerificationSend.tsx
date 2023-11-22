@@ -42,9 +42,7 @@ const EmailVerificationSend = ({
               sessionStorage.removeItem('emailSentAt');
               sessionStorage.removeItem('emailIsVerified');
 
-              dispatch({
-                type: 'RESET',
-              });
+              dispatch({ type: 'RESET' });
             }
           },
           validate: {

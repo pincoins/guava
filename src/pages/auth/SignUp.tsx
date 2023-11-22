@@ -22,6 +22,7 @@ export interface SignUpForm {
   fullName: string;
   password: string;
   passwordRepeat: string;
+  code?: string;
 }
 
 const schema = yup
@@ -45,6 +46,7 @@ const schema = yup
       .string()
       .oneOf([yup.ref('password')], '확인 비밀번호가 일치하지 않습니다.')
       .required('필수'),
+    code: yup.string().matches(/^[0-9]{6}$/),
   })
   .required();
 
@@ -70,6 +72,7 @@ const SignUp = () => {
       fullName: '',
       password: '',
       passwordRepeat: '',
+      code: '',
     },
     resolver: yupResolver(schema),
   });
@@ -228,19 +231,25 @@ const SignUp = () => {
   };
 
   const handleSendEmailCode = async (_: React.MouseEvent<HTMLElement>) => {
-    if (!emailVerification.code.trim().match(/^[0-9]{6}$/)) {
+    const { invalid, isDirty, isTouched } = methods.getFieldState('code');
+
+    // 인증번호 필드를 변경하고 나서 그 값이 유효한지 확인
+    if (!isDirty || !isTouched || invalid) {
       dispatchEmailVerification({
         type: 'ERROR',
         error: 'INVALID_CODE',
       });
+      return; // throw 해도 catch 해줄 곳이 없음
     }
+
+    const code = methods.getValues('code') as string;
 
     await validateUsernameAndCaptcha()
       .then(({ username, captcha }) => {
         sendEmailCode({
           username,
           captcha,
-          code: emailVerification.code,
+          code,
         })
           .unwrap()
           .then(({ success }) => {
@@ -344,8 +353,7 @@ const SignUp = () => {
         <p>
           오류메시지: timer: {timerStatus} / {timerRemaining} / status:
           <span>{emailVerification.status}</span>/ error:
-          <span>{emailVerification.error}</span> / code:
-          <span>{emailVerification.code}</span>
+          <span>{emailVerification.error}</span>
         </p>
         <input
           type="password"
