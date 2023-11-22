@@ -119,6 +119,8 @@ const SignUp = () => {
           .unwrap()
           .then((_) => {
             sessionStorage.removeItem('emailVerified');
+            sessionStorage.removeItem('emailSentAt');
+            sessionStorage.removeItem('emailIsVerified');
 
             navigate('/auth/sign-in');
           })
@@ -137,44 +139,45 @@ const SignUp = () => {
   }, [accessToken]);
 
   useEffect(() => {
-    const emailVerification = sessionStorage.getItem('emailVerification');
-
-    const emailVerificationExpired = sessionStorage.getItem(
-      'emailVerificationExpired'
-    );
-
     const emailVerified = sessionStorage.getItem('emailVerified');
+    const emailSentAt = sessionStorage.getItem('emailSentAt');
+    const emailIsVerified = sessionStorage.getItem('emailIsVerified');
 
-    if (emailVerified) {
-      setValue('username', emailVerified, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true,
-      });
-
-      dispatchEmailVerification({
-        type: 'COMPLETED',
-      });
-    } else if (emailVerification && emailVerificationExpired) {
-      const expired = new Date(emailVerificationExpired);
-      const now = new Date();
-      const duration = Math.floor((expired.getTime() - now.getTime()) / 1000);
-
-      console.log(expired, now, duration);
-
-      if (duration < parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`)) {
-        setValue('username', emailVerification, {
+    if (emailIsVerified !== null && emailVerified && emailVerified) {
+      if (JSON.parse(emailIsVerified)) {
+        setValue('username', emailVerified, {
           shouldValidate: true,
           shouldDirty: true,
           shouldTouch: true,
         });
 
         dispatchEmailVerification({
-          type: 'RELOADED',
-          timeout: duration,
+          type: 'COMPLETED',
         });
+      } else if (emailVerified && emailSentAt) {
+        const expired = new Date(emailSentAt);
+        const now = new Date();
+        const duration = Math.floor((expired.getTime() - now.getTime()) / 1000);
 
-        timerStart(duration);
+        console.log(expired, now, duration);
+
+        if (
+          duration < parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`) &&
+          duration > 0
+        ) {
+          setValue('username', emailVerified, {
+            shouldValidate: true,
+            shouldDirty: true,
+            shouldTouch: true,
+          });
+
+          dispatchEmailVerification({
+            type: 'RELOADED',
+            timeout: duration,
+          });
+
+          timerStart(duration);
+        }
       }
     }
   }, []);
@@ -204,12 +207,9 @@ const SignUp = () => {
                   parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`)
               );
 
-              sessionStorage.setItem('emailVerification', username);
-
-              sessionStorage.setItem(
-                'emailVerificationExpired',
-                expired.toISOString()
-              );
+              sessionStorage.setItem('emailVerified', username);
+              sessionStorage.setItem('emailSentAt', `${expired}`);
+              sessionStorage.setItem('emailIsVerified', `${false}`);
             }
           })
           .catch(({ data }) => {
@@ -260,10 +260,7 @@ const SignUp = () => {
 
               timerTerminate();
 
-              sessionStorage.removeItem('emailVerification');
-              sessionStorage.removeItem('emailVerificationExpired');
-
-              sessionStorage.setItem('emailVerified', username);
+              sessionStorage.setItem('emailIsVerified', `${true}`);
             } else {
               dispatchEmailVerification({
                 type: 'ERROR',
@@ -345,6 +342,8 @@ const SignUp = () => {
               emailVerification.status === 'ERROR'
             ) {
               sessionStorage.removeItem('emailVerified');
+              sessionStorage.removeItem('emailSentAt');
+              sessionStorage.removeItem('emailIsVerified');
 
               dispatchEmailVerification({
                 type: 'RESET',
@@ -383,7 +382,8 @@ const SignUp = () => {
       </button>
 
       {(emailVerification.status === 'SENT' ||
-        emailVerification.status === 'ERROR') && (
+        (emailVerification.status === 'ERROR' &&
+          emailVerification.error === 'INVALID_CODE')) && (
         <EmailVerification
           state={emailVerification}
           dispatch={dispatchEmailVerification}
