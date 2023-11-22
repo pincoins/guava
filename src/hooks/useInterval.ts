@@ -22,13 +22,10 @@ const reducer = (
   state: IntervalState,
   action: IntervalAction
 ): IntervalState => {
-  const { status, remaining } = state;
-
   switch (action.type) {
     case 'START':
-      if (status === 'READY') {
+      if (state.status === 'READY') {
         return {
-          ...state,
           status: 'RUNNING',
           remaining: action.remaining,
         };
@@ -36,7 +33,7 @@ const reducer = (
       return state;
 
     case 'PAUSE':
-      if (status === 'RUNNING') {
+      if (state.status === 'RUNNING') {
         return {
           ...state,
           status: 'PAUSED',
@@ -45,7 +42,7 @@ const reducer = (
       return state;
 
     case 'RESUME':
-      if (status === 'PAUSED') {
+      if (state.status === 'PAUSED') {
         return {
           ...state,
           status: 'RUNNING',
@@ -54,9 +51,8 @@ const reducer = (
       return state;
 
     case 'TERMINATE':
-      if (status === 'RUNNING' || status === 'PAUSED') {
+      if (state.status === 'RUNNING' || state.status === 'PAUSED') {
         return {
-          ...state,
           status: 'READY',
           remaining: DEFAULT_TERMINATE,
         };
@@ -64,18 +60,17 @@ const reducer = (
       return state;
 
     case 'TICK':
-      if (status === 'RUNNING') {
-        if (remaining < 1) {
+      if (state.status === 'RUNNING') {
+        if (state.remaining < 1) {
           // 타임아웃 종료조건
           return {
-            ...state,
             status: 'READY',
             remaining: DEFAULT_TERMINATE,
           };
         } else {
           return {
             ...state,
-            remaining: remaining - 1,
+            remaining: state.remaining - 1,
           };
         }
       }
@@ -102,12 +97,10 @@ const useInterval = ({
     remaining: initialRemaining,
   });
 
-  const { status, remaining } = state;
-
   const id = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (status === 'RUNNING') {
+    if (state.status === 'RUNNING') {
       id.current = setInterval(() => {
         dispatch({ type: 'TICK' });
       }, lap);
@@ -115,20 +108,19 @@ const useInterval = ({
 
     return () => {
       if (id.current !== null) {
+        clearInterval(id.current);
         if (endTask !== undefined) {
           endTask();
         }
-
-        clearInterval(id.current);
       }
     };
-  }, [dispatch, status, initialRemaining, lap]);
+  }, [dispatch, state.status, lap]);
 
   const start = useCallback(
-    (remaining?: number) => {
+    (remainingArg?: number) => {
       dispatch({
         type: 'START',
-        remaining: remaining ? remaining : initialRemaining,
+        remaining: remainingArg ? remainingArg : initialRemaining,
       });
 
       if (beginTask !== undefined) {
@@ -150,7 +142,7 @@ const useInterval = ({
     dispatch({ type: 'RESUME' });
   }, []);
 
-  return { id, remaining, status, start, terminate, pause, resume };
+  return { id, state, start, terminate, pause, resume };
 };
 
 export default useInterval;

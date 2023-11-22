@@ -83,15 +83,17 @@ const SignUp = () => {
   const [emailVerification, dispatchEmailVerification] = useEmailVerification();
 
   const {
-    remaining: timerRemaining,
-    status: timerStatus,
+    state: timerState,
     start: timerStart,
     terminate: timerTerminate,
   } = useInterval({
     initialRemaining: parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`),
     lap: parseInt(`${process.env.EMAIL_VERIFICATION_LAP}`),
     endTask: () => {
-      if (emailVerification.status === 'SENT' && timerRemaining <= 0) {
+      if (
+        timerState.remaining ===
+        parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`)
+      ) {
         dispatchEmailVerification({
           type: 'ERROR',
           error: 'EXPIRED',
@@ -353,7 +355,8 @@ const SignUp = () => {
           />
         )}
         <p>
-          오류메시지: timer: {timerStatus} / {timerRemaining} / status:
+          오류메시지: timer: {timerState.status} / {timerState.remaining} /
+          status:
           <span>{emailVerification.status}</span>/ error:
           <span>{emailVerification.error}</span>
         </p>
