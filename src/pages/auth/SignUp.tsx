@@ -83,15 +83,17 @@ const SignUp = () => {
   const [emailVerification, dispatchEmailVerification] = useEmailVerification();
 
   const {
-    remaining: timerRemaining,
-    status: timerStatus,
+    state: timerState,
     start: timerStart,
     terminate: timerTerminate,
   } = useInterval({
     initialRemaining: parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`),
     lap: parseInt(`${process.env.EMAIL_VERIFICATION_LAP}`),
     endTask: () => {
-      if (emailVerification.status === 'SENT' && timerRemaining <= 0) {
+      if (
+        timerState.remaining ===
+        parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`)
+      ) {
         dispatchEmailVerification({
           type: 'ERROR',
           error: 'EXPIRED',
@@ -151,13 +153,15 @@ const SignUp = () => {
           type: 'COMPLETED',
         });
       } else if (emailVerified && emailSentAt) {
-        const elapsed = Math.floor(
-          (new Date().getTime() - new Date(emailSentAt).getTime()) / 1000
-        );
+        const duration =
+          parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`) -
+          Math.floor(
+            (new Date().getTime() - new Date(emailSentAt).getTime()) / 1000
+          );
 
         if (
-          elapsed < parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`) &&
-          elapsed > 0
+          duration < parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`) &&
+          duration > 0
         ) {
           methods.setValue('username', emailVerified, {
             shouldValidate: true,
@@ -167,10 +171,10 @@ const SignUp = () => {
 
           dispatchEmailVerification({
             type: 'RELOADED',
-            timeout: elapsed,
+            timeout: duration,
           });
 
-          timerStart(elapsed);
+          timerStart(duration);
         }
       }
     }
@@ -351,7 +355,8 @@ const SignUp = () => {
           />
         )}
         <p>
-          오류메시지: timer: {timerStatus} / {timerRemaining} / status:
+          오류메시지: timer: {timerState.status} / {timerState.remaining} /
+          status:
           <span>{emailVerification.status}</span>/ error:
           <span>{emailVerification.error}</span>
         </p>
