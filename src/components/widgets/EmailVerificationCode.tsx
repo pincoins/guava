@@ -4,7 +4,7 @@ import {
   VerificationState,
 } from '../../hooks/useEmailVerification';
 
-const EmailVerification = ({
+const EmailVerificationCode = ({
   state,
   dispatch,
   onClick,
@@ -51,4 +51,4 @@ const EmailVerification = ({
   );
 };
 
-export default EmailVerification;
+export default EmailVerificationCode;
