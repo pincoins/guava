@@ -60,21 +60,16 @@ const reducer = (
       return state;
 
     case 'TICK':
-      if (state.status === 'RUNNING') {
-        if (state.remaining < 1) {
-          // 타임아웃 종료조건
-          return {
-            status: 'READY',
-            remaining: DEFAULT_TERMINATE,
-          };
-        } else {
-          return {
-            ...state,
-            remaining: state.remaining - 1,
-          };
-        }
+      if (state.status === 'RUNNING' && state.remaining > 0) {
+        return {
+          ...state,
+          remaining: state.remaining - 1,
+        };
       }
-      return state;
+      return {
+        status: 'READY',
+        remaining: DEFAULT_TERMINATE,
+      };
 
     default:
       throw new Error();
