@@ -3,29 +3,25 @@ import {
   VerificationAction,
   VerificationState,
 } from '../../hooks/useEmailVerification';
-import {
-  FieldErrors,
-  UseFormClearErrors,
-  UseFormRegister,
-} from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { SignUpForm } from '../../pages/auth/SignUp';
 
 const EmailVerificationSend = ({
   state,
   dispatch,
   onClick,
-  register,
-  clearErrors,
-  errors,
   ...rest
 }: {
   state: VerificationState;
   dispatch: Dispatch<VerificationAction>;
   onClick: (_: React.MouseEvent<HTMLElement>) => Promise<void>;
-  register: UseFormRegister<SignUpForm>;
-  clearErrors: UseFormClearErrors<SignUpForm>;
-  errors: FieldErrors<SignUpForm>;
 }) => {
+  const {
+    register,
+    clearErrors,
+    formState: { errors },
+  } = useFormContext<SignUpForm>(); // retrieve all hook methods
+
   return (
     <>
       <input

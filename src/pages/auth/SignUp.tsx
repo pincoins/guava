@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
@@ -63,15 +63,7 @@ const SignUp = () => {
   const [sendEmailCode] = useSendEmailCodeMutation();
 
   // 4. 리액트 훅 폼 정의
-  const {
-    register,
-    getValues,
-    setValue,
-    getFieldState,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    clearErrors,
-  } = useForm<SignUpForm>({
+  const methods = useForm<SignUpForm>({
     mode: 'onBlur',
     defaultValues: {
       username: '',
@@ -146,7 +138,7 @@ const SignUp = () => {
 
     if (emailIsVerified !== null && emailVerified && emailVerified) {
       if (JSON.parse(emailIsVerified)) {
-        setValue('username', emailVerified, {
+        methods.setValue('username', emailVerified, {
           shouldValidate: true,
           shouldDirty: true,
           shouldTouch: true,
@@ -164,7 +156,7 @@ const SignUp = () => {
           elapsed < parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`) &&
           elapsed > 0
         ) {
-          setValue('username', emailVerified, {
+          methods.setValue('username', emailVerified, {
             shouldValidate: true,
             shouldDirty: true,
             shouldTouch: true,
@@ -283,7 +275,7 @@ const SignUp = () => {
     captcha: string;
     username: string;
   }> = async () => {
-    const { invalid, isDirty, isTouched } = getFieldState('username');
+    const { invalid, isDirty, isTouched } = methods.getFieldState('username');
 
     // 이메일 필드를 변경하고 나서 그 값이 유효한지 확인
     if (!isDirty || !isTouched || invalid) {
@@ -294,7 +286,7 @@ const SignUp = () => {
       throw new Error('Invalid email address');
     }
 
-    const username = getValues('username');
+    const username = methods.getValues('username');
 
     if (reCaptcha && reCaptcha.current) {
       const captcha = await reCaptcha.current.executeAsync();
@@ -312,84 +304,94 @@ const SignUp = () => {
 
   // 9. JSX 반환
   return (
-    <form onSubmit={handleSubmit(onValid)} className="flex flex-col w-1/2">
-      <input
-        type="text"
-        placeholder="이름"
-        className="border"
-        {...register('fullName', {
-          required: true,
-          onChange: (_) => {
-            if (errors.fullName) {
-              clearErrors('fullName');
-            }
-          },
-        })}
-      />
-      {errors.fullName && <span>{errors.fullName.message}</span>}
+    <FormProvider {...methods}>
+      <form
+        onSubmit={methods.handleSubmit(onValid)}
+        className="flex flex-col w-1/2"
+      >
+        <input
+          type="text"
+          placeholder="이름"
+          className="border"
+          {...methods.register('fullName', {
+            required: true,
+            onChange: (_) => {
+              if (methods.formState.errors.fullName) {
+                methods.clearErrors('fullName');
+              }
+            },
+          })}
+        />
+        {methods.formState.errors.fullName && (
+          <span>{methods.formState.errors.fullName.message}</span>
+        )}
 
-      <EmailVerificationSend
-        state={emailVerification}
-        dispatch={dispatchEmailVerification}
-        onClick={handleSendEmailVerification}
-        register={register}
-        clearErrors={clearErrors}
-        errors={errors}
-      />
-
-      {(emailVerification.status === 'SENT' ||
-        (emailVerification.status === 'ERROR' &&
-          emailVerification.error === 'INVALID_CODE')) && (
-        <EmailVerificationCode
+        <EmailVerificationSend
           state={emailVerification}
           dispatch={dispatchEmailVerification}
-          onClick={handleSendEmailCode}
+          onClick={handleSendEmailVerification}
         />
-      )}
-      <p>
-        오류메시지: timer: {timerStatus} / {timerRemaining} / status:
-        <span>{emailVerification.status}</span>/ error:
-        <span>{emailVerification.error}</span> / code:
-        <span>{emailVerification.code}</span>
-      </p>
-      <input
-        type="password"
-        placeholder="비밀번호"
-        className="border"
-        {...register('password', {
-          required: true,
-          onChange: (_) => {
-            if (errors.password) {
-              clearErrors('password');
-            }
-          },
-        })}
-      />
-      {errors.password && <span>{errors.password.message}</span>}
-      <input
-        type="password"
-        placeholder="비밀번호 확인"
-        className="border"
-        {...register('passwordRepeat', {
-          required: true,
-          onChange: (_) => {
-            if (errors.passwordRepeat) {
-              clearErrors('passwordRepeat');
-            }
-          },
-        })}
-      />
-      {errors.passwordRepeat && <span>{errors.passwordRepeat.message}</span>}
-      <button
-        type="submit"
-        className="border inline-flex items-center"
-        disabled={isSubmitting}
-      >
-        {isSubmitting && <TbLoader2 className="-mt-1 animate-spin" />}
-        <span className="ml-1">회원가입</span>
-      </button>
-      {reCaptchaElement}
-    </form>
+
+        {(emailVerification.status === 'SENT' ||
+          (emailVerification.status === 'ERROR' &&
+            emailVerification.error === 'INVALID_CODE')) && (
+          <EmailVerificationCode
+            state={emailVerification}
+            dispatch={dispatchEmailVerification}
+            onClick={handleSendEmailCode}
+          />
+        )}
+        <p>
+          오류메시지: timer: {timerStatus} / {timerRemaining} / status:
+          <span>{emailVerification.status}</span>/ error:
+          <span>{emailVerification.error}</span> / code:
+          <span>{emailVerification.code}</span>
+        </p>
+        <input
+          type="password"
+          placeholder="비밀번호"
+          className="border"
+          {...methods.register('password', {
+            required: true,
+            onChange: (_) => {
+              if (methods.formState.errors.password) {
+                methods.clearErrors('password');
+              }
+            },
+          })}
+        />
+        {methods.formState.errors.password && (
+          <span>{methods.formState.errors.password.message}</span>
+        )}
+        <input
+          type="password"
+          placeholder="비밀번호 확인"
+          className="border"
+          {...methods.register('passwordRepeat', {
+            required: true,
+            onChange: (_) => {
+              if (methods.formState.errors.passwordRepeat) {
+                methods.clearErrors('passwordRepeat');
+              }
+            },
+          })}
+        />
+        {methods.formState.errors.passwordRepeat && (
+          <span>{methods.formState.errors.passwordRepeat.message}</span>
+        )}
+        <button
+          type="submit"
+          className="border inline-flex items-center"
+          disabled={methods.formState.isSubmitting}
+        >
+          {methods.formState.isSubmitting && (
+            <TbLoader2 className="-mt-1 animate-spin" />
+          )}
+          <span className="ml-1">회원가입</span>
+        </button>
+        {reCaptchaElement}
+      </form>
+    </FormProvider>
   );
 };
 
