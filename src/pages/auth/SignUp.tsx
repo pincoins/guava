@@ -151,13 +151,15 @@ const SignUp = () => {
           type: 'COMPLETED',
         });
       } else if (emailVerified && emailSentAt) {
-        const elapsed = Math.floor(
-          (new Date().getTime() - new Date(emailSentAt).getTime()) / 1000
-        );
+        const duration =
+          parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`) -
+          Math.floor(
+            (new Date().getTime() - new Date(emailSentAt).getTime()) / 1000
+          );
 
         if (
-          elapsed < parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`) &&
-          elapsed > 0
+          duration < parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`) &&
+          duration > 0
         ) {
           methods.setValue('username', emailVerified, {
             shouldValidate: true,
@@ -167,10 +169,10 @@ const SignUp = () => {
 
           dispatchEmailVerification({
             type: 'RELOADED',
-            timeout: elapsed,
+            timeout: duration,
           });
 
-          timerStart(elapsed);
+          timerStart(duration);
         }
       }
     }
