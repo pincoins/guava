@@ -90,14 +90,33 @@ const SignUp = () => {
     initialRemaining: parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`),
     lap: parseInt(`${process.env.EMAIL_VERIFICATION_LAP}`),
     endTask: () => {
+      const emailVerified = sessionStorage.getItem('emailVerified');
+      const emailSentAt = sessionStorage.getItem('emailSentAt');
+      const emailIsVerified = sessionStorage.getItem('emailIsVerified');
+
       if (
-        timerState.remaining ===
-        parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`)
+        emailIsVerified !== null &&
+        !JSON.parse(emailIsVerified) &&
+        emailVerified &&
+        emailSentAt
       ) {
-        dispatchEmailVerification({
-          type: 'ERROR',
-          error: 'EXPIRED',
-        });
+        const duration =
+          parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`) -
+          Math.floor(
+            (new Date().getTime() - new Date(emailSentAt).getTime()) / 1000
+          );
+
+        if (duration < 0) {
+          methods.setValue('username', emailVerified, {
+            shouldValidate: true,
+            shouldDirty: true,
+            shouldTouch: true,
+          });
+          dispatchEmailVerification({
+            type: 'ERROR',
+            error: 'EXPIRED',
+          });
+        }
       }
     },
   });

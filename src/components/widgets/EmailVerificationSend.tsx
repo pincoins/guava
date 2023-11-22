@@ -71,7 +71,12 @@ const EmailVerificationSend = ({
       <button
         type="button"
         onClick={onClick}
-        disabled={state.status !== 'PENDING'}
+        disabled={
+          !(
+            state.status === 'PENDING' ||
+            (state.status === 'ERROR' && state.error === 'EXPIRED')
+          )
+        }
       >
         인증메일 발송
       </button>
