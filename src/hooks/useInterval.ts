@@ -107,6 +107,8 @@ const useInterval = ({
     }
 
     return () => {
+      // state.remaining === initialRemaining
+
       if (id.current !== null) {
         clearInterval(id.current);
         if (endTask !== undefined) {
@@ -114,7 +116,7 @@ const useInterval = ({
         }
       }
     };
-  }, [dispatch, state.status, lap]);
+  }, [state.status]);
 
   const start = useCallback(
     (remainingArg?: number) => {
