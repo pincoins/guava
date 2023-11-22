@@ -3,6 +3,8 @@ import {
   VerificationAction,
   VerificationState,
 } from '../../hooks/useEmailVerification';
+import { useFormContext } from 'react-hook-form';
+import { SignUpForm } from '../../pages/auth/SignUp';
 
 const EmailVerificationCode = ({
   state,
@@ -14,31 +16,36 @@ const EmailVerificationCode = ({
   dispatch: Dispatch<VerificationAction>;
   onClick: (_: React.MouseEvent<HTMLElement>) => Promise<void>;
 }) => {
+  const {
+    register,
+    clearErrors,
+    formState: { errors },
+  } = useFormContext<SignUpForm>(); // retrieve all hook methods
+
+  const editable =
+    state.status === 'SENT' ||
+    (state.status === 'ERROR' && state.error === 'INVALID_CODE');
+
   return (
     <>
       <input
         type="text"
-        name="emailVerificationCode"
-        value={state.code}
+        minLength={6}
         maxLength={6}
         placeholder="000000"
-        disabled={
-          !(
-            state.status === 'SENT' ||
-            (state.status === 'ERROR' && state.error === 'INVALID_CODE')
-          )
-        }
-        onChange={(e) => {
-          if (
-            state.status === 'SENT' ||
-            (state.status === 'ERROR' && state.error === 'INVALID_CODE')
-          ) {
-            dispatch({
-              type: 'CODE',
-              code: e.target.value,
-            });
-          }
-        }}
+        readOnly={!editable}
+        {...register('code', {
+          required: false,
+          onChange: (_) => {
+            if (errors.code) {
+              clearErrors('code');
+            }
+
+            if (editable) {
+              dispatch({ type: 'SENT' });
+            }
+          },
+        })}
       />
       <button
         type="button"

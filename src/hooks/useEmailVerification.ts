@@ -14,7 +14,6 @@ export type Error =
 export type VerificationState = {
   status: Status;
   error: Error;
-  code: string;
   timeout: number;
 };
 
@@ -23,13 +22,11 @@ export type VerificationAction =
   | { type: 'COMPLETED' }
   | { type: 'RESET' }
   | { type: 'RELOADED'; timeout: number }
-  | { type: 'CODE'; code: string }
   | { type: 'ERROR'; error: Error };
 
 const initialState: VerificationState = {
   status: 'PENDING',
   error: null,
-  code: '',
   timeout: 300,
 };
 
@@ -50,27 +47,17 @@ const reducer = (
         ...state,
         status: 'COMPLETED',
         error: null,
-        code: '',
       };
 
     case 'RELOADED':
       return {
         status: 'SENT',
         error: null,
-        code: '',
         timeout: action.timeout,
       };
 
     case 'RESET':
       return initialState;
-
-    case 'CODE':
-      return {
-        ...state,
-        status: 'SENT',
-        error: null,
-        code: action.code,
-      };
 
     case 'ERROR':
       return {
