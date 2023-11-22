@@ -13,10 +13,11 @@ import {
 import { TbLoader2 } from 'react-icons/tb';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 import useEmailVerification from '../../hooks/useEmailVerification';
-import EmailVerification from '../../components/widgets/EmailVerification';
 import useInterval from '../../hooks/useInterval';
+import EmailVerificationCode from '../../components/widgets/EmailVerificationCode';
+import EmailVerificationSend from '../../components/widgets/EmailVerificationSend';
 
-interface SignUpForm {
+export interface SignUpForm {
   username: string;
   fullName: string;
   password: string;
@@ -193,12 +194,15 @@ const SignUp = () => {
           .unwrap()
           .then(({ success }) => {
             if (success) {
+              // 상태변경
               if (emailVerification.status === 'PENDING') {
                 dispatchEmailVerification({ type: 'SENT' });
               }
 
+              // 타이머 시작
               timerStart();
 
+              // 세션스토리지 저장
               const sentAt = new Date();
               sentAt.setSeconds(sentAt.getSeconds());
 
@@ -250,11 +254,14 @@ const SignUp = () => {
           .then(({ success }) => {
             if (success) {
               if (emailVerification.status === 'SENT') {
+                // 상태변경
                 dispatchEmailVerification({ type: 'COMPLETED' });
               }
 
+              // 타이머 종료
               timerTerminate();
 
+              // 세션스토리지 저장
               sessionStorage.setItem('emailIsVerified', `${true}`);
             } else {
               dispatchEmailVerification({
@@ -278,6 +285,7 @@ const SignUp = () => {
   }> = async () => {
     const { invalid, isDirty, isTouched } = getFieldState('username');
 
+    // 이메일 필드를 변경하고 나서 그 값이 유효한지 확인
     if (!isDirty || !isTouched || invalid) {
       dispatchEmailVerification({
         type: 'ERROR',
@@ -319,67 +327,20 @@ const SignUp = () => {
         })}
       />
       {errors.fullName && <span>{errors.fullName.message}</span>}
-      <input
-        type="text"
-        placeholder="이메일"
-        className="border"
-        readOnly={emailVerification.status === 'SENT'}
-        {...register('username', {
-          required: true,
 
-          onChange: (_) => {
-            if (errors.username) {
-              clearErrors('username');
-            }
-
-            if (
-              emailVerification.status === 'COMPLETED' ||
-              emailVerification.status === 'ERROR'
-            ) {
-              sessionStorage.removeItem('emailVerified');
-              sessionStorage.removeItem('emailSentAt');
-              sessionStorage.removeItem('emailIsVerified');
-
-              dispatchEmailVerification({
-                type: 'RESET',
-              });
-            }
-          },
-          validate: {
-            error: (_) => {
-              if (emailVerification.status !== 'COMPLETED') {
-                switch (emailVerification.error) {
-                  case 'INVALID_EMAIL':
-                    return '이메일 형식이 올바르지 않습니다.';
-                  case 'INVALID_RECAPTCHA':
-                    return '다른 브라우저에서 시도해주세요.';
-                  case 'DUPLICATED':
-                    return '이미 등록된 이메일 주소입니다.';
-                  case 'ALREADY_SENT':
-                    return '인증메일이 이미 발송되었습니다.';
-                  case 'EXPIRED':
-                    return '인증번호 입력 시간이 초과되었습니다.';
-                  case 'INVALID_CODE':
-                    return '인증번호가 올바르지 않습니다.';
-                }
-              }
-            },
-          },
-        })}
-      />
-      {errors.username && <span>{errors.username.message}</span>}
-      <button
-        type="button"
+      <EmailVerificationSend
+        state={emailVerification}
+        dispatch={dispatchEmailVerification}
         onClick={handleSendEmailVerification}
-        disabled={emailVerification.status !== 'PENDING'}
-      >
-        인증메일 발송
-      </button>
+        register={register}
+        clearErrors={clearErrors}
+        errors={errors}
+      />
 
       {(emailVerification.status === 'SENT' ||
         (emailVerification.status === 'ERROR' &&
           emailVerification.error === 'INVALID_CODE')) && (
-        <EmailVerification
+        <EmailVerificationCode
           state={emailVerification}
           dispatch={dispatchEmailVerification}
           onClick={handleSendEmailCode}
