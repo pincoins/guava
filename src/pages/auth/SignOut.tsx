@@ -20,7 +20,7 @@ const SignOut = () => {
 
   // 6. onValid 폼 제출 핸들러
   const onValid: SubmitHandler<{}> = async () => {
-    signOut()
+    await signOut()
       .unwrap()
       .then((_) => {})
       .catch((_) => {});
