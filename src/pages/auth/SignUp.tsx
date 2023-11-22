@@ -127,7 +127,7 @@ const SignUp = () => {
       const captcha = await reCaptcha.current.executeAsync();
 
       if (captcha) {
-        signUp({
+        await signUp({
           username: data.username,
           fullName: data.fullName,
           password: data.password,

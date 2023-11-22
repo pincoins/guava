@@ -61,7 +61,7 @@ const SignIn = () => {
       const captcha = await reCaptcha.current.executeAsync();
 
       if (captcha) {
-        signIn({
+        await signIn({
           username: data.username,
           password: data.password,
           captcha,
