@@ -155,15 +155,13 @@ const SignUp = () => {
           type: 'COMPLETED',
         });
       } else if (emailVerified && emailSentAt) {
-        const expired = new Date(emailSentAt);
-        const now = new Date();
-        const duration = Math.floor((expired.getTime() - now.getTime()) / 1000);
-
-        console.log(expired, now, duration);
+        const elapsed = Math.floor(
+          (new Date().getTime() - new Date(emailSentAt).getTime()) / 1000
+        );
 
         if (
-          duration < parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`) &&
-          duration > 0
+          elapsed < parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`) &&
+          elapsed > 0
         ) {
           setValue('username', emailVerified, {
             shouldValidate: true,
@@ -173,10 +171,10 @@ const SignUp = () => {
 
           dispatchEmailVerification({
             type: 'RELOADED',
-            timeout: duration,
+            timeout: elapsed,
           });
 
-          timerStart(duration);
+          timerStart(elapsed);
         }
       }
     }
@@ -201,14 +199,11 @@ const SignUp = () => {
 
               timerStart();
 
-              const expired = new Date();
-              expired.setSeconds(
-                expired.getSeconds() +
-                  parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`)
-              );
+              const sentAt = new Date();
+              sentAt.setSeconds(sentAt.getSeconds());
 
               sessionStorage.setItem('emailVerified', username);
-              sessionStorage.setItem('emailSentAt', `${expired}`);
+              sessionStorage.setItem('emailSentAt', `${sentAt}`);
               sessionStorage.setItem('emailIsVerified', `${false}`);
             }
           })
