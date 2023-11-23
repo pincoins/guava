@@ -95,7 +95,7 @@ const useInterval = ({
   const id = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (state.status === 'RUNNING') {
+    if (state.status === 'RUNNING' && id.current == null) {
       id.current = setInterval(() => {
         dispatch({ type: 'TICK' });
       }, lap);
@@ -106,6 +106,7 @@ const useInterval = ({
 
       if (id.current !== null) {
         clearInterval(id.current);
+        id.current = null;
         if (endTask !== undefined) {
           endTask();
         }

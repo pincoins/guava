@@ -9,7 +9,7 @@ import { RootState } from '../../store';
 import { TbLoader2 } from 'react-icons/tb';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 
-interface SignInForm {
+export interface SignInForm {
   username: string;
   password: string;
 }
