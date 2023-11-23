@@ -17,6 +17,8 @@ import EmailVerificationCode from '../../components/forms/EmailVerificationCode'
 import EmailVerificationSend from '../../components/forms/EmailVerificationSend';
 import PasswordConfirm from '../../components/forms/PasswordConfirm';
 import Button from '../../widgets/button/Button';
+import { GoSync } from 'react-icons/go';
+import { MdPersonAdd } from 'react-icons/md';
 
 export interface SignUpForm {
   username: string;
@@ -391,8 +393,15 @@ const SignUp = () => {
           type="submit"
           disabled={formMethods.formState.isSubmitting}
           loading={formMethods.formState.isSubmitting}
+          primary
+          className="text-sm font-semibold"
         >
-          <span className="ml-1">회원가입</span>
+          {formMethods.formState.isSubmitting ? (
+            <GoSync className="animate-spin" />
+          ) : (
+            <MdPersonAdd />
+          )}
+          회원가입
         </Button>
         {reCaptchaElement}
       </form>
