@@ -11,7 +11,6 @@ const EmailVerificationSend = ({
   state,
   dispatch,
   onClick,
-  ...rest
 }: {
   state: VerificationState;
   dispatch: Dispatch<VerificationAction>;

@@ -11,7 +11,6 @@ const EmailVerificationCode = ({
   state,
   dispatch,
   onClick,
-  ...rest
 }: {
   state: VerificationState;
   dispatch: Dispatch<VerificationAction>;
