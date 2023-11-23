@@ -10,13 +10,13 @@ import {
   useSendEmailVerificationMutation,
   useSignUpMutation,
 } from '../../store/services/authApi';
-import { TbLoader2 } from 'react-icons/tb';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 import useEmailVerification from '../../hooks/useEmailVerification';
 import useInterval from '../../hooks/useInterval';
 import EmailVerificationCode from '../../components/forms/EmailVerificationCode';
 import EmailVerificationSend from '../../components/forms/EmailVerificationSend';
 import PasswordConfirm from '../../components/forms/PasswordConfirm';
+import Button from '../../widgets/button/Button';
 
 export interface SignUpForm {
   username: string;
@@ -387,16 +387,14 @@ const SignUp = () => {
 
         <PasswordConfirm />
 
-        <button
+        <Button
           type="submit"
-          className="border inline-flex items-center"
           disabled={formMethods.formState.isSubmitting}
+          loading={formMethods.formState.isSubmitting}
+          className="border inline-flex items-center"
         >
-          {formMethods.formState.isSubmitting && (
-            <TbLoader2 className="-mt-1 animate-spin" />
-          )}
           <span className="ml-1">회원가입</span>
-        </button>
+        </Button>
         {reCaptchaElement}
       </form>
     </FormProvider>
