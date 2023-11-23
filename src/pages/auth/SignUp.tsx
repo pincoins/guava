@@ -91,6 +91,9 @@ const SignUp = () => {
     initialRemaining: parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`),
     lap: parseInt(`${process.env.EMAIL_VERIFICATION_LAP}`),
     endTask: () => {
+      // useEffect() cleanup 코드 동작 때문에 state.remaining 값을 신뢰할 수 없음
+      // 직접 시간 경과/만료 여부 재계산
+
       const emailVerified = sessionStorage.getItem('emailVerified');
       const emailSentAt = sessionStorage.getItem('emailSentAt');
       const emailIsVerified = sessionStorage.getItem('emailIsVerified');
@@ -107,7 +110,7 @@ const SignUp = () => {
             (new Date().getTime() - new Date(emailSentAt).getTime()) / 1000
           );
 
-        if (duration < 0) {
+        if (duration <= 0) {
           formMethods.setValue('username', emailVerified, {
             shouldValidate: true,
             shouldDirty: true,
