@@ -391,7 +391,6 @@ const SignUp = () => {
           type="submit"
           disabled={formMethods.formState.isSubmitting}
           loading={formMethods.formState.isSubmitting}
-          className="border inline-flex items-center"
         >
           <span className="ml-1">회원가입</span>
         </Button>

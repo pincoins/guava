@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSignInMutation } from '../../store/services/authApi';
 import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
-import { TbLoader2 } from 'react-icons/tb';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
+import Button from '../../widgets/button/Button';
 
 export interface SignInForm {
   username: string;
@@ -117,14 +117,9 @@ const SignIn = () => {
         })}
       />
       {errors.password && <span>{errors.password.message}</span>}
-      <button
-        type="submit"
-        className="border inline-flex items-center"
-        disabled={isSubmitting}
-      >
-        {isSubmitting && <TbLoader2 className="-mt-1 animate-spin" />}
+      <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
         <span className="ml-1">로그인</span>
-      </button>
+      </Button>
       {reCaptchaElement}
     </form>
   );
