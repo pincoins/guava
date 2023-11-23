@@ -8,6 +8,8 @@ import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 import Button from '../../widgets/button/Button';
+import { GoSync } from 'react-icons/go';
+import { MdLogin } from 'react-icons/md';
 
 export interface SignInForm {
   username: string;
@@ -117,8 +119,14 @@ const SignIn = () => {
         })}
       />
       {errors.password && <span>{errors.password.message}</span>}
-      <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-        <span className="ml-1">로그인</span>
+      <Button
+        type="submit"
+        disabled={isSubmitting}
+        loading={isSubmitting}
+        className="text-sm font-semibold"
+        primary
+      >
+        {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogin />}로그인
       </Button>
       {reCaptchaElement}
     </form>
