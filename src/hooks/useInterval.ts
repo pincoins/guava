@@ -52,7 +52,6 @@ const reducer = (
 
     case 'TERMINATE':
       if (state.status === 'RUNNING' || state.status === 'PAUSED') {
-        console.log('terminate', state);
         return {
           status: 'READY',
           remaining: DEFAULT_TERMINATE,
@@ -63,13 +62,12 @@ const reducer = (
     case 'TICK':
       // state.remaining > 0 조건일 경우 +1초 추가 구간 반복
       if (state.status === 'RUNNING' && state.remaining > 1) {
-        console.log(state);
         return {
           ...state,
           remaining: state.remaining - 1,
         };
       }
-      console.log('out', state);
+
       return {
         status: 'READY',
         remaining: DEFAULT_TERMINATE,
@@ -114,8 +112,6 @@ const useInterval = ({
     // cleanup 함수 내부에서는 변경 이전 값을 참조하므로
     // state.remaining === initialRemaining
     return () => {
-      console.log('end task', state);
-
       if (id.current !== null) {
         clearInterval(id.current);
 
