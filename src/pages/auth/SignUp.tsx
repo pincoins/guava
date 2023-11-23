@@ -16,7 +16,7 @@ import useInterval from '../../hooks/useInterval';
 import EmailVerificationCode from '../../components/forms/EmailVerificationCode';
 import EmailVerificationSend from '../../components/forms/EmailVerificationSend';
 import PasswordConfirm from '../../components/forms/PasswordConfirm';
-import Button from '../../widgets/button/Button';
+import Button from '../../widgets/Button';
 import { GoSync } from 'react-icons/go';
 import { MdPersonAdd } from 'react-icons/md';
 

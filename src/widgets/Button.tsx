@@ -24,7 +24,7 @@ function Button({
 } & ComponentPropsWithoutRef<'button'> & { children?: ReactNode }) {
   const classes = className(
     rest.className,
-    'inline-flex items-center gap-x-1.5 px-2.5 py-1.5 border shadow-sm',
+    'inline-flex items-center gap-x-2 px-3 py-1 border shadow-sm',
     {
       'opacity-80': loading,
 
