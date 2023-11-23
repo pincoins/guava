@@ -29,7 +29,7 @@ const RootBoundary = () => {
     }
   }
 
-  return <div>Something went wrong</div>;
+  return <div>서버에 문제가 있습니다. 관리자에게 연락바랍니다.</div>;
 };
 
 export default RootBoundary;

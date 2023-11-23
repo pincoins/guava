@@ -14,8 +14,9 @@ import { TbLoader2 } from 'react-icons/tb';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 import useEmailVerification from '../../hooks/useEmailVerification';
 import useInterval from '../../hooks/useInterval';
-import EmailVerificationCode from '../../components/widgets/EmailVerificationCode';
-import EmailVerificationSend from '../../components/widgets/EmailVerificationSend';
+import EmailVerificationCode from '../../components/auth/EmailVerificationCode';
+import EmailVerificationSend from '../../components/auth/EmailVerificationSend';
+import PasswordConfirm from '../../components/auth/PasswordConfirm';
 
 export interface SignUpForm {
   username: string;
@@ -65,7 +66,7 @@ const SignUp = () => {
   const [sendEmailCode] = useSendEmailCodeMutation();
 
   // 4. 리액트 훅 폼 정의
-  const methods = useForm<SignUpForm>({
+  const formMethods = useForm<SignUpForm>({
     mode: 'onBlur',
     defaultValues: {
       username: '',
@@ -107,7 +108,7 @@ const SignUp = () => {
           );
 
         if (duration < 0) {
-          methods.setValue('username', emailVerified, {
+          formMethods.setValue('username', emailVerified, {
             shouldValidate: true,
             shouldDirty: true,
             shouldTouch: true,
@@ -162,7 +163,7 @@ const SignUp = () => {
 
     if (emailIsVerified !== null && emailVerified && emailVerified) {
       if (JSON.parse(emailIsVerified)) {
-        methods.setValue('username', emailVerified, {
+        formMethods.setValue('username', emailVerified, {
           shouldValidate: true,
           shouldDirty: true,
           shouldTouch: true,
@@ -182,7 +183,7 @@ const SignUp = () => {
           duration < parseInt(`${process.env.EMAIL_VERIFICATION_TIMEOUT}`) &&
           duration > 0
         ) {
-          methods.setValue('username', emailVerified, {
+          formMethods.setValue('username', emailVerified, {
             shouldValidate: true,
             shouldDirty: true,
             shouldTouch: true,
@@ -254,9 +255,9 @@ const SignUp = () => {
   };
 
   const handleSendEmailCode = async (_: React.MouseEvent<HTMLElement>) => {
-    const { invalid, isDirty, isTouched } = methods.getFieldState('code');
+    const { invalid, isDirty, isTouched } = formMethods.getFieldState('code');
 
-    // 인증번호 필드를 변경하고 나서 그 값이 유효한지 확인
+    // 인증번호 필드가 변경되고 나서 그 값이 유효한지 확인
     if (!isDirty || !isTouched || invalid) {
       dispatchEmailVerification({
         type: 'ERROR',
@@ -265,7 +266,7 @@ const SignUp = () => {
       return; // throw 해도 catch 해줄 곳이 없음
     }
 
-    const code = methods.getValues('code') as string;
+    const code = formMethods.getValues('code') as string;
 
     await validateUsernameAndCaptcha()
       .then(({ username, captcha }) => {
@@ -307,9 +308,10 @@ const SignUp = () => {
     captcha: string;
     username: string;
   }> = async () => {
-    const { invalid, isDirty, isTouched } = methods.getFieldState('username');
+    const { invalid, isDirty, isTouched } =
+      formMethods.getFieldState('username');
 
-    // 이메일 필드를 변경하고 나서 그 값이 유효한지 확인
+    // 이메일 필드가 변경되고 나서 그 값이 유효한지 확인
     if (!isDirty || !isTouched || invalid) {
       dispatchEmailVerification({
         type: 'ERROR',
@@ -318,7 +320,7 @@ const SignUp = () => {
       throw new Error('Invalid email address');
     }
 
-    const username = methods.getValues('username');
+    const username = formMethods.getValues('username');
 
     if (reCaptcha && reCaptcha.current) {
       const captcha = await reCaptcha.current.executeAsync();
@@ -336,26 +338,26 @@ const SignUp = () => {
 
   // 9. JSX 반환
   return (
-    <FormProvider {...methods}>
+    <FormProvider {...formMethods}>
       <form
-        onSubmit={methods.handleSubmit(onValid)}
+        onSubmit={formMethods.handleSubmit(onValid)}
         className="flex flex-col w-1/2"
       >
         <input
           type="text"
           placeholder="이름"
           className="border"
-          {...methods.register('fullName', {
+          {...formMethods.register('fullName', {
             required: true,
             onChange: (_) => {
-              if (methods.formState.errors.fullName) {
-                methods.clearErrors('fullName');
+              if (formMethods.formState.errors.fullName) {
+                formMethods.clearErrors('fullName');
               }
             },
           })}
         />
-        {methods.formState.errors.fullName && (
-          <span>{methods.formState.errors.fullName.message}</span>
+        {formMethods.formState.errors.fullName && (
+          <span>{formMethods.formState.errors.fullName.message}</span>
         )}
 
         <EmailVerificationSend
@@ -379,44 +381,15 @@ const SignUp = () => {
           <span>{emailVerification.status}</span>/ error:
           <span>{emailVerification.error}</span>
         </p>
-        <input
-          type="password"
-          placeholder="비밀번호"
-          className="border"
-          {...methods.register('password', {
-            required: true,
-            onChange: (_) => {
-              if (methods.formState.errors.password) {
-                methods.clearErrors('password');
-              }
-            },
-          })}
-        />
-        {methods.formState.errors.password && (
-          <span>{methods.formState.errors.password.message}</span>
-        )}
-        <input
-          type="password"
-          placeholder="비밀번호 확인"
-          className="border"
-          {...methods.register('passwordRepeat', {
-            required: true,
-            onChange: (_) => {
-              if (methods.formState.errors.passwordRepeat) {
-                methods.clearErrors('passwordRepeat');
-              }
-            },
-          })}
-        />
-        {methods.formState.errors.passwordRepeat && (
-          <span>{methods.formState.errors.passwordRepeat.message}</span>
-        )}
+
+        <PasswordConfirm />
+
         <button
           type="submit"
           className="border inline-flex items-center"
-          disabled={methods.formState.isSubmitting}
+          disabled={formMethods.formState.isSubmitting}
         >
-          {methods.formState.isSubmitting && (
+          {formMethods.formState.isSubmitting && (
             <TbLoader2 className="-mt-1 animate-spin" />
           )}
           <span className="ml-1">회원가입</span>
