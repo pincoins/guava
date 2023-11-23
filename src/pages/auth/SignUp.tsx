@@ -14,9 +14,9 @@ import { TbLoader2 } from 'react-icons/tb';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 import useEmailVerification from '../../hooks/useEmailVerification';
 import useInterval from '../../hooks/useInterval';
-import EmailVerificationCode from '../../components/auth/EmailVerificationCode';
-import EmailVerificationSend from '../../components/auth/EmailVerificationSend';
-import PasswordConfirm from '../../components/auth/PasswordConfirm';
+import EmailVerificationCode from '../../components/forms/EmailVerificationCode';
+import EmailVerificationSend from '../../components/forms/EmailVerificationSend';
+import PasswordConfirm from '../../components/forms/PasswordConfirm';
 
 export interface SignUpForm {
   username: string;
