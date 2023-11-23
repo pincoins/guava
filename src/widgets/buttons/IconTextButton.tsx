@@ -1,7 +1,7 @@
 import className from 'classnames';
 import React, { ComponentPropsWithoutRef, ReactNode } from 'react';
 
-function Button({
+const IconTextButton = ({
   children,
   primary,
   secondary,
@@ -21,7 +21,7 @@ function Button({
   outline?: boolean;
   rounded?: boolean;
   loading?: boolean;
-} & ComponentPropsWithoutRef<'button'> & { children?: ReactNode }) {
+} & ComponentPropsWithoutRef<'button'> & { children?: ReactNode }) => {
   const classes = className(
     rest.className,
     'inline-flex items-center gap-x-2 px-3 py-1 border shadow-sm',
@@ -60,20 +60,14 @@ function Button({
     }
   );
 
-  /* 버튼 종류
-  - 자식: text, icon, icon + text
-  - 디자인: elevated[primary, secondary, success, warning, danger], outlined
-  - circular, rounded
-   */
-
   return (
     <button {...rest} disabled={loading} className={classes}>
       {children}
     </button>
   );
-}
+};
 
-Button.propTypes = {
+IconTextButton.propTypes = {
   checkVariationValue: ({
     primary,
     secondary,
@@ -105,4 +99,4 @@ Button.propTypes = {
   },
 };
 
-export default Button;
+export default IconTextButton;
