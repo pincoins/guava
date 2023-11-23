@@ -2,17 +2,6 @@ import className from 'classnames';
 import { GoSync } from 'react-icons/go';
 import React, { ComponentPropsWithoutRef, ReactNode } from 'react';
 
-interface InputGroupProps extends ComponentPropsWithoutRef<'button'> {
-  primary?: string;
-  secondary?: string;
-  success?: string;
-  warning?: string;
-  danger?: string;
-  outline?: string;
-  rounded?: string;
-  loading?: boolean;
-}
-
 function Button({
   children,
   primary,
@@ -24,7 +13,16 @@ function Button({
   rounded,
   loading,
   ...rest
-}: InputGroupProps & { children?: ReactNode }) {
+}: {
+  primary?: string;
+  secondary?: string;
+  success?: string;
+  warning?: string;
+  danger?: string;
+  outline?: string;
+  rounded?: string;
+  loading?: boolean;
+} & ComponentPropsWithoutRef<'button'> & { children?: ReactNode }) {
   const classes = className(
     rest.className,
     'flex items-center px-3 py-1.5 border h-8',
