@@ -7,7 +7,7 @@ import { useSignInMutation } from '../../store/services/authApi';
 import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
-import Button from '../../widgets/button/Button';
+import Button from '../../widgets/Button';
 import { GoSync } from 'react-icons/go';
 import { MdLogin } from 'react-icons/md';
 
