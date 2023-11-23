@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import UpperNavbar from '../components/UpperNavbar';
-import LowerNavbar from '../components/LowerNavbar';
+import UpperNavbar from '../components/header/UpperNavbar';
+import LowerNavbar from '../components/header/LowerNavbar';
 import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
 import { RootState } from '../store';
 import { signOut } from '../store/slices/authSlice';

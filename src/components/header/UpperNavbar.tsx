@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
-import { useAppSelector } from '../hooks/rtk-hooks';
-import { RootState } from '../store';
+import { useAppSelector } from '../../hooks/rtk-hooks';
+import { RootState } from '../../store';
 
 const UpperNavbar = () => {
   const { accessToken } = useAppSelector((state: RootState) => state.auth);
