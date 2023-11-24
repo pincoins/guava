@@ -28,3 +28,15 @@
     - Email verification
     - Phone verification
     - Document verification
+
+## tailwindcss
+- Animation
+  - shimmer (custom)
+  - spin
+  - bounce
+  - ping
+  - pulse
+- Official plugins
+  - @tailwindcss/forms
+  - @tailwindcss/typography
+- headless ui

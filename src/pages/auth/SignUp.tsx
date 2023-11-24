@@ -16,7 +16,7 @@ import useInterval from '../../hooks/useInterval';
 import EmailVerificationCode from '../../components/forms/EmailVerificationCode';
 import EmailVerificationSend from '../../components/forms/EmailVerificationSend';
 import PasswordConfirm from '../../components/forms/PasswordConfirm';
-import IconTextButton from '../../widgets/buttons/IconTextButton';
+import ContainedButton from '../../widgets/buttons/ContainedButton';
 import { GoSync } from 'react-icons/go';
 import { MdPersonAdd } from 'react-icons/md';
 
@@ -389,7 +389,7 @@ const SignUp = () => {
 
         <PasswordConfirm />
 
-        <IconTextButton
+        <ContainedButton
           type="submit"
           disabled={formMethods.formState.isSubmitting}
           loading={formMethods.formState.isSubmitting}
@@ -402,7 +402,7 @@ const SignUp = () => {
             <MdPersonAdd />
           )}
           회원가입
-        </IconTextButton>
+        </ContainedButton>
         {reCaptchaElement}
       </form>
     </FormProvider>

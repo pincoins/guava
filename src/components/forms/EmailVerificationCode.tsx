@@ -5,7 +5,7 @@ import {
 } from '../../hooks/useEmailVerification';
 import { useFormContext } from 'react-hook-form';
 import { SignUpForm } from '../../pages/auth/SignUp';
-import IconTextButton from '../../widgets/buttons/IconTextButton';
+import ContainedButton from '../../widgets/buttons/ContainedButton';
 
 const EmailVerificationCode = ({
   state,
@@ -47,13 +47,13 @@ const EmailVerificationCode = ({
           },
         })}
       />
-      <IconTextButton
+      <ContainedButton
         type="button"
         onClick={onClick}
         disabled={state.status !== 'SENT'}
       >
         인증번호 입력
-      </IconTextButton>
+      </ContainedButton>
     </>
   );
 };

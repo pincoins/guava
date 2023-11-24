@@ -1,7 +1,7 @@
 import className from 'classnames';
 import React, { ComponentPropsWithoutRef, ReactNode } from 'react';
 
-const IconButton = ({
+const ContainedButton = ({
   children,
   primary,
   secondary,
@@ -9,8 +9,8 @@ const IconButton = ({
   warning,
   danger,
   outline,
+  rounded,
   loading,
-  bounce,
   ...rest
 }: {
   primary?: boolean;
@@ -19,16 +19,17 @@ const IconButton = ({
   warning?: boolean;
   danger?: boolean;
   outline?: boolean;
+  rounded?: boolean;
   loading?: boolean;
-  bounce?: boolean;
 } & ComponentPropsWithoutRef<'button'> & { children?: ReactNode }) => {
   const classes = className(
     rest.className,
-    'items-center rounded-full p-1 border shadow-sm',
+    'inline-flex items-center gap-x-2 px-3 py-1 border shadow-sm',
     {
       'opacity-80': loading,
 
-      'animate-bounce': bounce,
+      'rounded-md': !rounded,
+      'rounded-full': rounded,
 
       'bg-white': outline,
 
@@ -58,14 +59,15 @@ const IconButton = ({
       'text-rose-500': outline && danger,
     }
   );
+
   return (
-    <button {...rest} className={classes}>
+    <button {...rest} disabled={loading} className={classes}>
       {children}
     </button>
   );
 };
 
-IconButton.propTypes = {
+ContainedButton.propTypes = {
   checkVariationValue: ({
     primary,
     secondary,
@@ -97,4 +99,4 @@ IconButton.propTypes = {
   },
 };
 
-export default IconButton;
+export default ContainedButton;

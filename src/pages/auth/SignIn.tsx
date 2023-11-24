@@ -7,7 +7,7 @@ import { useSignInMutation } from '../../store/services/authApi';
 import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
-import IconTextButton from '../../widgets/buttons/IconTextButton';
+import ContainedButton from '../../widgets/buttons/ContainedButton';
 import { GoSync } from 'react-icons/go';
 import { MdLogin } from 'react-icons/md';
 
@@ -119,7 +119,7 @@ const SignIn = () => {
         })}
       />
       {errors.password && <span>{errors.password.message}</span>}
-      <IconTextButton
+      <ContainedButton
         type="submit"
         disabled={isSubmitting}
         loading={isSubmitting}
@@ -127,7 +127,7 @@ const SignIn = () => {
         primary
       >
         {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogin />}로그인
-      </IconTextButton>
+      </ContainedButton>
       {reCaptchaElement}
     </form>
   );

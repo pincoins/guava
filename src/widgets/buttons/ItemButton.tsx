@@ -1,7 +1,7 @@
 import className from 'classnames';
 import React, { ComponentPropsWithoutRef, ReactNode } from 'react';
 
-const IconTextButton = ({
+const ItemButton = ({
   children,
   primary,
   secondary,
@@ -9,8 +9,10 @@ const IconTextButton = ({
   warning,
   danger,
   outline,
-  rounded,
+  circular,
   loading,
+  bounce,
+  ping,
   ...rest
 }: {
   primary?: boolean;
@@ -19,17 +21,22 @@ const IconTextButton = ({
   warning?: boolean;
   danger?: boolean;
   outline?: boolean;
-  rounded?: boolean;
+  circular?: boolean;
   loading?: boolean;
+  bounce?: boolean;
+  ping?: boolean;
 } & ComponentPropsWithoutRef<'button'> & { children?: ReactNode }) => {
   const classes = className(
     rest.className,
-    'inline-flex items-center gap-x-2 px-3 py-1 border shadow-sm',
+    'items-center p-1 border shadow-sm',
     {
+      'rounded-full': circular,
+      'rounded-md': !circular,
+
       'opacity-80': loading,
 
-      'rounded-md': !rounded,
-      'rounded-full': rounded,
+      'animate-bounce': bounce,
+      'animate-ping': ping,
 
       'bg-white': outline,
 
@@ -60,21 +67,31 @@ const IconTextButton = ({
     }
   );
 
+  /*
+      <IconButton warning circular bounce>
+        <MdLogin />
+      </IconButton>
+   */
+
   return (
-    <button {...rest} disabled={loading} className={classes}>
+    <button {...rest} className={classes}>
       {children}
     </button>
   );
 };
 
-IconTextButton.propTypes = {
+ItemButton.propTypes = {
   checkVariationValue: ({
+    bounce,
+    ping,
     primary,
     secondary,
     success,
     warning,
     danger,
   }: {
+    bounce: boolean | undefined;
+    ping: boolean | undefined;
     primary: boolean | undefined;
     secondary: boolean | undefined;
     success: boolean | undefined;
@@ -83,15 +100,18 @@ IconTextButton.propTypes = {
   }) => {
     // !! 변수에 값이 할당되었으면 true 그렇지 않으면 false
     // undefined 변수를 false 만들기
+    if (Number(!!bounce) + Number(!!ping) > 1) {
+      return new Error('Only one of bounce, ping can be true');
+    }
 
-    const count =
+    if (
       Number(!!primary) +
-      Number(!!secondary) +
-      Number(!!warning) +
-      Number(!!success) +
-      Number(!!danger);
-
-    if (count > 1) {
+        Number(!!secondary) +
+        Number(!!warning) +
+        Number(!!success) +
+        Number(!!danger) >
+      1
+    ) {
       return new Error(
         'Only one of primary, secondary, success, warning, danger can be true'
       );
@@ -99,4 +119,4 @@ IconTextButton.propTypes = {
   },
 };
 
-export default IconTextButton;
+export default ItemButton;
