@@ -27,7 +27,6 @@ const EmailVerificationSend = ({
       <input
         type="text"
         placeholder="이메일"
-        className="border"
         readOnly={state.status === 'SENT'}
         {...register('username', {
           required: true,

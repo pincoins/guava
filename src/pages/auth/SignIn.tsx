@@ -10,7 +10,6 @@ import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 import Button from '../../widgets/Button';
 import { GoSync } from 'react-icons/go';
 import { MdLogin } from 'react-icons/md';
-import Badge from '../../widgets/Badge';
 
 export interface SignInForm {
   username: string;
@@ -130,9 +129,6 @@ const SignIn = () => {
       >
         {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogin />}로그인
       </Button>
-      <Badge rounded className="text-xs">
-        badge
-      </Badge>
       {reCaptchaElement}
     </form>
   );

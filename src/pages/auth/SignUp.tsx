@@ -351,7 +351,6 @@ const SignUp = () => {
         <input
           type="text"
           placeholder="이름"
-          className="border"
           {...formMethods.register('fullName', {
             required: true,
             onChange: (_) => {

@@ -14,7 +14,6 @@ const PasswordConfirm = () => {
       <input
         type="password"
         placeholder="비밀번호"
-        className="border"
         {...register('password', {
           required: true,
           onChange: (_) => {
@@ -28,7 +27,6 @@ const PasswordConfirm = () => {
       <input
         type="password"
         placeholder="비밀번호 확인"
-        className="border"
         {...register('passwordRepeat', {
           required: true,
           onChange: (_) => {

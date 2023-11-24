@@ -17,9 +17,7 @@ const ProtectedRoute = (props: ProtectedRoutProps) => {
     return (
       <div>
         <h2 className="text-red-600">로그인 안 함</h2>
-        <Link to="/auth/sign-in" className="border">
-          로그인
-        </Link>
+        <Link to="/auth/sign-in">로그인</Link>
       </div>
     );
   }
@@ -29,9 +27,7 @@ const ProtectedRoute = (props: ProtectedRoutProps) => {
     return (
       <div>
         <h2 className="text-red-600">권한 없음</h2>
-        <Link to="/auth/sign-in" className="border">
-          로그인
-        </Link>
+        <Link to="/auth/sign-in">로그인</Link>
       </div>
     );
   }

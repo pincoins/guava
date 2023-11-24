@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import UpperNavbar from '../components/header/UpperNavbar';
-import LowerNavbar from '../components/header/LowerNavbar';
 import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
 import { RootState } from '../store';
 import { signOut } from '../store/slices/authSlice';
+import Header from '../components/header/Header';
 
 const Root = () => {
   const { accessToken, expiresIn } = useAppSelector(
@@ -39,14 +38,11 @@ const Root = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="flex-none bg-green-50">
-        <UpperNavbar />
-        <LowerNavbar />
-      </div>
+      <Header className="flex-none" />
       <div className="flex-1 overflow-auto bg-white">
         <Outlet />
       </div>
-      <div className="flex-none bg-yellow-50">푸터</div>
+      <div className="flex-none">푸터</div>
     </div>
   );
 };
