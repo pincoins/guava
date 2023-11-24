@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef, ReactNode } from 'react';
 import className from 'classnames';
 
-const Badge = ({
+const ItemBadge = ({
   children,
   primary,
   secondary,
@@ -29,7 +29,7 @@ const Badge = ({
 } & ComponentPropsWithoutRef<'span'> & { children?: ReactNode }) => {
   const classes = className(
     rest.className,
-    'inline-flex items-center px-2 py-1 ring-1 ring-inset',
+    'items-center ring-1 ring-inset p-1',
     {
       'rounded-md': rounded,
       'rounded-full': pill,
@@ -39,28 +39,23 @@ const Badge = ({
 
       'bg-white': outline,
 
-      'border-sky-600 hover:bg-sky-600 hover:text-white hover:border-sky-500':
-        primary,
+      'border-sky-600': primary,
       'bg-sky-700 text-white': primary && !outline, // outline if undefined
       'text-sky-700': outline && primary,
 
-      'border-slate-500 hover:bg-slate-500 hover:text-white hover:border-slate-400':
-        secondary,
+      'border-slate-500': secondary,
       'bg-slate-600 text-white': secondary && !outline,
       'text-slate-600': outline && secondary,
 
-      'border-green-400 hover:bg-green-400 hover:text-white hover:border-green-300':
-        success,
+      'border-green-400': success,
       'bg-green-500 text-white': success && !outline,
       'text-green-500': outline && success,
 
-      'border-yellow-300 hover:bg-yellow-300 hover:text-white hover:border-yellow-200':
-        warning,
+      'border-yellow-300': warning,
       'bg-yellow-400 text-white': warning && !outline,
       'text-yellow-400': outline && warning,
 
-      'border-rose-400 hover:bg-rose-400 hover:text-white hover:border-rose-300':
-        danger,
+      'border-rose-400': danger,
       'bg-rose-500 text-white': danger && !outline,
       'text-rose-500': outline && danger,
     }
@@ -73,7 +68,7 @@ const Badge = ({
   );
 };
 
-Badge.propTypes = {
+ItemBadge.propTypes = {
   checkVariationValue: ({
     bounce,
     ping,
@@ -120,4 +115,4 @@ Badge.propTypes = {
   },
 };
 
-export default Badge;
+export default ItemBadge;
