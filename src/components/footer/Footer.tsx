@@ -13,7 +13,7 @@ const Footer = ({ ...rest }) => {
     <footer className={classes}>
       <div className="bg-green-50 text-green-950">
         <ContainerFixed className="flex flex-col p-2 gap-y-2">
-          <div className="flex-1 flex flex-col md:flex-row justify-between gap-y-2">
+          <div className="flex-1 flex flex-col md:flex-row justify-between gap-y-2 items-center">
             <div className="inline-flex flex-wrap gap-x-4 gap-y-2">
               <Link to="/">이용안내</Link>
               <Link to="/">자주묻는질문</Link>
@@ -64,7 +64,7 @@ const Footer = ({ ...rest }) => {
             </div>
           </div>
           <div className="text-lime-500 text-lg font-bold">주식회사 핀코인</div>
-          <div className="flex flex-col md:flex-row gap-y-2 gap-x-4">
+          <div className="flex flex-col md:flex-row gap-y-2 gap-x-4 items-center">
             <div>대표: 서종화</div>
             <div>주소: 서울 서초구 방배로 32길 8 / 203호</div>
             <div>
@@ -78,13 +78,13 @@ const Footer = ({ ...rest }) => {
             </div>
             <div>통신판매업신고: 2019-서울서초-0835</div>
             <div>
-              <Button inline>
+              <Button inline flat>
                 <MdPhone />
                 <span>070-4517-1801</span>
               </Button>
             </div>
             <div>
-              <Button inline>
+              <Button inline flat>
                 <MdEmail />
                 <a href="mailto:help@pincoin.co.kr">help&#64;pincoin.co.kr</a>
               </Button>
