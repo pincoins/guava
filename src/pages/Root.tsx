@@ -14,13 +14,22 @@ const Root = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    // 자동 로그아웃
     if (accessToken && expiresIn) {
       // token is always refreshed whenever refreshing page.
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         dispatch(signOut());
       }, expiresIn * 1000); // seconds to milliseconds
+
+      return () => {
+        clearTimeout(timer);
+      };
     }
   }, [accessToken, expiresIn, dispatch]);
+
+  useEffect(() => {
+    // 자동 로그인 시도
+  }, []);
 
   return (
     <div>

@@ -7,9 +7,11 @@ import { useSignInMutation } from '../../store/services/authApi';
 import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
-import Button from '../../widgets/Button';
+import ItemButton from '../../widgets/buttons/ItemButton';
 import { GoSync } from 'react-icons/go';
 import { MdLogin } from 'react-icons/md';
+import ItemBadge from '../../widgets/badges/ItemBadge';
+import ContainedButton from '../../widgets/buttons/ContainedButton';
 
 export interface SignInForm {
   username: string;
@@ -119,7 +121,7 @@ const SignIn = () => {
         })}
       />
       {errors.password && <span>{errors.password.message}</span>}
-      <Button
+      <ContainedButton
         type="submit"
         disabled={isSubmitting}
         loading={isSubmitting}
@@ -127,7 +129,13 @@ const SignIn = () => {
         primary
       >
         {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogin />}로그인
-      </Button>
+      </ContainedButton>
+      <ItemBadge primary pill className="text-xs">
+        badge
+      </ItemBadge>
+      <ItemButton bounce warning rounded>
+        <MdLogin />
+      </ItemButton>
       {reCaptchaElement}
     </form>
   );
