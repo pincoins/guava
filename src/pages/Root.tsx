@@ -31,11 +31,22 @@ const Root = () => {
     // 자동 로그인 시도
   }, []);
 
+  // 사이트 기본 레이아웃
+  // 컨테이너: 뷰포트 100vh 높이로 공간 확보 - display: flex; flex-direction: column; height: 100vh;
+  // - 헤더: 자신의 크기만큼 - flex: 0 0 auto;
+  // - 본문: 부모 크기만큼 커지거나 작아짐 - flex: 1 1 0;
+  // - 푸터: 자신의 크기만큼 - flex: 0 0 auto;
+
   return (
-    <div>
-      <UpperNavbar />
-      <LowerNavbar />
-      <Outlet />
+    <div className="flex flex-col h-screen">
+      <div className="flex-none bg-green-50">
+        <UpperNavbar />
+        <LowerNavbar />
+      </div>
+      <div className="flex-1 overflow-auto bg-white">
+        <Outlet />
+      </div>
+      <div className="flex-none bg-yellow-50">푸터</div>
     </div>
   );
 };

@@ -22,7 +22,10 @@ const Button = ({
     rest.className,
     'items-center border shadow-sm p-1',
     {
-      'inline-flex gap-x-2 px-3 py-1': inline,
+      // inline-flex
+      // - 부모 요소에 적용하여 부모 요소 및 자식 요소를 인라인 블록 요소로 만든다.
+      // - 인라인 블록 요소는 인라인 블록 요소들끼리 서로 가로 배치된다.
+      'inline-flex gap-x-2 px-2 py-1': inline,
       'p-1': !inline,
 
       'opacity-80': loading,

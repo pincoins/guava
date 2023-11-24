@@ -55,6 +55,7 @@ const config: webpack.Configuration = {
     new HtmlWebpackPlugin({
       template: 'public/index.html',
       title: process.env.SITE_TITLE,
+      themeColor: process.env.THEME_COLOR,
     }),
     new MiniCssExtractPlugin(),
   ],
