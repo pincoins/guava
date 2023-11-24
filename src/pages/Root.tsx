@@ -5,6 +5,7 @@ import { RootState } from '../store';
 import { signOut } from '../store/slices/authSlice';
 import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
+import { setViewportSize } from '../store/slices/viewportSlice';
 
 const Root = () => {
   const { accessToken, expiresIn } = useAppSelector(
@@ -12,6 +13,12 @@ const Root = () => {
   );
 
   const dispatch = useAppDispatch();
+
+  const handleWindowResize = () => {
+    dispatch(
+      setViewportSize({ width: window.innerWidth, height: window.innerHeight })
+    );
+  };
 
   useEffect(() => {
     // 자동 로그아웃
@@ -29,6 +36,11 @@ const Root = () => {
 
   useEffect(() => {
     // 자동 로그인 시도
+
+    // 뷰 포트 가로 크기에 따라 반응형 모바일 여부 결정
+    handleWindowResize();
+    window.addEventListener('resize', handleWindowResize);
+    return () => window.removeEventListener('resize', handleWindowResize);
   }, []);
 
   // 사이트 기본 레이아웃
