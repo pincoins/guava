@@ -126,16 +126,13 @@ const SignIn = () => {
         loading={isSubmitting}
         className="text-sm font-semibold"
         inline
-        primary
+        preset="primary"
       >
         {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogin />}로그인
       </Button>
       <Badge rounded className="text-xs">
         badge
       </Badge>
-      <Button bounce warning rounded>
-        <MdLogin />
-      </Button>
       {reCaptchaElement}
     </form>
   );

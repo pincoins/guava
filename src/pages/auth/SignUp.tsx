@@ -394,7 +394,7 @@ const SignUp = () => {
           disabled={formMethods.formState.isSubmitting}
           loading={formMethods.formState.isSubmitting}
           inline
-          primary
+          preset="primary"
           className="text-sm font-semibold"
         >
           {formMethods.formState.isSubmitting ? (

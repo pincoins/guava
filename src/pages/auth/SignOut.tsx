@@ -40,7 +40,7 @@ const SignOut = () => {
           disabled={isSubmitting}
           loading={isSubmitting}
           inline
-          danger
+          preset="danger"
           className="text-sm font-semibold"
         >
           {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogout />}

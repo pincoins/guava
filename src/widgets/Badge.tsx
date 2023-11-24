@@ -3,33 +3,24 @@ import className from 'classnames';
 
 const Badge = ({
   children,
-  primary,
-  secondary,
-  success,
-  warning,
-  danger,
+  preset,
+  inline,
   outline,
   flat,
-  inline,
+
   rounded,
   pill,
-  bounce,
-  ping,
+  animate,
   ...rest
 }: {
-  primary?: boolean;
-  secondary?: boolean;
-  success?: boolean;
-  warning?: boolean;
-  danger?: boolean;
+  preset?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
+  inline?: boolean;
   outline?: boolean;
   flat?: boolean;
-  inline?: boolean;
   rounded?: boolean;
   pill?: boolean;
   loading?: boolean;
-  bounce?: boolean;
-  ping?: boolean;
+  animate?: 'bounce' | 'ping';
 } & ComponentPropsWithoutRef<'span'> & { children?: ReactNode }) => {
   const classes = className(rest.className, 'items-center', {
     'inline-flex gap-x-2 px-2 py-1': inline,
@@ -38,32 +29,32 @@ const Badge = ({
     'rounded-md': rounded,
     'rounded-full': pill,
 
-    'animate-bounce': bounce,
-    'animate-ping': ping,
+    'animate-bounce': animate === 'bounce',
+    'animate-ping': animate === 'ping',
 
     'bg-white': outline,
 
     'ring-1 ring-inset p-1 ring-gray-200': !flat,
 
-    'border-sky-600': primary,
-    'bg-sky-700 text-white': primary && !outline, // outline if undefined
-    'text-sky-700': outline && primary,
+    'border-sky-600': preset === 'primary',
+    'bg-sky-700 text-white': preset === 'primary' && !outline, // outline if undefined
+    'text-sky-700': outline && preset === 'primary',
 
-    'border-slate-500': secondary,
-    'bg-slate-600 text-white': secondary && !outline,
-    'text-slate-600': outline && secondary,
+    'border-slate-500': preset === 'secondary',
+    'bg-slate-600 text-white': preset === 'secondary' && !outline,
+    'text-slate-600': outline && preset === 'secondary',
 
-    'border-green-400': success,
-    'bg-green-500 text-white': success && !outline,
-    'text-green-500': outline && success,
+    'border-green-400': preset === 'success',
+    'bg-green-500 text-white': preset === 'success' && !outline,
+    'text-green-500': outline && preset === 'success',
 
-    'border-yellow-300': warning,
-    'bg-yellow-400 text-white': warning && !outline,
-    'text-yellow-400': outline && warning,
+    'border-yellow-300': preset === 'warning',
+    'bg-yellow-400 text-white': preset === 'warning' && !outline,
+    'text-yellow-400': outline && preset === 'warning',
 
-    'border-rose-400': danger,
-    'bg-rose-500 text-white': danger && !outline,
-    'text-rose-500': outline && danger,
+    'border-rose-400': preset === 'danger',
+    'bg-rose-500 text-white': preset === 'danger' && !outline,
+    'text-rose-500': outline && preset === 'danger',
   });
 
   return (
@@ -71,53 +62,6 @@ const Badge = ({
       {children}
     </span>
   );
-};
-
-Badge.propTypes = {
-  checkVariationValue: ({
-    bounce,
-    ping,
-    rounded,
-    pill,
-    primary,
-    secondary,
-    success,
-    warning,
-    danger,
-  }: {
-    bounce: boolean | undefined;
-    ping: boolean | undefined;
-    rounded: boolean | undefined;
-    pill: boolean | undefined;
-    primary: boolean | undefined;
-    secondary: boolean | undefined;
-    success: boolean | undefined;
-    warning: boolean | undefined;
-    danger: boolean | undefined;
-  }) => {
-    // !! 변수에 값이 할당되었으면 true 그렇지 않으면 false
-    // undefined 변수를 false 만들기
-    if (Number(!!bounce) + Number(!!ping) > 1) {
-      return new Error('Only one of bounce, ping can be true');
-    }
-
-    if (Number(!!rounded) + Number(!!pill) > 1) {
-      return new Error('Only one of bounce, ping can be true');
-    }
-
-    if (
-      Number(!!primary) +
-        Number(!!secondary) +
-        Number(!!warning) +
-        Number(!!success) +
-        Number(!!danger) >
-      1
-    ) {
-      return new Error(
-        'Only one of primary, secondary, success, warning, danger can be true'
-      );
-    }
-  },
 };
 
 export default Badge;
