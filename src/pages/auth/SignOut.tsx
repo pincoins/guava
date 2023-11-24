@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useSignOutMutation } from '../../store/services/authApi';
 import { GoSync } from 'react-icons/go';
 import { MdLogout } from 'react-icons/md';
-import ContainedButton from '../../widgets/buttons/ContainedButton';
+import Button from '../../widgets/Button';
 
 const SignOut = () => {
   // 1. 리덕스 스토어 객체 가져오기
@@ -35,16 +35,17 @@ const SignOut = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(onValid)}>
-        <ContainedButton
+        <Button
           type="submit"
           disabled={isSubmitting}
           loading={isSubmitting}
-          danger
+          inline
+          preset="danger"
           className="text-sm font-semibold"
         >
           {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogout />}
           로그아웃
-        </ContainedButton>
+        </Button>
       </form>
     </div>
   );

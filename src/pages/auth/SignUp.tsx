@@ -18,7 +18,7 @@ import EmailVerificationSend from '../../components/forms/EmailVerificationSend'
 import PasswordConfirm from '../../components/forms/PasswordConfirm';
 import { GoSync } from 'react-icons/go';
 import { MdPersonAdd } from 'react-icons/md';
-import ContainedButton from '../../widgets/buttons/ContainedButton';
+import Button from '../../widgets/Button';
 
 export interface SignUpForm {
   username: string;
@@ -351,7 +351,6 @@ const SignUp = () => {
         <input
           type="text"
           placeholder="이름"
-          className="border"
           {...formMethods.register('fullName', {
             required: true,
             onChange: (_) => {
@@ -389,11 +388,12 @@ const SignUp = () => {
 
         <PasswordConfirm />
 
-        <ContainedButton
+        <Button
           type="submit"
           disabled={formMethods.formState.isSubmitting}
           loading={formMethods.formState.isSubmitting}
-          primary
+          inline
+          preset="primary"
           className="text-sm font-semibold"
         >
           {formMethods.formState.isSubmitting ? (
@@ -402,7 +402,7 @@ const SignUp = () => {
             <MdPersonAdd />
           )}
           회원가입
-        </ContainedButton>
+        </Button>
         {reCaptchaElement}
       </form>
     </FormProvider>

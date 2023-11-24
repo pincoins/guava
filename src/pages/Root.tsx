@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import UpperNavbar from '../components/header/UpperNavbar';
-import LowerNavbar from '../components/header/LowerNavbar';
 import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
 import { RootState } from '../store';
 import { signOut } from '../store/slices/authSlice';
+import Header from '../components/header/Header';
 
 const Root = () => {
   const { accessToken, expiresIn } = useAppSelector(
@@ -31,11 +30,19 @@ const Root = () => {
     // 자동 로그인 시도
   }, []);
 
+  // 사이트 기본 레이아웃
+  // 컨테이너: 뷰포트 100vh 높이로 공간 확보 - display: flex; flex-direction: column; height: 100vh;
+  // - 헤더: 자신의 크기만큼 - flex: 0 0 auto;
+  // - 본문: 부모 크기만큼 커지거나 작아짐 - flex: 1 1 0;
+  // - 푸터: 자신의 크기만큼 - flex: 0 0 auto;
+
   return (
-    <div>
-      <UpperNavbar />
-      <LowerNavbar />
-      <Outlet />
+    <div className="flex flex-col h-screen">
+      <Header className="flex-none" />
+      <div className="flex-1 overflow-auto bg-white">
+        <Outlet />
+      </div>
+      <div className="flex-none">푸터</div>
     </div>
   );
 };

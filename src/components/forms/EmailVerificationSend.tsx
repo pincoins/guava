@@ -5,7 +5,7 @@ import {
 } from '../../hooks/useEmailVerification';
 import { useFormContext } from 'react-hook-form';
 import { SignUpForm } from '../../pages/auth/SignUp';
-import ContainedButton from '../../widgets/buttons/ContainedButton';
+import Button from '../../widgets/Button';
 
 const EmailVerificationSend = ({
   state,
@@ -27,7 +27,6 @@ const EmailVerificationSend = ({
       <input
         type="text"
         placeholder="이메일"
-        className="border"
         readOnly={state.status === 'SENT'}
         {...register('username', {
           required: true,
@@ -68,7 +67,7 @@ const EmailVerificationSend = ({
         })}
       />
       {errors.username && <span>{errors.username.message}</span>}
-      <ContainedButton
+      <Button
         type="button"
         onClick={onClick}
         disabled={
@@ -79,7 +78,7 @@ const EmailVerificationSend = ({
         }
       >
         인증메일 발송
-      </ContainedButton>
+      </Button>
     </>
   );
 };

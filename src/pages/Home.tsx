@@ -9,7 +9,7 @@ const Home = () => {
       <div>공지사항</div>
       <div>이용후기</div>
       <div>베스트셀러</div>
-      <Skeleton className="h-10 w-full" times={3} />;
+      <Skeleton className="h-10 w-full" times={3} />
     </>
   );
 };
