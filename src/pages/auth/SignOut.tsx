@@ -1,7 +1,7 @@
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useSignOutMutation } from '../../store/services/authApi';
-import ContainedButton from '../../widgets/buttons/ContainedButton';
+import Button from '../../widgets/Button';
 import { GoSync } from 'react-icons/go';
 import { MdLogout } from 'react-icons/md';
 
@@ -35,7 +35,7 @@ const SignOut = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(onValid)}>
-        <ContainedButton
+        <Button
           type="submit"
           disabled={isSubmitting}
           loading={isSubmitting}
@@ -44,7 +44,7 @@ const SignOut = () => {
         >
           {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogout />}
           로그아웃
-        </ContainedButton>
+        </Button>
       </form>
     </div>
   );

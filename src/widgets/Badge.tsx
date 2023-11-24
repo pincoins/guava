@@ -1,7 +1,7 @@
+import { ComponentPropsWithoutRef, ReactNode } from 'react';
 import className from 'classnames';
-import React, { ComponentPropsWithoutRef, ReactNode } from 'react';
 
-const ItemButton = ({
+const Badge = ({
   children,
   primary,
   secondary,
@@ -9,8 +9,8 @@ const ItemButton = ({
   warning,
   danger,
   outline,
-  circular,
-  loading,
+  rounded,
+  pill,
   bounce,
   ping,
   ...rest
@@ -21,19 +21,18 @@ const ItemButton = ({
   warning?: boolean;
   danger?: boolean;
   outline?: boolean;
-  circular?: boolean;
+  rounded?: boolean;
+  pill?: boolean;
   loading?: boolean;
   bounce?: boolean;
   ping?: boolean;
-} & ComponentPropsWithoutRef<'button'> & { children?: ReactNode }) => {
+} & ComponentPropsWithoutRef<'span'> & { children?: ReactNode }) => {
   const classes = className(
     rest.className,
-    'items-center p-1 border shadow-sm',
+    'inline-flex items-center px-2 py-1 ring-1 ring-inset',
     {
-      'rounded-full': circular,
-      'rounded-md': !circular,
-
-      'opacity-80': loading,
+      'rounded-md': rounded,
+      'rounded-full': pill,
 
       'animate-bounce': bounce,
       'animate-ping': ping,
@@ -67,23 +66,19 @@ const ItemButton = ({
     }
   );
 
-  /*
-      <IconButton warning circular bounce>
-        <MdLogin />
-      </IconButton>
-   */
-
   return (
-    <button {...rest} className={classes}>
+    <span {...rest} className={classes}>
       {children}
-    </button>
+    </span>
   );
 };
 
-ItemButton.propTypes = {
+Badge.propTypes = {
   checkVariationValue: ({
     bounce,
     ping,
+    rounded,
+    pill,
     primary,
     secondary,
     success,
@@ -92,6 +87,8 @@ ItemButton.propTypes = {
   }: {
     bounce: boolean | undefined;
     ping: boolean | undefined;
+    rounded: boolean | undefined;
+    pill: boolean | undefined;
     primary: boolean | undefined;
     secondary: boolean | undefined;
     success: boolean | undefined;
@@ -101,6 +98,10 @@ ItemButton.propTypes = {
     // !! 변수에 값이 할당되었으면 true 그렇지 않으면 false
     // undefined 변수를 false 만들기
     if (Number(!!bounce) + Number(!!ping) > 1) {
+      return new Error('Only one of bounce, ping can be true');
+    }
+
+    if (Number(!!rounded) + Number(!!pill) > 1) {
       return new Error('Only one of bounce, ping can be true');
     }
 
@@ -119,4 +120,4 @@ ItemButton.propTypes = {
   },
 };
 
-export default ItemButton;
+export default Badge;
