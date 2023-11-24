@@ -52,13 +52,13 @@ const Footer = ({ ...rest }) => {
                   <option value="USD">USD</option>
                 </select>
               </div>
-              <Button>
+              <Button flat>
                 <FaFacebookSquare className="text-2xl text-[#4267B2]" />
               </Button>
-              <Button>
+              <Button flat>
                 <FaTwitterSquare className="text-2xl text-[#1DA1F2]" />
               </Button>
-              <Button>
+              <Button flat>
                 <FaCcPaypal className="text-2xl text-[#012169]" />
               </Button>
             </div>
