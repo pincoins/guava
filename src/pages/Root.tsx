@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
 import { RootState } from '../store';
 import { signOut } from '../store/slices/authSlice';
 import Header from '../components/header/Header';
+import Footer from '../components/footer/Footer';
 
 const Root = () => {
   const { accessToken, expiresIn } = useAppSelector(
@@ -42,7 +43,7 @@ const Root = () => {
       <div className="flex-1 overflow-auto bg-white">
         <Outlet />
       </div>
-      <div className="flex-none">푸터</div>
+      <Footer className="flex-none" />
     </div>
   );
 };
