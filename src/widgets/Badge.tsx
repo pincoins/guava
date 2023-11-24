@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef, ReactNode } from 'react';
 import className from 'classnames';
 
-const ItemBadge = ({
+const Badge = ({
   children,
   primary,
   secondary,
@@ -9,6 +9,8 @@ const ItemBadge = ({
   warning,
   danger,
   outline,
+  flat,
+  inline,
   rounded,
   pill,
   bounce,
@@ -21,45 +23,48 @@ const ItemBadge = ({
   warning?: boolean;
   danger?: boolean;
   outline?: boolean;
+  flat?: boolean;
+  inline?: boolean;
   rounded?: boolean;
   pill?: boolean;
   loading?: boolean;
   bounce?: boolean;
   ping?: boolean;
 } & ComponentPropsWithoutRef<'span'> & { children?: ReactNode }) => {
-  const classes = className(
-    rest.className,
-    'items-center ring-1 ring-inset p-1',
-    {
-      'rounded-md': rounded,
-      'rounded-full': pill,
+  const classes = className(rest.className, 'items-center', {
+    'inline-flex gap-x-2 px-2 py-1': inline,
+    'p-1': !inline,
 
-      'animate-bounce': bounce,
-      'animate-ping': ping,
+    'rounded-md': rounded,
+    'rounded-full': pill,
 
-      'bg-white': outline,
+    'animate-bounce': bounce,
+    'animate-ping': ping,
 
-      'border-sky-600': primary,
-      'bg-sky-700 text-white': primary && !outline, // outline if undefined
-      'text-sky-700': outline && primary,
+    'bg-white': outline,
 
-      'border-slate-500': secondary,
-      'bg-slate-600 text-white': secondary && !outline,
-      'text-slate-600': outline && secondary,
+    'ring-1 ring-inset p-1 ring-gray-200': !flat,
 
-      'border-green-400': success,
-      'bg-green-500 text-white': success && !outline,
-      'text-green-500': outline && success,
+    'border-sky-600': primary,
+    'bg-sky-700 text-white': primary && !outline, // outline if undefined
+    'text-sky-700': outline && primary,
 
-      'border-yellow-300': warning,
-      'bg-yellow-400 text-white': warning && !outline,
-      'text-yellow-400': outline && warning,
+    'border-slate-500': secondary,
+    'bg-slate-600 text-white': secondary && !outline,
+    'text-slate-600': outline && secondary,
 
-      'border-rose-400': danger,
-      'bg-rose-500 text-white': danger && !outline,
-      'text-rose-500': outline && danger,
-    }
-  );
+    'border-green-400': success,
+    'bg-green-500 text-white': success && !outline,
+    'text-green-500': outline && success,
+
+    'border-yellow-300': warning,
+    'bg-yellow-400 text-white': warning && !outline,
+    'text-yellow-400': outline && warning,
+
+    'border-rose-400': danger,
+    'bg-rose-500 text-white': danger && !outline,
+    'text-rose-500': outline && danger,
+  });
 
   return (
     <span {...rest} className={classes}>
@@ -68,7 +73,7 @@ const ItemBadge = ({
   );
 };
 
-ItemBadge.propTypes = {
+Badge.propTypes = {
   checkVariationValue: ({
     bounce,
     ping,
@@ -115,4 +120,4 @@ ItemBadge.propTypes = {
   },
 };
 
-export default ItemBadge;
+export default Badge;

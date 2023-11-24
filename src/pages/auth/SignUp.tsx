@@ -18,7 +18,7 @@ import EmailVerificationSend from '../../components/forms/EmailVerificationSend'
 import PasswordConfirm from '../../components/forms/PasswordConfirm';
 import { GoSync } from 'react-icons/go';
 import { MdPersonAdd } from 'react-icons/md';
-import ContainedButton from '../../widgets/buttons/ContainedButton';
+import Button from '../../widgets/Button';
 
 export interface SignUpForm {
   username: string;
@@ -389,10 +389,11 @@ const SignUp = () => {
 
         <PasswordConfirm />
 
-        <ContainedButton
+        <Button
           type="submit"
           disabled={formMethods.formState.isSubmitting}
           loading={formMethods.formState.isSubmitting}
+          inline
           primary
           className="text-sm font-semibold"
         >
@@ -402,7 +403,7 @@ const SignUp = () => {
             <MdPersonAdd />
           )}
           회원가입
-        </ContainedButton>
+        </Button>
         {reCaptchaElement}
       </form>
     </FormProvider>

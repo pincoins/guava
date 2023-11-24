@@ -9,8 +9,11 @@ const Button = ({
   warning,
   danger,
   outline,
+  inline,
   rounded,
   loading,
+  bounce,
+  ping,
   ...rest
 }: {
   primary?: boolean;
@@ -19,14 +22,23 @@ const Button = ({
   warning?: boolean;
   danger?: boolean;
   outline?: boolean;
+  inline?: boolean;
   rounded?: boolean;
   loading?: boolean;
+  bounce?: boolean;
+  ping?: boolean;
 } & ComponentPropsWithoutRef<'button'> & { children?: ReactNode }) => {
   const classes = className(
     rest.className,
-    'items-center border shadow-sm inline-flex gap-x-2 px-3 py-1',
+    'items-center border shadow-sm p-1',
     {
+      'inline-flex gap-x-2 px-3 py-1': inline,
+      'p-1': !inline,
+
       'opacity-80': loading,
+
+      'animate-bounce': bounce,
+      'animate-ping': ping,
 
       'rounded-md': !rounded,
       'rounded-full': rounded,
@@ -69,12 +81,16 @@ const Button = ({
 
 Button.propTypes = {
   checkVariationValue: ({
+    bounce,
+    ping,
     primary,
     secondary,
     success,
     warning,
     danger,
   }: {
+    bounce: boolean | undefined;
+    ping: boolean | undefined;
     primary: boolean | undefined;
     secondary: boolean | undefined;
     success: boolean | undefined;
@@ -83,6 +99,9 @@ Button.propTypes = {
   }) => {
     // !! 변수에 값이 할당되었으면 true 그렇지 않으면 false
     // undefined 변수를 false 만들기
+    if (Number(!!bounce) + Number(!!ping) > 1) {
+      return new Error('Only one of bounce, ping can be true');
+    }
 
     const count =
       Number(!!primary) +
