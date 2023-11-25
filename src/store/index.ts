@@ -4,6 +4,7 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import { authSlice } from './slices/authSlice';
 import { authApi } from './services/authApi';
 import { viewportSlice } from './slices/viewportSlice';
+import { saveState } from './storages';
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,16 @@ export const store = configureStore({
 });
 
 setupListeners(store.dispatch); // optional, but for refetch behaviors
+
+store.subscribe(() => {
+  // 스토어 상태 변경 될 때마다 스토어 저장
+  saveState({
+    auth: {
+      rememberMe: store.getState().auth.rememberMe,
+      validUntil: store.getState().auth.validUntil,
+    },
+  });
+});
 
 export type RootState = ReturnType<typeof store.getState>;
 

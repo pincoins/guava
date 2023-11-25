@@ -1,14 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { parseJwt } from '../../utils/parseJwt';
+import { loadState } from '../storages';
 
 interface AuthState {
+  rememberMe: boolean | null; // persisted
+  validUntil: string | null; // persisted
   accessToken: string | null;
   expiresIn: number | null;
   role: string | null;
   username: string | null;
 }
 
+const persistedState = loadState();
+
 const initialState: AuthState = {
+  rememberMe: persistedState?.auth?.rememberMe || false,
+  validUntil: persistedState?.auth?.validUntil || null,
   accessToken: null,
   expiresIn: null,
   role: null,
@@ -21,7 +28,11 @@ export const authSlice = createSlice({
   reducers: {
     // not async action
     setCredentials: (state, action) => {
-      // localStorage.setItem('refreshToken', action.payload.refreshToken);
+      state.rememberMe = true;
+      state.validUntil = new Date(
+        new Date().getTime() +
+          parseInt(`${process.env.REFRESH_TOKEN_EXPIRES_IN}`) * 1000
+      ).toISOString(); // Date 객체 직접 저장하려면 serializableCheck: false
 
       state.accessToken = action.payload.accessToken;
       state.expiresIn = action.payload.expiresIn;
@@ -32,14 +43,23 @@ export const authSlice = createSlice({
       state.username = jwt.username;
     },
     signOut: (state) => {
-      // localStorage.removeItem('refreshToken');
+      state.rememberMe = false;
+      state.validUntil = null;
 
       state.accessToken = null;
       state.expiresIn = null;
+      state.role = null;
+      state.username = null;
+    },
+    autoSignOut: (state) => {
+      state.accessToken = null;
+      state.expiresIn = null;
+      state.role = null;
+      state.username = null;
     },
   },
 });
 
-export const { setCredentials, signOut } = authSlice.actions;
+export const { setCredentials, signOut, autoSignOut } = authSlice.actions;
 
 export default authSlice.reducer;

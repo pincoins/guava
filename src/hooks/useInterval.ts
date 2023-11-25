@@ -99,7 +99,7 @@ const useInterval = ({
   useEffect(() => {
     // setup 함수
     // - 초기 마운트 시점에 수행
-    if (state.status === 'RUNNING' && id.current == null) {
+    if (state.status === 'RUNNING' && id.current === null) {
       id.current = setInterval(() => {
         dispatch({ type: 'TICK' });
       }, lap);

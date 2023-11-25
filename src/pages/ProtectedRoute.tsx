@@ -2,17 +2,17 @@ import React from 'react';
 import { useAppSelector } from '../hooks/rtk-hooks';
 import { RootState } from '../store';
 import { Link, Outlet } from 'react-router-dom';
+import getLoginState from '../utils/getLoginState';
 
 interface ProtectedRoutProps {
   roles: string[];
 }
 
 const ProtectedRoute = (props: ProtectedRoutProps) => {
-  const { accessToken, role } = useAppSelector(
-    (state: RootState) => state.auth
-  );
+  const { rememberMe, accessToken, expiresIn, validUntil, role } =
+    useAppSelector((state: RootState) => state.auth);
 
-  if (!accessToken) {
+  if (getLoginState(rememberMe, accessToken, validUntil) === 'EXPIRED') {
     // unauthorized
     return (
       <div>
