@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
 import { RootState } from '../store';
@@ -14,11 +14,11 @@ const Root = () => {
 
   const dispatch = useAppDispatch();
 
-  const handleWindowResize = () => {
+  const handleWindowResize = useCallback(() => {
     dispatch(
       setViewportSize({ width: window.innerWidth, height: window.innerHeight })
     );
-  };
+  }, []);
 
   useEffect(() => {
     // 자동 로그아웃
