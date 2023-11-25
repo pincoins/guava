@@ -71,10 +71,10 @@ const reducer = (
   }
 };
 
-const UseEmailVerification = () => {
+const useEmailVerification = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return [state, dispatch] as const;
 };
 
-export default UseEmailVerification;
+export default useEmailVerification;
