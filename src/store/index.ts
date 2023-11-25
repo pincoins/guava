@@ -32,8 +32,6 @@ store.subscribe(() => {
       validUntil: store.getState().auth.validUntil,
     },
   });
-
-  // deleteState();
 });
 
 export type RootState = ReturnType<typeof store.getState>;

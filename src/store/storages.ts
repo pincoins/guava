@@ -33,7 +33,3 @@ export const saveState = (state: any) => {
     console.log(err);
   }
 };
-
-export const deleteState = () => {
-  localStorage.removeItem(persistenceKey);
-};
