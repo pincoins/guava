@@ -30,6 +30,6 @@ export const saveState = (state: any) => {
 
     localStorage.setItem(persistenceKey, serialized);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };

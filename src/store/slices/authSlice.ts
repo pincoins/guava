@@ -3,7 +3,7 @@ import { parseJwt } from '../../utils/parseJwt';
 import { loadState } from '../storages';
 
 interface AuthState {
-  isAuthenticated: boolean | null; // persisted
+  rememberMe: boolean | null; // persisted
   validUntil: string | null; // persisted
   accessToken: string | null;
   expiresIn: number | null;
@@ -12,10 +12,9 @@ interface AuthState {
 }
 
 const persistedState = loadState();
-console.log('persisted', persistedState);
 
 const initialState: AuthState = {
-  isAuthenticated: persistedState?.auth?.isAuthenticated || false,
+  rememberMe: persistedState?.auth?.rememberMe || false,
   validUntil: persistedState?.auth?.validUntil || null,
   accessToken: null,
   expiresIn: null,
@@ -29,7 +28,7 @@ export const authSlice = createSlice({
   reducers: {
     // not async action
     setCredentials: (state, action) => {
-      state.isAuthenticated = true;
+      state.rememberMe = true;
       state.validUntil = new Date(
         new Date().getTime() +
           parseInt(`${process.env.REFRESH_TOKEN_EXPIRES_IN}`) * 1000
@@ -44,9 +43,15 @@ export const authSlice = createSlice({
       state.username = jwt.username;
     },
     signOut: (state) => {
-      state.isAuthenticated = false;
+      state.rememberMe = false;
       state.validUntil = null;
 
+      state.accessToken = null;
+      state.expiresIn = null;
+      state.role = null;
+      state.username = null;
+    },
+    autoSignOut: (state) => {
       state.accessToken = null;
       state.expiresIn = null;
       state.role = null;
@@ -55,6 +60,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, signOut } = authSlice.actions;
+export const { setCredentials, signOut, autoSignOut } = authSlice.actions;
 
 export default authSlice.reducer;

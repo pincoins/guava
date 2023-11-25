@@ -23,12 +23,10 @@ export const store = configureStore({
 setupListeners(store.dispatch); // optional, but for refetch behaviors
 
 store.subscribe(() => {
-  console.log(store.getState());
-
   // 스토어 상태 변경 될 때마다 스토어 저장
   saveState({
     auth: {
-      isAuthenticated: store.getState().auth.isAuthenticated,
+      rememberMe: store.getState().auth.rememberMe,
       validUntil: store.getState().auth.validUntil,
     },
   });

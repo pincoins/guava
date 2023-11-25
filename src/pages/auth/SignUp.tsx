@@ -19,6 +19,7 @@ import PasswordConfirm from '../../components/forms/PasswordConfirm';
 import { GoSync } from 'react-icons/go';
 import { MdPersonAdd } from 'react-icons/md';
 import Button from '../../widgets/Button';
+import getLoginState from '../../utils/getLoginState';
 
 export interface SignUpForm {
   username: string;
@@ -55,7 +56,9 @@ const schema = yup
 
 const SignUp = () => {
   // 1. 리덕스 스토어 객체 가져오기
-  const { accessToken } = useAppSelector((state: RootState) => state.auth);
+  const { rememberMe, accessToken, validUntil } = useAppSelector(
+    (state: RootState) => state.auth
+  );
 
   // 2. 리액트 라우터 네비게이션 객체 가져오기
   const navigate = useNavigate();
@@ -156,10 +159,12 @@ const SignUp = () => {
 
   // 7. useEffect
   useEffect(() => {
-    if (accessToken) {
+    if (
+      getLoginState(rememberMe, accessToken, validUntil) === 'AUTHENTICATED'
+    ) {
       navigate('/');
     }
-  }, [accessToken]);
+  }, [rememberMe, accessToken, validUntil]);
 
   useEffect(() => {
     const emailVerified = sessionStorage.getItem('emailVerified');

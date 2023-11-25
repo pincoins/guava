@@ -10,6 +10,7 @@ import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 import Button from '../../widgets/Button';
 import { GoSync } from 'react-icons/go';
 import { MdLogin } from 'react-icons/md';
+import getLoginState from '../../utils/getLoginState';
 
 export interface SignInForm {
   username: string;
@@ -31,7 +32,9 @@ const schema = yup
 
 const SignIn = () => {
   // 1. 리덕스 스토어 객체 가져오기
-  const { accessToken } = useAppSelector((state: RootState) => state.auth);
+  const { rememberMe, accessToken, validUntil } = useAppSelector(
+    (state: RootState) => state.auth
+  );
 
   // 2. 리액트 라우터 네비게이션 객체 가져오기
   const navigate = useNavigate();
@@ -81,10 +84,12 @@ const SignIn = () => {
 
   // 7. useEffect
   useEffect(() => {
-    if (accessToken) {
+    if (
+      getLoginState(rememberMe, accessToken, validUntil) === 'AUTHENTICATED'
+    ) {
       navigate('/');
     }
-  }, [accessToken]);
+  }, [rememberMe, accessToken, validUntil]);
 
   // 8. 이벤트 핸들러
 

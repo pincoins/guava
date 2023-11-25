@@ -53,7 +53,7 @@ const authApi = createApi({
     refresh: builder.mutation<TokenResponse, void>({
       query: () => {
         return {
-          url: '/auth/authenticate',
+          url: '/auth/refresh',
           method: 'POST',
           body: {
             grantType: 'refresh_token',
@@ -124,6 +124,7 @@ export const {
   useSignUpMutation,
   useSignInMutation,
   useSignOutMutation,
+  useRefreshMutation,
   useSendEmailVerificationMutation,
   useSendEmailCodeMutation,
 } = authApi;

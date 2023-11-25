@@ -15,9 +15,12 @@ import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import { useFetchCategoriesQuery } from '../../store/services/categoryApi';
 import { Category } from '../../store/models/interfaces';
+import getLoginState from '../../utils/getLoginState';
 
 const NavbarDesktop = ({ ...rest }) => {
-  const { accessToken } = useAppSelector((state: RootState) => state.auth);
+  const { rememberMe, accessToken, validUntil } = useAppSelector(
+    (state: RootState) => state.auth
+  );
 
   const classes = className(rest.className, 'hidden md:flex md:flex-col');
 
@@ -71,7 +74,8 @@ const NavbarDesktop = ({ ...rest }) => {
                 <MdInfoOutline />
                 <span>고객센터</span>
               </Link>
-              {!accessToken && (
+              {getLoginState(rememberMe, accessToken, validUntil) ===
+                'EXPIRED' && (
                 <>
                   <Link
                     to="/auth/sign-in"
@@ -89,7 +93,8 @@ const NavbarDesktop = ({ ...rest }) => {
                   </Link>
                 </>
               )}
-              {accessToken && (
+              {getLoginState(rememberMe, accessToken, validUntil) ===
+                ('AUTHENTICATED' || 'STALE') && (
                 <>
                   <Link
                     to="/auth/profile"
