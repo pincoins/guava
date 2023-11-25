@@ -1,11 +1,11 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { TokenResponse } from '../models/interfaces';
 import { setCredentials, signOut } from '../slices/authSlice';
-import customBaseQuery from './customBaseQuery';
+import baseQueryWithRetry from './baseQueryWithRetry';
 
 const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: customBaseQuery,
+  baseQuery: baseQueryWithRetry,
   endpoints: (builder) => ({
     signUp: builder.mutation<
       any,
@@ -32,6 +32,32 @@ const authApi = createApi({
           url: '/auth/authenticate',
           method: 'POST',
           body: { ...data, grantType: 'password' },
+        };
+      },
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          const {
+            data: { accessToken, refreshToken, expiresIn },
+          } = await queryFulfilled;
+
+          dispatch(
+            setCredentials({
+              accessToken,
+              refreshToken,
+              expiresIn,
+            })
+          );
+        } catch (error) {}
+      },
+    }),
+    refresh: builder.mutation<TokenResponse, void>({
+      query: () => {
+        return {
+          url: '/auth/authenticate',
+          method: 'POST',
+          body: {
+            grantType: 'refresh_token',
+          },
         };
       },
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
