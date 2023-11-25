@@ -49,7 +49,7 @@ const Root = () => {
       // 최상위 레이아웃이므로 라우트 페이지 이동해도 리렌더링되지 않음
       const timer = setTimeout(() => {
         // 자동로그아웃 될 경우 http only, secure 쿠키로 재로그인 가능하도록
-        // rememberMe, validUntil 삭제 안 함
+        // rememberMe, validUntil 삭제 안 함 (loginState === 'STALE' 상태로 만듦)
         dispatch(autoSignOut());
       }, expiresIn * 1000); // seconds to milliseconds
 
@@ -62,7 +62,7 @@ const Root = () => {
       };
     }
 
-    // 자동 로그인 시도
+    // useEffect() 의존성 변경을 감지하여 자동 로그인 시도
     if (loginState === 'STALE') {
       refresh();
     }
