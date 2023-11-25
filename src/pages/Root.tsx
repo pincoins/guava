@@ -2,12 +2,12 @@ import React, { useCallback, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
 import { RootState } from '../store';
-import { autoSignOut } from '../store/slices/authSlice';
 import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
 import { setViewportSize } from '../store/slices/viewportSlice';
 import getLoginState from '../utils/getLoginState';
 import { useRefreshMutation } from '../store/services/authApi';
+import signOut from './auth/SignOut';
 
 const Root = () => {
   // 1. 리덕스 스토어 객체 가져오기
@@ -48,9 +48,12 @@ const Root = () => {
       // 액세스 토큰은 언제나 새로고침 때문에 새 토큰을 받음
       // 최상위 레이아웃이므로 라우트 페이지 이동해도 리렌더링되지 않음
       const timer = setTimeout(() => {
-        // 자동로그아웃 될 경우 http only, secure 쿠키로 재로그인 가능하도록
-        // rememberMe, validUntil 삭제 안 함 (loginState === 'STALE' 상태로 만듦)
-        dispatch(autoSignOut());
+        if (rememberMe && validUntil && new Date() < new Date(validUntil)) {
+          // `STALE` 상태 확인 후 http only, secure 쿠키로 재로그인
+          refresh();
+        } else {
+          dispatch(signOut());
+        }
       }, expiresIn * 1000); // seconds to milliseconds
 
       // 콜백의 반환타입이 void | Destructor 이기 때문에

@@ -51,15 +51,9 @@ export const authSlice = createSlice({
       state.role = null;
       state.username = null;
     },
-    autoSignOut: (state) => {
-      state.accessToken = null;
-      state.expiresIn = null;
-      state.role = null;
-      state.username = null;
-    },
   },
 });
 
-export const { setCredentials, signOut, autoSignOut } = authSlice.actions;
+export const { setCredentials, signOut } = authSlice.actions;
 
 export default authSlice.reducer;
