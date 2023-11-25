@@ -42,23 +42,21 @@ const Root = () => {
 
   useEffect(() => {
     const loginState = getLoginState(rememberMe, accessToken, validUntil);
-    console.log(rememberMe, accessToken, validUntil);
 
     // 타임아웃 자동 로그아웃 설정
     if (loginState === 'AUTHENTICATED' && expiresIn) {
-      console.log('timer setup');
-
       // 액세스 토큰은 언제나 새로고침 때문에 새 토큰을 받음
+      // 최상위 레이아웃이므로 라우트 페이지 이동해도 리렌더링되지 않음
       const timer = setTimeout(() => {
         // 자동로그아웃 될 경우 http only, secure 쿠키로 재로그인 가능하도록
-        // rememberMe, validUntil 삭제하지 않음
-        console.log('timer logout');
+        // rememberMe, validUntil 삭제 안 함
         dispatch(autoSignOut());
       }, expiresIn * 1000); // seconds to milliseconds
 
+      // 콜백의 반환타입이 void | Destructor 이기 때문에
+      // 조건절 안에서도 useEffect() 클린업 함수를 반환 가능
       return () => {
         if (timer !== null) {
-          console.log('timer cleared', timer);
           clearTimeout(timer);
         }
       };
@@ -66,7 +64,6 @@ const Root = () => {
 
     // 자동 로그인 시도
     if (loginState === 'STALE') {
-      console.log('auto login');
       refresh();
     }
   }, [rememberMe, accessToken, validUntil, expiresIn, dispatch]);
