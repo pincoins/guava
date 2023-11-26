@@ -75,7 +75,7 @@ const NavbarDesktop = ({ ...rest }) => {
                 <span>고객센터</span>
               </Link>
               {getLoginState(rememberMe, accessToken, validUntil) ===
-                'EXPIRED' && (
+                'UNAUTHENTICATED' && (
                 <>
                   <Link
                     to="/auth/sign-in"
@@ -94,7 +94,7 @@ const NavbarDesktop = ({ ...rest }) => {
                 </>
               )}
               {getLoginState(rememberMe, accessToken, validUntil) ===
-                ('AUTHENTICATED' || 'STALE') && (
+                ('AUTHENTICATED' || 'EXPIRED') && (
                 <>
                   <Link
                     to="/auth/profile"

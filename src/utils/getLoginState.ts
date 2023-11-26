@@ -1,4 +1,4 @@
-type LoginState = 'AUTHENTICATED' | 'STALE' | 'EXPIRED';
+type LoginState = 'AUTHENTICATED' | 'EXPIRED' | 'UNAUTHENTICATED';
 
 const getLoginState = (
   rememberMe: boolean | null,
@@ -18,10 +18,10 @@ const getLoginState = (
     validUntil &&
     new Date() < new Date(validUntil)
   ) {
-    return 'STALE';
+    return 'EXPIRED';
   }
 
-  return 'EXPIRED';
+  return 'UNAUTHENTICATED';
 };
 
 export default getLoginState;

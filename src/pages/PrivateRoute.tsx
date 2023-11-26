@@ -19,8 +19,6 @@ const PrivateRoute = (props: ProtectedRoutProps) => {
     if (
       getLoginState(rememberMe, accessToken, validUntil) !== 'AUTHENTICATED'
     ) {
-      // unauthorized
-      // 명시적으로 로그인하지 않은 사용자
       navigate('/auth/sign-in');
     }
 

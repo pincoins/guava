@@ -66,7 +66,7 @@ const Root = () => {
     }
 
     // useEffect() 의존성 변경 감지 후 자동 로그인 시도
-    if (loginState === 'STALE') {
+    if (loginState === 'EXPIRED') {
       refresh();
     }
   }, [rememberMe, accessToken, validUntil, expiresIn, dispatch]);

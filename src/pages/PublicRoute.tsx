@@ -12,9 +12,9 @@ const PublicRoute = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (getLoginState(rememberMe, accessToken, validUntil) !== 'EXPIRED') {
-      // 명시적으로 로그인하지 않은 사용자
-      // already authorized
+    if (
+      getLoginState(rememberMe, accessToken, validUntil) !== 'UNAUTHENTICATED'
+    ) {
       navigate('/');
     }
   }, [rememberMe, accessToken, validUntil]);
