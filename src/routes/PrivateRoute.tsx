@@ -4,12 +4,8 @@ import { RootState } from '../store';
 import { Outlet, useNavigate } from 'react-router-dom';
 import getLoginState from '../utils/getLoginState';
 
-interface ProtectedRoutProps {
-  roles: string[];
-}
-
-const PrivateRoute = (props: ProtectedRoutProps) => {
-  const { rememberMe, accessToken, validUntil, role } = useAppSelector(
+const PrivateRoute = () => {
+  const { rememberMe, accessToken, validUntil } = useAppSelector(
     (state: RootState) => state.auth
   );
 
@@ -19,11 +15,6 @@ const PrivateRoute = (props: ProtectedRoutProps) => {
     if (
       getLoginState(rememberMe, accessToken, validUntil) !== 'AUTHENTICATED'
     ) {
-      navigate('/auth/sign-in');
-    }
-
-    if (!role || (role && props.roles.indexOf(role) < 0)) {
-      // forbidden
       navigate('/auth/sign-in');
     }
   }, [rememberMe, accessToken, validUntil]);

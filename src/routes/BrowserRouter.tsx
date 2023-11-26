@@ -27,18 +27,14 @@ import Notice from '../pages/help/Notice';
 import Privacy from '../pages/help/Privacy';
 import Terms from '../pages/help/Terms';
 import Guide from '../pages/help/Guide';
-
-const ROLE_ALL = Array.of('SYSADMIN', 'STAFF', 'MEMBER');
-const ROLE_SYSADMIN = Array.of('SYSADMIN');
-const ROLE_MANAGER = Array.of('SYSADMIN', 'STAFF');
-const ROLE_MEMBER = Array.of('MEMBER');
+import RoleManagerRoute from './RoleManagerRoute';
 
 const BrowserRouter = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />} errorElement={<RootBoundary />}>
       <Route index={true} element={<Home />} />
       <Route path="auth">
-        <Route element={<PrivateRoute roles={ROLE_ALL} />}>
+        <Route element={<PrivateRoute />}>
           <Route path="profile" element={<Profile />} />
           <Route path="sign-out" element={<SignOut />} />
         </Route>
@@ -48,7 +44,7 @@ const BrowserRouter = createBrowserRouter(
         </Route>
       </Route>
       <Route path="shop">
-        <Route element={<PrivateRoute roles={ROLE_ALL} />}>
+        <Route element={<PrivateRoute />}>
           <Route path="orders">
             <Route index={true} element={<OrderList />} />
             <Route path=":order" element={<OrderDetail />} />
@@ -65,7 +61,7 @@ const BrowserRouter = createBrowserRouter(
         <Route path="cart" element={<Cart />} />
       </Route>
       <Route path="help">
-        <Route element={<PrivateRoute roles={ROLE_ALL} />}>
+        <Route element={<PrivateRoute />}>
           <Route path="qna" element={<Qna />} />
         </Route>
         <Route path="faq" element={<Faq />} />
@@ -74,8 +70,10 @@ const BrowserRouter = createBrowserRouter(
         <Route path="terms" element={<Terms />} />
         <Route path="guide" element={<Guide />} />
       </Route>
-      <Route path="dashboard" element={<PrivateRoute roles={ROLE_MANAGER} />}>
-        <Route index={true} element={<Home />} />
+      <Route path="dashboard" element={<PrivateRoute />}>
+        <Route element={<RoleManagerRoute />}>
+          <Route index={true} element={<Home />} />
+        </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>
