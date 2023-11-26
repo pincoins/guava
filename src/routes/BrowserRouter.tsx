@@ -3,37 +3,37 @@ import {
   createRoutesFromElements,
   Route,
 } from 'react-router-dom';
-import Home from './pages/Home';
-import CategoryList from './pages/shop/categories/CategoryList';
-import ProductList from './pages/shop/products/ProductList';
-import SignIn from './pages/auth/SignIn';
-import SignOut from './pages/auth/SignOut';
+import Home from '../pages/Home';
+import CategoryList from '../pages/shop/categories/CategoryList';
+import ProductList from '../pages/shop/products/ProductList';
+import SignIn from '../pages/auth/SignIn';
+import SignOut from '../pages/auth/SignOut';
 import React from 'react';
-import Root from './pages/Root';
-import Cart from './pages/shop/Cart';
-import SignUp from './pages/auth/SignUp';
-import RootBoundary from './pages/RootBoundary';
-import CategoryDetail from './pages/shop/categories/CategoryDetail';
-import ProductDetail from './pages/shop/products/ProductDetail';
-import NotFound from './pages/NotFound';
-import PrivateRoute from './pages/PrivateRoute';
-import PublicRoute from './pages/PublicRoute';
-import Profile from './pages/auth/Profile';
-import OrderList from './pages/shop/orders/OrderList';
-import OrderDetail from './pages/shop/orders/OrderDetail';
-import Qna from './pages/help/Qna';
-import Faq from './pages/help/Faq';
-import Notice from './pages/help/Notice';
-import Privacy from './pages/help/Privacy';
-import Terms from './pages/help/Terms';
-import Guide from './pages/help/Guide';
+import Root from './Root';
+import Cart from '../pages/shop/Cart';
+import SignUp from '../pages/auth/SignUp';
+import RootBoundary from './RootBoundary';
+import CategoryDetail from '../pages/shop/categories/CategoryDetail';
+import ProductDetail from '../pages/shop/products/ProductDetail';
+import NotFound from '../pages/NotFound';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
+import Profile from '../pages/auth/Profile';
+import OrderList from '../pages/shop/orders/OrderList';
+import OrderDetail from '../pages/shop/orders/OrderDetail';
+import Qna from '../pages/help/Qna';
+import Faq from '../pages/help/Faq';
+import Notice from '../pages/help/Notice';
+import Privacy from '../pages/help/Privacy';
+import Terms from '../pages/help/Terms';
+import Guide from '../pages/help/Guide';
 
 const ROLE_ALL = Array.of('SYSADMIN', 'STAFF', 'MEMBER');
 const ROLE_SYSADMIN = Array.of('SYSADMIN');
 const ROLE_MANAGER = Array.of('SYSADMIN', 'STAFF');
 const ROLE_MEMBER = Array.of('MEMBER');
 
-const router = createBrowserRouter(
+const BrowserRouter = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />} errorElement={<RootBoundary />}>
       <Route index={true} element={<Home />} />
@@ -82,4 +82,4 @@ const router = createBrowserRouter(
   )
 );
 
-export default router;
+export default BrowserRouter;

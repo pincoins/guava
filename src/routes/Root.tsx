@@ -7,7 +7,7 @@ import Footer from '../components/footer/Footer';
 import { setViewportSize } from '../store/slices/viewportSlice';
 import getLoginState from '../utils/getLoginState';
 import { useRefreshMutation } from '../store/services/authApi';
-import signOut from './auth/SignOut';
+import signOut from '../pages/auth/SignOut';
 
 const Root = () => {
   // 1. 리덕스 스토어 객체 가져오기
@@ -17,8 +17,7 @@ const Root = () => {
 
   const dispatch = useAppDispatch();
 
-  // 2. 리액트 라우터 네비게이션 객체 가져오기
-
+  // 2. 리액트 라우터 네비게이션 객체 가져오
   // 3. RTK Query 객체 가져오기
   const [refresh] = useRefreshMutation();
 
