@@ -1,4 +1,3 @@
-import React from 'react';
 import { Category } from '../../../store/models/interfaces';
 import { useFetchCategoriesQuery } from '../../../store/services/categoryApi';
 

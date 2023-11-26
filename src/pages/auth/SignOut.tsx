@@ -1,8 +1,7 @@
-import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useSignOutMutation } from '../../store/services/authApi';
 import { GoSync } from 'react-icons/go';
 import { MdLogout } from 'react-icons/md';
+import { useSignOutMutation } from '../../store/services/authApi';
 import Button from '../../widgets/Button';
 
 const SignOut = () => {

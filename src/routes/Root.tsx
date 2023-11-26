@@ -1,24 +1,23 @@
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
-import { RootState } from '../store';
-import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
+import Header from '../components/header/Header';
+import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
+import signOut from '../pages/auth/SignOut';
+import { RootState } from '../store';
+import { useRefreshMutation } from '../store/services/authApi';
 import { setViewportSize } from '../store/slices/viewportSlice';
 import getLoginState from '../utils/getLoginState';
-import { useRefreshMutation } from '../store/services/authApi';
-import signOut from './auth/SignOut';
 
 const Root = () => {
   // 1. 리덕스 스토어 객체 가져오기
-  const { rememberMe, accessToken, expiresIn, validUntil } = useAppSelector(
+  const { rememberMe, accessToken, validUntil, expiresIn } = useAppSelector(
     (state: RootState) => state.auth
   );
 
   const dispatch = useAppDispatch();
 
-  // 2. 리액트 라우터 네비게이션 객체 가져오기
-
+  // 2. 리액트 라우터 네비게이션 객체 가져오
   // 3. RTK Query 객체 가져오기
   const [refresh] = useRefreshMutation();
 
@@ -56,7 +55,7 @@ const Root = () => {
         }
       }, expiresIn * 1000); // seconds to milliseconds
 
-      // 콜백의 반환타입이 void | Destructor 이기 때문에
+      // 콜백의 반환타입이 void | Destructor 이므로
       // 조건절 안에서도 useEffect() 클린업 함수를 반환 가능
       return () => {
         if (timer !== null) {
@@ -65,8 +64,8 @@ const Root = () => {
       };
     }
 
-    // useEffect() 의존성 변경을 감지하여 자동 로그인 시도
-    if (loginState === 'STALE') {
+    // useEffect() 의존성 변경 감지 후 자동 로그인 시도
+    if (loginState === 'EXPIRED') {
       refresh();
     }
   }, [rememberMe, accessToken, validUntil, expiresIn, dispatch]);

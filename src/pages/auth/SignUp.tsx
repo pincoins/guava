@@ -1,25 +1,22 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useAppSelector } from '../../hooks/rtk-hooks';
-import { RootState } from '../../store';
-import * as yup from 'yup';
+import { GoSync } from 'react-icons/go';
+import { MdPersonAdd } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import * as yup from 'yup';
+import EmailVerificationCode from '../../components/forms/EmailVerificationCode';
+import EmailVerificationSend from '../../components/forms/EmailVerificationSend';
+import PasswordConfirm from '../../components/forms/PasswordConfirm';
+import useEmailVerification from '../../hooks/useEmailVerification';
+import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
+import useInterval from '../../hooks/useInterval';
 import {
   useSendEmailCodeMutation,
   useSendEmailVerificationMutation,
   useSignUpMutation,
 } from '../../store/services/authApi';
-import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
-import useEmailVerification from '../../hooks/useEmailVerification';
-import useInterval from '../../hooks/useInterval';
-import EmailVerificationCode from '../../components/forms/EmailVerificationCode';
-import EmailVerificationSend from '../../components/forms/EmailVerificationSend';
-import PasswordConfirm from '../../components/forms/PasswordConfirm';
-import { GoSync } from 'react-icons/go';
-import { MdPersonAdd } from 'react-icons/md';
 import Button from '../../widgets/Button';
-import getLoginState from '../../utils/getLoginState';
 
 export interface SignUpForm {
   username: string;
@@ -56,10 +53,6 @@ const schema = yup
 
 const SignUp = () => {
   // 1. 리덕스 스토어 객체 가져오기
-  const { rememberMe, accessToken, validUntil } = useAppSelector(
-    (state: RootState) => state.auth
-  );
-
   // 2. 리액트 라우터 네비게이션 객체 가져오기
   const navigate = useNavigate();
 
@@ -158,14 +151,6 @@ const SignUp = () => {
   };
 
   // 7. useEffect
-  useEffect(() => {
-    if (
-      getLoginState(rememberMe, accessToken, validUntil) === 'AUTHENTICATED'
-    ) {
-      navigate('/');
-    }
-  }, [rememberMe, accessToken, validUntil]);
-
   useEffect(() => {
     const emailVerified = sessionStorage.getItem('emailVerified');
     const emailSentAt = sessionStorage.getItem('emailSentAt');
