@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
-import { RootState } from '../store';
-import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
+import Header from '../components/header/Header';
+import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
+import signOut from '../pages/auth/SignOut';
+import { RootState } from '../store';
+import { useRefreshMutation } from '../store/services/authApi';
 import { setViewportSize } from '../store/slices/viewportSlice';
 import getLoginState from '../utils/getLoginState';
-import { useRefreshMutation } from '../store/services/authApi';
-import signOut from '../pages/auth/SignOut';
 
 const Root = () => {
   // 1. 리덕스 스토어 객체 가져오기

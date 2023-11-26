@@ -1,5 +1,5 @@
 import className from 'classnames';
-import React, { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 const ContainerFixed = ({
   children,

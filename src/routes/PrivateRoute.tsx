@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../hooks/rtk-hooks';
 import { RootState } from '../store';
-import { Outlet, useNavigate } from 'react-router-dom';
 import getLoginState from '../utils/getLoginState';
 
 const PrivateRoute = () => {

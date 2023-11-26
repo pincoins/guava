@@ -3,31 +3,30 @@ import {
   createRoutesFromElements,
   Route,
 } from 'react-router-dom';
-import Home from '../pages/Home';
-import CategoryList from '../pages/shop/categories/CategoryList';
-import ProductList from '../pages/shop/products/ProductList';
+import Profile from '../pages/auth/Profile';
 import SignIn from '../pages/auth/SignIn';
 import SignOut from '../pages/auth/SignOut';
-import React from 'react';
-import Root from './Root';
-import Cart from '../pages/shop/Cart';
 import SignUp from '../pages/auth/SignUp';
-import RootBoundary from './RootBoundary';
-import CategoryDetail from '../pages/shop/categories/CategoryDetail';
-import ProductDetail from '../pages/shop/products/ProductDetail';
-import NotFound from '../pages/NotFound';
-import PrivateRoute from './PrivateRoute';
-import PublicRoute from './PublicRoute';
-import Profile from '../pages/auth/Profile';
-import OrderList from '../pages/shop/orders/OrderList';
-import OrderDetail from '../pages/shop/orders/OrderDetail';
-import Qna from '../pages/help/Qna';
 import Faq from '../pages/help/Faq';
+import Guide from '../pages/help/Guide';
 import Notice from '../pages/help/Notice';
 import Privacy from '../pages/help/Privacy';
+import Qna from '../pages/help/Qna';
 import Terms from '../pages/help/Terms';
-import Guide from '../pages/help/Guide';
+import Home from '../pages/Home';
+import NotFound from '../pages/NotFound';
+import Cart from '../pages/shop/Cart';
+import CategoryDetail from '../pages/shop/categories/CategoryDetail';
+import CategoryList from '../pages/shop/categories/CategoryList';
+import OrderDetail from '../pages/shop/orders/OrderDetail';
+import OrderList from '../pages/shop/orders/OrderList';
+import ProductDetail from '../pages/shop/products/ProductDetail';
+import ProductList from '../pages/shop/products/ProductList';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
 import RoleManagerRoute from './RoleManagerRoute';
+import Root from './Root';
+import RootBoundary from './RootBoundary';
 
 const BrowserRouter = createBrowserRouter(
   createRoutesFromElements(

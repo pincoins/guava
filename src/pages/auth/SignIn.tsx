@@ -1,13 +1,12 @@
-import React from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useNavigate } from 'react-router-dom';
-import { useSignInMutation } from '../../store/services/authApi';
-import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
-import Button from '../../widgets/Button';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { GoSync } from 'react-icons/go';
 import { MdLogin } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
+import * as yup from 'yup';
+import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
+import { useSignInMutation } from '../../store/services/authApi';
+import Button from '../../widgets/Button';
 
 export interface SignInForm {
   username: string;

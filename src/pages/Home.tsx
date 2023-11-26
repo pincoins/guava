@@ -1,4 +1,3 @@
-import React from 'react';
 import Skeleton from '../widgets/Skeleton';
 
 const Home = () => {

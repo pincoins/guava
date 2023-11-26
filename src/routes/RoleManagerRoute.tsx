@@ -2,11 +2,6 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../hooks/rtk-hooks';
 import { RootState } from '../store';
 
-type ROLE_ALL = 'SYSADMIN' | 'STAFF' | 'MEMBER';
-type ROLE_SYSADMIN = 'SYSADMIN';
-type ROLE_MANAGER = 'SYSADMIN' | 'STAFF';
-type ROLE_MEMBER = 'MEMBER';
-
 const RoleManagerRoute = () => {
   const { role } = useAppSelector((state: RootState) => state.auth);
 

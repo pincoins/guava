@@ -1,21 +1,21 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { GoSync } from 'react-icons/go';
+import { MdPersonAdd } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import * as yup from 'yup';
+import EmailVerificationCode from '../../components/forms/EmailVerificationCode';
+import EmailVerificationSend from '../../components/forms/EmailVerificationSend';
+import PasswordConfirm from '../../components/forms/PasswordConfirm';
+import useEmailVerification from '../../hooks/useEmailVerification';
+import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
+import useInterval from '../../hooks/useInterval';
 import {
   useSendEmailCodeMutation,
   useSendEmailVerificationMutation,
   useSignUpMutation,
 } from '../../store/services/authApi';
-import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
-import useEmailVerification from '../../hooks/useEmailVerification';
-import useInterval from '../../hooks/useInterval';
-import EmailVerificationCode from '../../components/forms/EmailVerificationCode';
-import EmailVerificationSend from '../../components/forms/EmailVerificationSend';
-import PasswordConfirm from '../../components/forms/PasswordConfirm';
-import { GoSync } from 'react-icons/go';
-import { MdPersonAdd } from 'react-icons/md';
 import Button from '../../widgets/Button';
 
 export interface SignUpForm {
