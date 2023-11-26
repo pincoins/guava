@@ -11,7 +11,7 @@ import signOut from './auth/SignOut';
 
 const Root = () => {
   // 1. 리덕스 스토어 객체 가져오기
-  const { rememberMe, accessToken, expiresIn, validUntil } = useAppSelector(
+  const { rememberMe, accessToken, validUntil, expiresIn } = useAppSelector(
     (state: RootState) => state.auth
   );
 
