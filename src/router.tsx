@@ -16,8 +16,8 @@ import RootBoundary from './pages/RootBoundary';
 import CategoryDetail from './pages/shop/categories/CategoryDetail';
 import ProductDetail from './pages/shop/products/ProductDetail';
 import NotFound from './pages/NotFound';
-import ProtectedRoute from './pages/ProtectedRoute';
-
+import PrivateRoute from './pages/PrivateRoute';
+import PublicRoute from './pages/PublicRoute';
 import Profile from './pages/auth/Profile';
 import OrderList from './pages/shop/orders/OrderList';
 import OrderDetail from './pages/shop/orders/OrderDetail';
@@ -38,15 +38,17 @@ const router = createBrowserRouter(
     <Route path="/" element={<Root />} errorElement={<RootBoundary />}>
       <Route index={true} element={<Home />} />
       <Route path="auth">
-        <Route element={<ProtectedRoute roles={ROLE_ALL} />}>
+        <Route element={<PrivateRoute roles={ROLE_ALL} />}>
           <Route path="profile" element={<Profile />} />
           <Route path="sign-out" element={<SignOut />} />
         </Route>
-        <Route path="sign-up" element={<SignUp />} />
-        <Route path="sign-in" element={<SignIn />} />
+        <Route element={<PublicRoute />}>
+          <Route path="sign-up" element={<SignUp />} />
+          <Route path="sign-in" element={<SignIn />} />
+        </Route>
       </Route>
       <Route path="shop">
-        <Route element={<ProtectedRoute roles={ROLE_ALL} />}>
+        <Route element={<PrivateRoute roles={ROLE_ALL} />}>
           <Route path="orders">
             <Route index={true} element={<OrderList />} />
             <Route path=":order" element={<OrderDetail />} />
@@ -63,7 +65,7 @@ const router = createBrowserRouter(
         <Route path="cart" element={<Cart />} />
       </Route>
       <Route path="help">
-        <Route element={<ProtectedRoute roles={ROLE_ALL} />}>
+        <Route element={<PrivateRoute roles={ROLE_ALL} />}>
           <Route path="qna" element={<Qna />} />
         </Route>
         <Route path="faq" element={<Faq />} />
@@ -72,7 +74,7 @@ const router = createBrowserRouter(
         <Route path="terms" element={<Terms />} />
         <Route path="guide" element={<Guide />} />
       </Route>
-      <Route path="dashboard" element={<ProtectedRoute roles={ROLE_MANAGER} />}>
+      <Route path="dashboard" element={<PrivateRoute roles={ROLE_MANAGER} />}>
         <Route index={true} element={<Home />} />
       </Route>
       <Route path="*" element={<NotFound />} />

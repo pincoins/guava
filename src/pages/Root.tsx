@@ -56,7 +56,7 @@ const Root = () => {
         }
       }, expiresIn * 1000); // seconds to milliseconds
 
-      // 콜백의 반환타입이 void | Destructor 이기 때문에
+      // 콜백의 반환타입이 void | Destructor 이므로
       // 조건절 안에서도 useEffect() 클린업 함수를 반환 가능
       return () => {
         if (timer !== null) {
@@ -65,7 +65,7 @@ const Root = () => {
       };
     }
 
-    // useEffect() 의존성 변경을 감지하여 자동 로그인 시도
+    // useEffect() 의존성 변경 감지 후 자동 로그인 시도
     if (loginState === 'STALE') {
       refresh();
     }
