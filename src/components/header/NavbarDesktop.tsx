@@ -1,6 +1,4 @@
-import React from 'react';
-import ContainerFixed from '../../widgets/ContainerFixed';
-import { Link } from 'react-router-dom';
+import className from 'classnames';
 import {
   MdInfoOutline,
   MdLogin,
@@ -10,12 +8,13 @@ import {
   MdSendToMobile,
   MdShoppingBag,
 } from 'react-icons/md';
-import className from 'classnames';
+import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
-import { useFetchCategoriesQuery } from '../../store/services/categoryApi';
 import { Category } from '../../store/models/interfaces';
+import { useFetchCategoriesQuery } from '../../store/services/categoryApi';
 import getLoginState from '../../utils/getLoginState';
+import ContainerFixed from '../../widgets/ContainerFixed';
 
 const NavbarDesktop = ({ ...rest }) => {
   const { rememberMe, accessToken, validUntil } = useAppSelector(
@@ -51,8 +50,10 @@ const NavbarDesktop = ({ ...rest }) => {
           <div className="flex justify-between">
             <div className="font-bold">
               <Link to="/">
-                LOGO
-                {process.env.SITE_TITLE}
+                <img
+                  src={process.env.LOGO_DESKTOP}
+                  alt={process.env.SITE_TITLE}
+                />
               </Link>
             </div>
             <div className="flex-none flex gap-x-4">

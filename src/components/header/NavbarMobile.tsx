@@ -1,6 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import className from 'classnames';
+import { Link } from 'react-router-dom';
 
 const NavbarMobile = ({ ...rest }) => {
   const classes = className(rest.className, 'md:hidden');
@@ -12,7 +11,7 @@ const NavbarMobile = ({ ...rest }) => {
         {/* 로고, 버거 아이콘 justify-between 요소 배치 */}
         <div>
           <Link to="/" className="font-bold text-lg">
-            LOGO {process.env.SITE_TITLE}
+            <img src={process.env.LOGO_MOBILE} alt={process.env.SITE_TITLE} />
           </Link>
         </div>
         <div>
