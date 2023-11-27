@@ -68,7 +68,7 @@ const NavbarDesktop = ({ ...rest }) => {
                 <MdShoppingBag />
                 <span>장바구니</span>
               </Link>
-              <Link to="/help/qna" className="inline-flex items-center gap-x-1">
+              <Link to="/help/faq" className="inline-flex items-center gap-x-1">
                 <MdInfoOutline />
                 <span>고객센터</span>
               </Link>

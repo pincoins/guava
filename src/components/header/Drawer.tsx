@@ -10,6 +10,7 @@ import {
   MdOutlineArrowRight,
   MdOutlineMenu,
   MdPerson,
+  MdPersonAdd,
   MdSendToMobile,
   MdShoppingBag,
 } from 'react-icons/md';
@@ -45,6 +46,57 @@ const products = [
     title: '문화상품권',
     to: '/shop/categories/문화',
     icon: MdOutlineArrowRight,
+  },
+];
+
+const authenticated = [
+  {
+    id: 1,
+    title: '마이페이지',
+    to: '/auth/profile',
+    icon: MdPerson,
+  },
+  {
+    id: 2,
+    title: '로그아웃',
+    to: '/auth/sign-out',
+    icon: MdLogin,
+  },
+];
+
+const unauthenticated = [
+  {
+    id: 1,
+    title: '로그인',
+    to: '/auth/sign-in',
+    icon: MdLogin,
+  },
+  {
+    id: 2,
+    title: '회원가입',
+    to: '/auth/sign-up',
+    icon: MdPersonAdd,
+  },
+];
+
+const menu = [
+  {
+    id: 1,
+    title: '주문/발송',
+    to: '/shop/orders',
+    icon: MdSendToMobile,
+  },
+  {
+    id: 2,
+    title: '장바구니',
+    to: '/shop/cart',
+    icon: MdShoppingBag,
+  },
+  {
+    id: 3,
+    title: '고객센터',
+    to: '/help/faq',
+    icon: MdInfoOutline,
   },
 ];
 
@@ -105,83 +157,60 @@ const Drawer = ({
                     핀코인
                   </Link>
                 </DrawerHeading>
-                {loginState === 'AUTHENTICATED' && (
-                  <>
-                    <Link
-                      to="/auth/profile"
-                      className="inline-flex gap-x-2 items-center border-b px-3 py-1"
-                      onClick={onClose}
-                    >
-                      <MdPerson />
-                      마이페이지
-                    </Link>
-                    <Link
-                      to="/auth/sign-out"
-                      className="inline-flex gap-x-2 items-center border-b px-3 py-1"
-                      onClick={onClose}
-                    >
-                      <MdLogin />
-                      로그아웃
-                    </Link>
-                  </>
-                )}
-                {loginState === 'UNAUTHENTICATED' && (
-                  <>
-                    <Link
-                      to="/auth/sign-in"
-                      className="inline-flex gap-x-2 items-center border-b px-3 py-1"
-                      onClick={onClose}
-                    >
-                      <MdLogin />
-                      로그인
-                    </Link>
-                    <Link
-                      to="/auth/sign-up"
-                      className="inline-flex gap-x-2 items-center border-b px-3 py-1"
-                      onClick={onClose}
-                    >
-                      <MdPerson />
-                      회원가입
-                    </Link>
-                  </>
-                )}
-                <Link
-                  to="/"
-                  className="inline-flex gap-x-2 items-center border-b px-3 py-1"
-                  onClick={onClose}
-                >
-                  <MdSendToMobile />
-                  주문/발송
-                </Link>
-                <Link
-                  to="/"
-                  className="inline-flex gap-x-2 items-center border-b px-3 py-1"
-                  onClick={onClose}
-                >
-                  <MdShoppingBag />
-                  장바구니
-                </Link>
-                <Link
-                  to="/"
-                  className="inline-flex gap-x-2 items-center border-b px-3 py-1"
-                  onClick={onClose}
-                >
-                  <MdInfoOutline />
-                  고객센터
-                </Link>
-                <DrawerHeading>상품권</DrawerHeading>
-                {/* 스크롤 가능하게 한 번 감싸줄 것 /*/}
-                <div className="flex flex-col h-[calc(100vh_-_264px)] overflow-y-auto">
-                  {products.map((product) => {
+                {loginState === 'AUTHENTICATED' &&
+                  authenticated.map((item) => {
                     return (
                       <Link
-                        key={product.id}
-                        to={product.to}
+                        key={item.id}
+                        to={item.to}
                         className="inline-flex gap-x-2 items-center border-b px-3 py-1"
                         onClick={onClose}
                       >
-                        {<product.icon />}
-                        {product.title}
+                        {<item.icon />}
+                        {item.title}
+                      </Link>
+                    );
+                  })}
+                {loginState === 'UNAUTHENTICATED' &&
+                  unauthenticated.map((item) => {
+                    return (
+                      <Link
+                        key={item.id}
+                        to={item.to}
+                        className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+                        onClick={onClose}
+                      >
+                        {<item.icon />}
+                        {item.title}
+                      </Link>
+                    );
+                  })}
+                {menu.map((item) => {
+                  return (
+                    <Link
+                      key={item.id}
+                      to={item.to}
+                      className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+                      onClick={onClose}
+                    >
+                      {<item.icon />}
+                      {item.title}
+                    </Link>
+                  );
+                })}
+                <DrawerHeading>상품권</DrawerHeading>
+                {/* 스크롤 가능하게 한 번 감싸줄 것 /*/}
+                <div className="flex flex-col h-[calc(100vh_-_264px)] overflow-y-auto">
+                  {products.map((item) => {
+                    return (
+                      <Link
+                        key={item.id}
+                        to={item.to}
+                        className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+                        onClick={onClose}
+                      >
+                        {<item.icon />}
+                        {item.title}
                       </Link>
                     );
                   })}
