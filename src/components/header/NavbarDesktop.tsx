@@ -13,13 +13,10 @@ import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import { Category } from '../../store/models/interfaces';
 import { useFetchCategoriesQuery } from '../../store/services/categoryApi';
-import getLoginState from '../../utils/getLoginState';
 import ContainerFixed from '../../widgets/ContainerFixed';
 
 const NavbarDesktop = ({ ...rest }) => {
-  const { rememberMe, accessToken, validUntil } = useAppSelector(
-    (state: RootState) => state.auth
-  );
+  const { loginState } = useAppSelector((state: RootState) => state.auth);
 
   const classes = className(rest.className, 'hidden md:flex md:flex-col');
 
@@ -75,8 +72,7 @@ const NavbarDesktop = ({ ...rest }) => {
                 <MdInfoOutline />
                 <span>고객센터</span>
               </Link>
-              {getLoginState(rememberMe, accessToken, validUntil) ===
-                'UNAUTHENTICATED' && (
+              {loginState === 'UNAUTHENTICATED' && (
                 <>
                   <Link
                     to="/auth/sign-in"
@@ -94,8 +90,7 @@ const NavbarDesktop = ({ ...rest }) => {
                   </Link>
                 </>
               )}
-              {getLoginState(rememberMe, accessToken, validUntil) ===
-                ('AUTHENTICATED' || 'EXPIRED') && (
+              {loginState === ('AUTHENTICATED' || 'EXPIRED') && (
                 <>
                   <Link
                     to="/auth/profile"
