@@ -64,7 +64,7 @@ const Footer = ({ ...rest }) => {
             </div>
           </div>
           <div className="text-lime-500 text-lg font-bold">주식회사 핀코인</div>
-          <div className="flex flex-col md:flex-row gap-y-2 gap-x-4 items-center">
+          <div className="flex flex-col md:flex-row gap-y-1 md:gap-y-2 gap-x-4 items-center text-sm">
             <div>대표: 서종화</div>
             <div>주소: 서울 서초구 방배로 32길 8 / 203호</div>
             <div>
