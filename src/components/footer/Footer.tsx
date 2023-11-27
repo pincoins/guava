@@ -12,7 +12,7 @@ const Footer = ({ ...rest }) => {
   return (
     <footer className={classes}>
       <div className="bg-green-50 text-green-950">
-        <ContainerFixed className="flex flex-col p-2 gap-y-2">
+        <ContainerFixed className="flex flex-col p-2">
           <div className="flex-1 flex flex-col md:flex-row justify-between gap-y-2 items-center">
             <div className="inline-flex flex-wrap gap-x-4 gap-y-2">
               <Link to="/">이용안내</Link>
@@ -63,8 +63,10 @@ const Footer = ({ ...rest }) => {
               </Button>
             </div>
           </div>
-          <div className="text-lime-500 text-lg font-bold">주식회사 핀코인</div>
-          <div className="flex flex-col md:flex-row gap-y-1 md:gap-y-2 gap-x-4 items-center text-sm">
+          <div className="text-lime-500 text-lg font-bold pt-3 pb-0.5">
+            주식회사 핀코인
+          </div>
+          <div className="flex flex-col md:flex-row gap-y-1 gap-x-4 items-center text-sm">
             <div>대표: 서종화</div>
             <div>주소: 서울 서초구 방배로 32길 8 / 203호</div>
             <div>

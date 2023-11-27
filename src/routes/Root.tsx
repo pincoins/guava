@@ -80,7 +80,7 @@ const Root = () => {
   return (
     <div className="flex flex-col h-screen">
       <Header className="flex-none" />
-      <div className="flex-1 overflow-auto bg-white">
+      <div className="flex-1 bg-white">
         <Outlet />
       </div>
       <Footer className="flex-none" />
