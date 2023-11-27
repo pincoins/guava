@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, Fragment } from 'react';
+import React, { ComponentPropsWithoutRef, Fragment } from 'react';
 import Button from '../../widgets/Button';
 import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import {
   MdInfoOutline,
   MdLogin,
+  MdOutlineMenu,
   MdPerson,
   MdSendToMobile,
   MdShoppingBag,
@@ -25,10 +26,13 @@ const Drawer = ({
 
   return (
     <>
-      <Button onClick={onOpen}>burger</Button>
+      <Button onClick={onOpen} className="text-2xl border-green-950">
+        <MdOutlineMenu />
+      </Button>
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={onClose}>
           {/* 백드롭 오버레이: 애니메이션 효과 - ease-in-out(천천히 나타났다 사라짐) */}
+          {/* position: fixed - modal, sticky header, sticky footer */}
           <Transition.Child
             as={Fragment}
             enter="ease-in-out duration-50"
