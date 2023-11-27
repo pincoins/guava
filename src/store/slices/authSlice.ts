@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { parseJwt } from '../../utils/parseJwt';
 import { loadState } from '../storages';
 
+type LoginState = 'AUTHENTICATED' | 'EXPIRED' | 'UNAUTHENTICATED';
+
 interface AuthState {
   rememberMe: boolean | null; // persisted
   validUntil: string | null; // persisted
@@ -9,17 +11,25 @@ interface AuthState {
   expiresIn: number | null;
   role: string | null;
   username: string | null;
+  loginState: LoginState;
 }
 
 const persistedState = loadState();
 
 const initialState: AuthState = {
+  // 새로고침 시 액세스 토큰 만료 & 쿠키 만료 이전 상태인지 확인
   rememberMe: persistedState?.auth?.rememberMe || false,
   validUntil: persistedState?.auth?.validUntil || null,
   accessToken: null,
   expiresIn: null,
   role: null,
   username: null,
+  loginState:
+    persistedState?.auth?.rememberMe &&
+    persistedState?.auth?.validUntil &&
+    new Date() < new Date(persistedState.auth.validUntil)
+      ? 'EXPIRED'
+      : 'UNAUTHENTICATED',
 };
 
 export const authSlice = createSlice({
@@ -41,6 +51,8 @@ export const authSlice = createSlice({
 
       state.role = jwt.role;
       state.username = jwt.username;
+
+      state.loginState = 'AUTHENTICATED';
     },
     signOut: (state) => {
       state.rememberMe = false;
@@ -50,6 +62,8 @@ export const authSlice = createSlice({
       state.expiresIn = null;
       state.role = null;
       state.username = null;
+
+      state.loginState = 'UNAUTHENTICATED';
     },
   },
 });

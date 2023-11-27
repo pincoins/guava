@@ -7,13 +7,11 @@ import signOut from '../pages/auth/SignOut';
 import { RootState } from '../store';
 import { useRefreshMutation } from '../store/services/authApi';
 import { setViewportSize } from '../store/slices/viewportSlice';
-import getLoginState from '../utils/getLoginState';
 
 const Root = () => {
   // 1. 리덕스 스토어 객체 가져오기
-  const { rememberMe, accessToken, validUntil, expiresIn } = useAppSelector(
-    (state: RootState) => state.auth
-  );
+  const { rememberMe, accessToken, validUntil, expiresIn, loginState } =
+    useAppSelector((state: RootState) => state.auth);
 
   const dispatch = useAppDispatch();
 
@@ -40,15 +38,17 @@ const Root = () => {
   }, []);
 
   useEffect(() => {
-    const loginState = getLoginState(rememberMe, accessToken, validUntil);
+    console.log(loginState);
 
     // 타임아웃 자동 로그아웃 설정
     if (loginState === 'AUTHENTICATED' && expiresIn) {
       // 액세스 토큰은 언제나 새로고침 때문에 새 토큰을 받음
       // 최상위 레이아웃이므로 라우트 페이지 이동해도 리렌더링되지 않음
       const timer = setTimeout(() => {
+        // 상단에서 AUTHENTICATED 조건으로 들어와서
+        // loginState === 'EXPIRED' 조건 사용할 수 없음
         if (rememberMe && validUntil && new Date() < new Date(validUntil)) {
-          // `STALE` 상태 확인 후 http only, secure 쿠키로 재로그인
+          // `EXPIRED` 상태 확인 후 http only, secure 쿠키로 재로그인
           refresh();
         } else {
           dispatch(signOut());
@@ -68,7 +68,7 @@ const Root = () => {
     if (loginState === 'EXPIRED') {
       refresh();
     }
-  }, [rememberMe, accessToken, validUntil, expiresIn, dispatch]);
+  }, [rememberMe, accessToken, validUntil, expiresIn, loginState, dispatch]);
 
   // 8. 이벤트 핸들러
   // 9. JSX 반환
