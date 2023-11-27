@@ -5,6 +5,7 @@ import { RootState } from '../../store';
 import { Dialog, Transition } from '@headlessui/react';
 import { Link } from 'react-router-dom';
 import {
+  MdCardGiftcard,
   MdInfoOutline,
   MdLogin,
   MdOutlineMenu,
@@ -12,6 +13,40 @@ import {
   MdSendToMobile,
   MdShoppingBag,
 } from 'react-icons/md';
+import DrawerHeading from './DrawerHeading';
+
+const products = [
+  {
+    id: 1,
+    title: '구글기프트카드',
+    to: '/shop/categories/구글',
+    icon: MdCardGiftcard,
+  },
+  {
+    id: 2,
+    title: '구글기프트카드',
+    to: '/shop/categories/구글',
+    icon: MdCardGiftcard,
+  },
+  {
+    id: 3,
+    title: '구글기프트카드',
+    to: '/shop/categories/구글',
+    icon: MdCardGiftcard,
+  },
+  {
+    id: 4,
+    title: '구글기프트카드',
+    to: '/shop/categories/구글',
+    icon: MdCardGiftcard,
+  },
+  {
+    id: 5,
+    title: '구글기프트카드',
+    to: '/shop/categories/구글',
+    icon: MdCardGiftcard,
+  },
+];
 
 const Drawer = ({
   isOpen,
@@ -29,10 +64,12 @@ const Drawer = ({
       <Button onClick={onOpen} className="text-2xl border-green-950">
         <MdOutlineMenu />
       </Button>
+      {/* 트랜지션 효과 2개를 감쌀 것 */}
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={onClose}>
-          {/* 백드롭 오버레이: 애니메이션 효과 - ease-in-out(천천히 나타났다 사라짐) */}
+          {/* 백드롭 오버레이: 트랜지션 효과 - ease-in-out(천천히 나타났다 사라짐) */}
           {/* position: fixed - modal, sticky header, sticky footer */}
+          {/* 백드롭 터치 시 모달 사라짐 */}
           <Transition.Child
             as={Fragment}
             enter="ease-in-out duration-50"
@@ -44,7 +81,8 @@ const Drawer = ({
           >
             <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" />
           </Transition.Child>
-          {/* 실제 서랍 메뉴: 애니메이션 효과 - transition (좌에서 우로 슬라이드) */}
+          {/* 실제 서랍 메뉴: 트랜지션 효과 - transition (좌에서 우로 슬라이드) */}
+          {/* https://headlessui.com/react/transition#co-ordinating-multiple-transitions */}
           <Transition.Child
             as={Fragment}
             enter="transform transition ease-in-out duration-100"
@@ -54,86 +92,110 @@ const Drawer = ({
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <div className="fixed inset-0 overflow-hidden">
-              <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pr-32">
-                {/* 우측 여백으로 크기 조정 */}
-                <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
-                  <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                    <div>
-                      <h1 className="font-bold border-l-4 border-b border-green-600 bg-green-50 text-green-800 px-2 py-1">
-                        <Link to="/" onClick={onClose}>
-                          핀코인
-                        </Link>
-                      </h1>
-                    </div>
-                    {loginState === 'AUTHENTICATED' && (
-                      <>
-                        <Link
-                          to="/auth/profile"
-                          className="border-b px-3 py-1 flex gap-x-2 items-center"
-                          onClick={onClose}
-                        >
-                          <MdPerson />
-                          <span>마이페이지</span>
-                        </Link>
-                        <Link
-                          to="/auth/sign-out"
-                          className="border-b px-3 py-1 flex gap-x-2 items-center"
-                          onClick={onClose}
-                        >
-                          <MdLogin />
-                          <span>로그아웃</span>
-                        </Link>
-                      </>
-                    )}
-                    {loginState === 'UNAUTHENTICATED' && (
-                      <>
-                        <Link
-                          to="/auth/sign-in"
-                          className="border-b px-3 py-1 flex gap-x-2 items-center"
-                          onClick={onClose}
-                        >
-                          <MdLogin />
-                          <span>로그인</span>
-                        </Link>
-                        <Link
-                          to="/auth/sign-up"
-                          className="border-b px-3 py-1 flex gap-x-2 items-center"
-                          onClick={onClose}
-                        >
-                          <MdPerson />
-                          <span>회원가입</span>
-                        </Link>
-                      </>
-                    )}
-                    <div className="border-b px-3 py-1 flex gap-x-2 items-center">
-                      <MdSendToMobile />
-                      <span>주문/발송</span>
-                    </div>
-                    <div className="border-b px-3 py-1 flex gap-x-2 items-center">
-                      <MdShoppingBag />
-                      <span>장바구니</span>
-                    </div>
-                    <div className="border-b px-3 py-1 flex gap-x-2 items-center">
-                      <MdInfoOutline />
-                      <span>고객센터</span>
-                    </div>
-                    <div>
-                      <h1 className="font-bold border-l-4 border-b border-green-600 bg-green-50 text-green-800 px-2 py-1">
-                        상품권
-                      </h1>
-                    </div>
-                    <div className="overflow-y-auto h-[calc(100vh_-_264px)]">
-                      ...
-                    </div>
-                    <div>
-                      <h1 className="font-bold border-l-4 border-t border-green-600 bg-green-50 text-green-800 px-2 py-1">
-                        {window.location.hostname}
-                      </h1>
-                    </div>
-                  </div>
-                </Dialog.Panel>
-              </div>
+            {/* 모달 기능 속성 */}
+            {/* fixed & inset-0 (top:0; right:0; bottom:0; left: 0) */}
+            {/* overflow: hidden: 스크롤 허용 안 함 */}
+            {/* pointer-events: none - action, hover 등 커서 옵션들 비활성화 */}
+            {/* pr-32: 우측 여백으로 백드롭 터치 시 모달 서랍 사라지기 가능 */}
+            <div className="fixed inset-0 overflow-hidden pointer-events-none pr-32">
+              {/* 모달 내용 속성 */}
+              <Dialog.Panel className="flex flex-col h-full overflow-y-scroll pointer-events-auto bg-white shadow-xl">
+                <DrawerHeading>
+                  <Link to="/" onClick={onClose}>
+                    핀코인
+                  </Link>
+                </DrawerHeading>
+                {loginState === 'AUTHENTICATED' && (
+                  <>
+                    <Link
+                      to="/auth/profile"
+                      className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+                      onClick={onClose}
+                    >
+                      <MdPerson />
+                      마이페이지
+                    </Link>
+                    <Link
+                      to="/auth/sign-out"
+                      className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+                      onClick={onClose}
+                    >
+                      <MdLogin />
+                      로그아웃
+                    </Link>
+                  </>
+                )}
+                {loginState === 'UNAUTHENTICATED' && (
+                  <>
+                    <Link
+                      to="/auth/sign-in"
+                      className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+                      onClick={onClose}
+                    >
+                      <MdLogin />
+                      로그인
+                    </Link>
+                    <Link
+                      to="/auth/sign-up"
+                      className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+                      onClick={onClose}
+                    >
+                      <MdPerson />
+                      회원가입
+                    </Link>
+                  </>
+                )}
+                <Link
+                  to="/"
+                  className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+                  onClick={onClose}
+                >
+                  <MdSendToMobile />
+                  주문/발송
+                </Link>
+                <Link
+                  to="/"
+                  className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+                  onClick={onClose}
+                >
+                  <MdShoppingBag />
+                  장바구니
+                </Link>
+                <Link
+                  to="/"
+                  className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+                  onClick={onClose}
+                >
+                  <MdInfoOutline />
+                  고객센터
+                </Link>
+                <DrawerHeading>상품권</DrawerHeading>
+                {/* 스크롤 가능하게 한 번 감싸줄 것 /*/}
+                <div className="flex flex-col h-[calc(100vh_-_264px)] overflow-y-auto">
+                  {products.map((product) => {
+                    return (
+                      <Link
+                        key={product.id}
+                        to={product.to}
+                        className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+                        onClick={onClose}
+                      >
+                        {<product.icon />}
+                        {product.title}
+                      </Link>
+                    );
+                  })}
+                  <Link
+                    to="/"
+                    className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+                    onClick={onClose}
+                  >
+                    <MdCardGiftcard />
+                    카드
+                  </Link>
+                </div>
+                <DrawerHeading>{window.location.hostname}</DrawerHeading>
+              </Dialog.Panel>
             </div>
           </Transition.Child>
         </Dialog>
