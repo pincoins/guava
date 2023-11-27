@@ -1,8 +1,20 @@
 import className from 'classnames';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import Drawer from './Drawer';
 
 const NavbarMobile = ({ ...rest }) => {
   const classes = className(rest.className, 'md:hidden');
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openDrawerHandler = () => {
+    setIsOpen(true);
+  };
+
+  const closeDrawerHandler = () => {
+    setIsOpen(false);
+  };
 
   // 모바일 메뉴 (fixed)
   return (
@@ -15,7 +27,11 @@ const NavbarMobile = ({ ...rest }) => {
           </Link>
         </div>
         <div>
-          <div>drawer</div>
+          <Drawer
+            isOpen={isOpen}
+            onOpen={openDrawerHandler}
+            onClose={closeDrawerHandler}
+          />
         </div>
       </div>
     </div>

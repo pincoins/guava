@@ -38,15 +38,13 @@ const Root = () => {
   }, []);
 
   useEffect(() => {
-    console.log(loginState);
-
     // 타임아웃 자동 로그아웃 설정
     if (loginState === 'AUTHENTICATED' && expiresIn) {
       // 액세스 토큰은 언제나 새로고침 때문에 새 토큰을 받음
       // 최상위 레이아웃이므로 라우트 페이지 이동해도 리렌더링되지 않음
       const timer = setTimeout(() => {
         // 상단에서 AUTHENTICATED 조건으로 들어와서
-        // loginState === 'EXPIRED' 조건 사용할 수 없음
+        // 타임아웃 시점에는 loginState === 'EXPIRED' 조건 사용할 수 없음
         if (rememberMe && validUntil && new Date() < new Date(validUntil)) {
           // `EXPIRED` 상태 확인 후 http only, secure 쿠키로 재로그인
           refresh();
