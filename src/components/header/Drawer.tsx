@@ -29,9 +29,10 @@ const Drawer = ({
       <Button onClick={onOpen} className="text-2xl border-green-950">
         <MdOutlineMenu />
       </Button>
+      {/* 트랜지션 효과 2개를 감쌀 것 */}
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={onClose}>
-          {/* 백드롭 오버레이: 애니메이션 효과 - ease-in-out(천천히 나타났다 사라짐) */}
+          {/* 백드롭 오버레이: 트랜지션 효과 - ease-in-out(천천히 나타났다 사라짐) */}
           {/* position: fixed - modal, sticky header, sticky footer */}
           <Transition.Child
             as={Fragment}
@@ -44,7 +45,8 @@ const Drawer = ({
           >
             <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" />
           </Transition.Child>
-          {/* 실제 서랍 메뉴: 애니메이션 효과 - transition (좌에서 우로 슬라이드) */}
+          {/* 실제 서랍 메뉴: 트랜지션 효과 - transition (좌에서 우로 슬라이드) */}
+          {/* https://headlessui.com/react/transition#co-ordinating-multiple-transitions */}
           <Transition.Child
             as={Fragment}
             enter="transform transition ease-in-out duration-100"
@@ -55,8 +57,8 @@ const Drawer = ({
             leaveTo="-translate-x-full"
           >
             <div className="fixed inset-0 overflow-hidden">
+              {/* 우측 여백으로 크기 조정 */}
               <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pr-32">
-                {/* 우측 여백으로 크기 조정 */}
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
                   <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                     <div>
