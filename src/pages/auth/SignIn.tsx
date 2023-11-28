@@ -183,8 +183,9 @@ const SignIn = () => {
             type="submit"
             disabled={isSubmitting}
             loading={isSubmitting}
-            className="font-semibold"
+            className="font-semibold py-2"
             inline
+            rounded="full"
             center
             preset="primary"
           >
