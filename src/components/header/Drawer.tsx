@@ -152,7 +152,7 @@ const Drawer = ({
             {/* pr-32: 우측 여백으로 백드롭 터치 시 모달 서랍 사라지기 가능 */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none pr-32">
               {/* 모달 내용 속성 */}
-              <Dialog.Panel className="flex flex-col h-full overflow-y-scroll pointer-events-auto bg-white shadow-xl">
+              <Dialog.Panel className="flex flex-col h-screen overflow-y-scroll pointer-events-auto bg-white shadow-xl">
                 <DrawerHeading>
                   <Link to="/" onClick={onClose}>
                     핀코인

@@ -75,7 +75,7 @@ const NavbarDesktop = ({ ...rest }) => {
       {/* fluid 크기로 배경색 주기 위해 ContainerFixed 감싸기. */}
       {/* 현재 메뉴 배경색은 Header 부모 컴포넌트에서 적용 중 */}
       <div className="">
-        <ContainerFixed className="px-2 py-2">
+        <ContainerFixed className="py-2">
           <div className="flex justify-between">
             <div className="font-bold">
               <Link to="/">

@@ -17,6 +17,9 @@ import {
   useSignUpMutation,
 } from '../../store/services/authApi';
 import Button from '../../widgets/Button';
+import ContainerFixed from '../../widgets/ContainerFixed';
+import Panel from '../../widgets/Panel';
+import PanelTitle from '../../widgets/PanelTitle';
 
 export interface SignUpForm {
   username: string;
@@ -333,69 +336,86 @@ const SignUp = () => {
 
   // 9. JSX 반환
   return (
-    <FormProvider {...formMethods}>
-      <form
-        onSubmit={formMethods.handleSubmit(onValid)}
-        className="flex flex-col w-1/2"
+    <ContainerFixed className="flex p-1 md:p-0 md:justify-center">
+      <Panel
+        shadow
+        rounded
+        className="md:w-1/2 flex flex-col gap-y-2 px-8 py-4"
       >
-        <input
-          type="text"
-          placeholder="이름"
-          {...formMethods.register('fullName', {
-            required: true,
-            onChange: (_) => {
-              if (formMethods.formState.errors.fullName) {
-                formMethods.clearErrors('fullName');
-              }
-            },
-          })}
-        />
-        {formMethods.formState.errors.fullName && (
-          <span>{formMethods.formState.errors.fullName.message}</span>
-        )}
+        <PanelTitle>
+          <h3 className="text-lg font-semibold text-gray-900 text-center">
+            회원가입
+          </h3>
+          <p className="text-sm text-gray-500 mb-2">
+            핀코인 회원가입을 환영합니다.
+          </p>
+        </PanelTitle>
+        <FormProvider {...formMethods}>
+          <form
+            onSubmit={formMethods.handleSubmit(onValid)}
+            className="flex flex-col"
+          >
+            <input
+              type="text"
+              placeholder="이름"
+              {...formMethods.register('fullName', {
+                required: true,
+                onChange: (_) => {
+                  if (formMethods.formState.errors.fullName) {
+                    formMethods.clearErrors('fullName');
+                  }
+                },
+              })}
+            />
+            {formMethods.formState.errors.fullName && (
+              <span>{formMethods.formState.errors.fullName.message}</span>
+            )}
 
-        <EmailVerificationSend
-          state={emailVerification}
-          dispatch={dispatchEmailVerification}
-          onClick={handleSendEmailVerification}
-        />
+            <EmailVerificationSend
+              state={emailVerification}
+              dispatch={dispatchEmailVerification}
+              onClick={handleSendEmailVerification}
+            />
 
-        {(emailVerification.status === 'SENT' ||
-          (emailVerification.status === 'ERROR' &&
-            emailVerification.error === 'INVALID_CODE')) && (
-          <EmailVerificationCode
-            state={emailVerification}
-            dispatch={dispatchEmailVerification}
-            onClick={handleSendEmailCode}
-          />
-        )}
-        <p>
-          오류메시지: timer: {timerState.status} / {timerState.remaining} /
-          status:
-          <span>{emailVerification.status}</span>/ error:
-          <span>{emailVerification.error}</span>
-        </p>
+            {(emailVerification.status === 'SENT' ||
+              (emailVerification.status === 'ERROR' &&
+                emailVerification.error === 'INVALID_CODE')) && (
+              <EmailVerificationCode
+                state={emailVerification}
+                dispatch={dispatchEmailVerification}
+                onClick={handleSendEmailCode}
+              />
+            )}
+            <p>
+              오류메시지: timer: {timerState.status} / {timerState.remaining} /
+              status:
+              <span>{emailVerification.status}</span>/ error:
+              <span>{emailVerification.error}</span>
+            </p>
 
-        <PasswordConfirm />
+            <PasswordConfirm />
 
-        <Button
-          type="submit"
-          disabled={formMethods.formState.isSubmitting}
-          loading={formMethods.formState.isSubmitting}
-          inline
-          preset="primary"
-          className="text-sm font-semibold"
-        >
-          {formMethods.formState.isSubmitting ? (
-            <GoSync className="animate-spin" />
-          ) : (
-            <MdPersonAdd />
-          )}
-          회원가입
-        </Button>
-        {reCaptchaElement}
-      </form>
-    </FormProvider>
+            <Button
+              type="submit"
+              disabled={formMethods.formState.isSubmitting}
+              loading={formMethods.formState.isSubmitting}
+              inline
+              center
+              preset="primary"
+              className="text-sm font-semibold"
+            >
+              {formMethods.formState.isSubmitting ? (
+                <GoSync className="animate-spin" />
+              ) : (
+                <MdPersonAdd />
+              )}
+              회원가입
+            </Button>
+            {reCaptchaElement}
+          </form>
+        </FormProvider>
+      </Panel>
+    </ContainerFixed>
   );
 };
 

@@ -4,9 +4,14 @@ import { GoSync } from 'react-icons/go';
 import { MdLogin } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
+import className from 'classnames';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 import { useSignInMutation } from '../../store/services/authApi';
 import Button from '../../widgets/Button';
+import ContainerFixed from '../../widgets/ContainerFixed';
+import React from 'react';
+import Panel from '../../widgets/Panel';
+import PanelTitle from '../../widgets/PanelTitle';
 
 export interface SignInForm {
   username: string;
@@ -79,47 +84,117 @@ const SignIn = () => {
 
   // 9. JSX 반환
   return (
-    <form onSubmit={handleSubmit(onValid)}>
-      <input
-        type="text"
-        placeholder="이메일"
-        className="border"
-        {...register('username', {
-          required: true,
-          onChange: (_) => {
-            if (errors.username) {
-              clearErrors('username');
-            }
-          },
-        })}
-      />
-      {errors.username && <span>{errors.username.message}</span>}
-      <input
-        type="password"
-        placeholder="비밀번호"
-        className="border"
-        {...register('password', {
-          required: true,
-          onChange: (_) => {
-            if (errors.password) {
-              clearErrors('password');
-            }
-          },
-        })}
-      />
-      {errors.password && <span>{errors.password.message}</span>}
-      <Button
-        type="submit"
-        disabled={isSubmitting}
-        loading={isSubmitting}
-        className="text-sm font-semibold"
-        inline
-        preset="primary"
+    <ContainerFixed className="flex p-1 md:p-0 md:justify-center">
+      <Panel
+        shadow
+        rounded
+        className="md:w-1/2 flex flex-col gap-y-2 px-8 py-4"
       >
-        {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogin />}로그인
-      </Button>
-      {reCaptchaElement}
-    </form>
+        <PanelTitle>
+          <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
+            로그인
+          </h3>
+        </PanelTitle>
+        <form
+          onSubmit={handleSubmit(onValid)}
+          className="grid grid-cols-1 gap-6"
+        >
+          <div className="flex flex-col gap-y-1.5">
+            <div
+              className={className(
+                'rounded-md shadow-sm w-full border-0 px-3 pb-1.5 pt-2.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset',
+                !errors.username
+                  ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
+                  : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
+              )}
+            >
+              <label
+                htmlFor="username"
+                className="block text-xs font-medium text-gray-900 mb-1"
+              >
+                이메일
+              </label>
+              <input
+                type="email"
+                {...register('username', {
+                  required: true,
+                  onChange: (_) => {
+                    if (errors.username) {
+                      clearErrors('username');
+                    }
+                  },
+                })}
+                className={className(
+                  'block w-full border-0 focus:ring-0 p-0',
+                  !errors.username
+                    ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
+                    : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
+                )}
+                placeholder="username@example.com"
+              />
+            </div>
+            {errors.username && (
+              <p className="ml-2 text-sm text-red-600">
+                <span>{errors.username.message}</span>
+              </p>
+            )}
+          </div>
+          <div className="flex flex-col gap-y-1.5">
+            <div
+              className={className(
+                'rounded-md shadow-sm w-full border-0 px-3 pb-1.5 pt-2.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset',
+                !errors.password
+                  ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
+                  : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
+              )}
+            >
+              <label
+                htmlFor="password"
+                className="block text-xs font-medium text-gray-900 mb-1"
+              >
+                비밀번호
+              </label>
+              <input
+                type="password"
+                {...register('password', {
+                  required: true,
+                  onChange: (_) => {
+                    if (errors.password) {
+                      clearErrors('password');
+                    }
+                  },
+                })}
+                className={className(
+                  'block w-full border-0 focus:ring-0 p-0',
+                  !errors.password
+                    ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
+                    : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
+                )}
+                placeholder="********"
+              />
+            </div>
+            {errors.password && (
+              <p className="ml-2 text-sm text-red-600">
+                <span>{errors.password.message}</span>
+              </p>
+            )}
+          </div>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            loading={isSubmitting}
+            className="font-semibold"
+            inline
+            center
+            preset="primary"
+          >
+            {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogin />}
+            로그인
+          </Button>
+          {reCaptchaElement}
+        </form>
+      </Panel>
+    </ContainerFixed>
   );
 };
 

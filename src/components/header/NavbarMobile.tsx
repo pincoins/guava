@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Drawer from './Drawer';
 
 const NavbarMobile = ({ ...rest }) => {
-  const classes = className(rest.className, 'px-1 py-2');
+  const classes = className(rest.className, 'p-1');
 
   const [isOpen, setIsOpen] = useState(false);
 
