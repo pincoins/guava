@@ -7,6 +7,7 @@ const Button = ({
   inline,
   outline,
   flat,
+  center,
   rounded,
   loading,
   animate,
@@ -16,6 +17,7 @@ const Button = ({
   inline?: boolean;
   outline?: boolean;
   flat?: boolean;
+  center?: boolean;
   rounded?: boolean;
   loading?: boolean;
   animate?: 'bounce' | 'ping';
@@ -39,6 +41,7 @@ const Button = ({
     'px-2 py-1': inline && !flat,
 
     'bg-white': outline,
+    'justify-center': center,
 
     'border-sky-600 hover:bg-sky-600 hover:text-white hover:border-sky-500':
       preset === 'primary',

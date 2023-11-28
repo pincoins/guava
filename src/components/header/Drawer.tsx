@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import {
   MdInfoOutline,
   MdLogin,
+  MdLogout,
   MdOutlineArrowRight,
   MdOutlineMenu,
   MdPerson,
@@ -60,7 +61,7 @@ const authenticated = [
     id: 2,
     title: '로그아웃',
     to: '/auth/sign-out',
-    icon: MdLogin,
+    icon: MdLogout,
   },
 ];
 
@@ -82,21 +83,21 @@ const unauthenticated = [
 const menu = [
   {
     id: 1,
-    title: '주문/발송',
-    to: '/shop/orders',
-    icon: MdSendToMobile,
-  },
-  {
-    id: 2,
     title: '장바구니',
     to: '/shop/cart',
     icon: MdShoppingBag,
   },
   {
-    id: 3,
+    id: 2,
     title: '고객센터',
     to: '/help/faq',
     icon: MdInfoOutline,
+  },
+  {
+    id: 3,
+    title: '주문/발송',
+    to: '/shop/orders',
+    icon: MdSendToMobile,
   },
 ];
 
@@ -118,7 +119,7 @@ const Drawer = ({
       </Button>
       {/* 트랜지션 효과 2개를 감쌀 것 */}
       <Transition.Root show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={onClose}>
+        <Dialog as="div" className="relative z-20" onClose={onClose}>
           {/* 백드롭 오버레이: 트랜지션 효과 - ease-in-out(천천히 나타났다 사라짐) */}
           {/* position: fixed - modal, sticky header, sticky footer */}
           {/* 백드롭 터치 시 모달 사라짐 */}
@@ -151,7 +152,7 @@ const Drawer = ({
             {/* pr-32: 우측 여백으로 백드롭 터치 시 모달 서랍 사라지기 가능 */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none pr-32">
               {/* 모달 내용 속성 */}
-              <Dialog.Panel className="flex flex-col h-full overflow-y-scroll pointer-events-auto bg-white shadow-xl">
+              <Dialog.Panel className="flex flex-col h-screen overflow-y-scroll pointer-events-auto bg-white shadow-xl">
                 <DrawerHeading>
                   <Link to="/" onClick={onClose}>
                     핀코인

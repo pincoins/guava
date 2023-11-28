@@ -1,10 +1,17 @@
 import { Suspense } from 'react';
+import Skeleton from '../../widgets/Skeleton';
+import ContainerFixed from '../../widgets/ContainerFixed';
+import Panel from '../../widgets/Panel';
 
 const Profile = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div>profile</div>
-    </Suspense>
+    <ContainerFixed className="flex p-1 md:p-0 md:justify-center">
+      <Suspense fallback={<Skeleton className="h-10 w-full" times={3} />}>
+        <Panel shadow rounded>
+          profile
+        </Panel>
+      </Suspense>
+    </ContainerFixed>
   );
 };
 

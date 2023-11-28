@@ -11,12 +11,17 @@ const Header = ({ ...rest }) => {
 
   const { isMobile } = useAppSelector((state: RootState) => state.viewport);
 
-  const classes = className(rest.className, '');
+  // z-index 값을 주지 않으면 자식 컴포넌트 때문에 그림자 적용 안 됨
+  // z-index: 20 모바일 서랍 메뉴에서 사용 중
+  const classes = className(
+    rest.className,
+    'bg-green-50 shadow-sm shadow-green-600/20 z-10'
+  );
 
   return (
     <header className={classes}>
-      {isMobile && <NavbarMobile className="shadow px-2 py-3" />}
-      {!isMobile && <NavbarDesktop className="" />}
+      {isMobile && <NavbarMobile />}
+      {!isMobile && <NavbarDesktop />}
     </header>
   );
 };

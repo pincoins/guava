@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Drawer from './Drawer';
 
 const NavbarMobile = ({ ...rest }) => {
-  const classes = className(rest.className, 'md:hidden');
+  const classes = className(rest.className, 'p-1');
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -23,7 +23,7 @@ const NavbarMobile = ({ ...rest }) => {
         {/* 로고, 버거 아이콘 justify-between 요소 배치 */}
         <div>
           <Link to="/" className="font-bold text-lg">
-            <img src={process.env.LOGO_MOBILE} alt={process.env.SITE_TITLE} />
+            <img src={process.env.SITE_LOGO} alt={process.env.SITE_TITLE} />
           </Link>
         </div>
         <div>
