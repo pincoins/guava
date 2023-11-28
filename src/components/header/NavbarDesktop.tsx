@@ -3,118 +3,126 @@ import {
   MdInfoOutline,
   MdLogin,
   MdLogout,
+  MdPerson,
   MdPersonAdd,
-  MdPersonPin,
   MdSendToMobile,
   MdShoppingBag,
 } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
-import { Category } from '../../store/models/interfaces';
-import { useFetchCategoriesQuery } from '../../store/services/categoryApi';
 import ContainerFixed from '../../widgets/ContainerFixed';
+
+const authenticated = [
+  {
+    id: 1,
+    title: '마이페이지',
+    to: '/auth/profile',
+    icon: MdPerson,
+  },
+  {
+    id: 2,
+    title: '로그아웃',
+    to: '/auth/sign-out',
+    icon: MdLogout,
+  },
+];
+
+const unauthenticated = [
+  {
+    id: 1,
+    title: '로그인',
+    to: '/auth/sign-in',
+    icon: MdLogin,
+  },
+  {
+    id: 2,
+    title: '회원가입',
+    to: '/auth/sign-up',
+    icon: MdPersonAdd,
+  },
+];
+
+const menu = [
+  {
+    id: 1,
+    title: '장바구니',
+    to: '/shop/cart',
+    icon: MdShoppingBag,
+  },
+  {
+    id: 2,
+    title: '고객센터',
+    to: '/help/faq',
+    icon: MdInfoOutline,
+  },
+  {
+    id: 3,
+    title: '주문/발송',
+    to: '/shop/orders',
+    icon: MdSendToMobile,
+  },
+];
 
 const NavbarDesktop = ({ ...rest }) => {
   const { loginState } = useAppSelector((state: RootState) => state.auth);
 
-  const classes = className(rest.className, 'hidden md:flex md:flex-col');
-
-  const { data, error, isFetching } = useFetchCategoriesQuery();
-
-  let content;
-
-  if (isFetching) {
-    content = <div>Loading...</div>;
-  } else if (error) {
-    content = <div>error occurred.</div>;
-  } else {
-    content = data?.map((category: Category) => {
-      return (
-        <Link to={`/shop/categories/${category.slug}`} key={category.slug}>
-          {category.title}
-        </Link>
-      );
-    });
-  }
+  const classes = className(rest.className, 'flex flex-col');
 
   // 데스크탑 메뉴 (fluid 기본값)
   return (
     <div className={classes}>
       {/* fluid 크기로 배경색 주기 위해 ContainerFixed 감싸기. */}
-      <div className="bg-white">
+      {/* 현재 메뉴 배경색은 Header 부모 컴포넌트에서 적용 중 */}
+      <div className="">
         <ContainerFixed className="px-2 py-2">
           <div className="flex justify-between">
             <div className="font-bold">
               <Link to="/">
-                <img
-                  src={process.env.LOGO_DESKTOP}
-                  alt={process.env.SITE_TITLE}
-                />
+                <img src={process.env.SITE_LOGO} alt={process.env.SITE_TITLE} />
               </Link>
             </div>
             <div className="flex-none flex gap-x-4">
-              <Link
-                to="/shop/orders"
-                className="inline-flex items-center gap-x-1"
-              >
-                <MdSendToMobile />
-                <span>주문발송</span>
-              </Link>
-              <Link
-                to="/shop/cart"
-                className="inline-flex items-center gap-x-1"
-              >
-                <MdShoppingBag />
-                <span>장바구니</span>
-              </Link>
-              <Link to="/help/faq" className="inline-flex items-center gap-x-1">
-                <MdInfoOutline />
-                <span>고객센터</span>
-              </Link>
-              {loginState === 'UNAUTHENTICATED' && (
-                <>
+              {menu.map((item) => {
+                return (
                   <Link
-                    to="/auth/sign-in"
-                    className="inline-flex items-center gap-x-1"
+                    key={item.id}
+                    to={item.to}
+                    className="inline-flex gap-x-1 items-center"
                   >
-                    <MdLogin />
-                    <span>로그인</span>
+                    {<item.icon />}
+                    {item.title}
                   </Link>
-                  <Link
-                    to="/auth/sign-up"
-                    className="inline-flex items-center gap-x-1"
-                  >
-                    <MdPersonAdd />
-                    <span>회원가입</span>
-                  </Link>
-                </>
-              )}
-              {loginState === ('AUTHENTICATED' || 'EXPIRED') && (
-                <>
-                  <Link
-                    to="/auth/profile"
-                    className="inline-flex items-center gap-x-1"
-                  >
-                    <MdPersonPin />
-                    <span>마이페이지</span>
-                  </Link>
-                  <Link
-                    to="/auth/sign-out"
-                    className="inline-flex items-center gap-x-1"
-                  >
-                    <MdLogout />
-                    <span>로그아웃</span>
-                  </Link>
-                </>
-              )}
+                );
+              })}
+              {loginState === 'UNAUTHENTICATED' &&
+                unauthenticated.map((item) => {
+                  return (
+                    <Link
+                      key={item.id}
+                      to={item.to}
+                      className="inline-flex gap-x-1 items-center"
+                    >
+                      {<item.icon />}
+                      {item.title}
+                    </Link>
+                  );
+                })}
+              {loginState === ('AUTHENTICATED' || 'EXPIRED') &&
+                authenticated.map((item) => {
+                  return (
+                    <Link
+                      key={item.id}
+                      to={item.to}
+                      className="inline-flex gap-x-1 items-center"
+                    >
+                      {<item.icon />}
+                      {item.title}
+                    </Link>
+                  );
+                })}
             </div>
           </div>
-        </ContainerFixed>
-      </div>
-      <div className="bg-green-50 text-green-950">
-        <ContainerFixed className="px-2 py-2">
-          <div className="flex flex-row justify-between">{content}</div>
         </ContainerFixed>
       </div>
     </div>
