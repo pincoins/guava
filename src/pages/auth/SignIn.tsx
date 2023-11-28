@@ -84,11 +84,11 @@ const SignIn = () => {
 
   // 9. JSX 반환
   return (
-    <ContainerFixed className="flex p-1 md:p-0 md:justify-center">
+    <ContainerFixed className="flex p-2 md:p-0 md:justify-center">
       <Panel
         shadow
         rounded
-        className="md:w-1/2 flex flex-col gap-y-2 px-8 py-4"
+        className="w-full md:w-1/2 flex flex-col gap-y-2 px-8 py-4"
       >
         <PanelTitle>
           <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
