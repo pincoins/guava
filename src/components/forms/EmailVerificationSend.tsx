@@ -4,8 +4,10 @@ import {
   VerificationState,
 } from '../../hooks/useEmailVerification';
 import { useFormContext } from 'react-hook-form';
+import className from 'classnames';
 import { SignUpForm } from '../../pages/auth/SignUp';
 import Button from '../../widgets/Button';
+import { MdSendToMobile } from 'react-icons/md';
 
 const EmailVerificationSend = ({
   state,
@@ -24,61 +26,97 @@ const EmailVerificationSend = ({
 
   return (
     <>
-      <input
-        type="text"
-        placeholder="이메일"
-        readOnly={state.status === 'SENT'}
-        {...register('username', {
-          required: true,
+      <div className="flex flex-col gap-y-1.5">
+        <div className="flex">
+          <div
+            className={className(
+              'rounded-md shadow-sm w-full border-0 px-3 pb-1.5 pt-2.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset relative',
+              !errors.username
+                ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
+                : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
+            )}
+          >
+            <label
+              htmlFor="username"
+              className="block text-xs font-medium text-gray-900 mb-1"
+            >
+              이메일
+            </label>
+            <input
+              type="email"
+              readOnly={state.status === 'SENT'}
+              {...register('username', {
+                required: true,
+                onChange: (_) => {
+                  if (errors.username) {
+                    clearErrors('username');
+                  }
 
-          onChange: (_) => {
-            if (errors.username) {
-              clearErrors('username');
+                  if (
+                    state.status === 'COMPLETED' ||
+                    state.status === 'ERROR'
+                  ) {
+                    sessionStorage.removeItem('emailVerified');
+                    sessionStorage.removeItem('emailSentAt');
+                    sessionStorage.removeItem('emailIsVerified');
+
+                    dispatch({ type: 'RESET' });
+                  }
+                },
+                validate: {
+                  error: (_) => {
+                    if (state.status !== 'COMPLETED') {
+                      switch (state.error) {
+                        case 'INVALID_EMAIL':
+                          return '이메일 형식이 올바르지 않습니다.';
+                        case 'INVALID_RECAPTCHA':
+                          return '다른 브라우저에서 시도해주세요.';
+                        case 'DUPLICATED':
+                          return '이미 등록된 이메일 주소입니다.';
+                        case 'ALREADY_SENT':
+                          return '인증메일이 이미 발송되었습니다.';
+                        case 'EXPIRED':
+                          return '인증번호 입력 시간이 초과되었습니다.';
+                        case 'INVALID_CODE':
+                          return '인증번호가 올바르지 않습니다.';
+                      }
+                    }
+                  },
+                },
+              })}
+              className={className(
+                'block w-full border-0 focus:ring-0 p-0',
+                !errors.username
+                  ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
+                  : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
+              )}
+              placeholder="username@example.com"
+            />
+          </div>
+          <Button
+            type="button"
+            onClick={onClick}
+            inline
+            center
+            preset={errors.username ? 'danger' : 'secondary'}
+            className="text-sm font-semibold relative -ml-1 w-24 rounded-br-md rounded-tr-md"
+            disabled={
+              !(
+                state.status === 'PENDING' ||
+                (state.status === 'ERROR' && state.error === 'EXPIRED')
+              )
             }
+          >
+            <MdSendToMobile /> 발송
+          </Button>
+        </div>
 
-            if (state.status === 'COMPLETED' || state.status === 'ERROR') {
-              sessionStorage.removeItem('emailVerified');
-              sessionStorage.removeItem('emailSentAt');
-              sessionStorage.removeItem('emailIsVerified');
-
-              dispatch({ type: 'RESET' });
-            }
-          },
-          validate: {
-            error: (_) => {
-              if (state.status !== 'COMPLETED') {
-                switch (state.error) {
-                  case 'INVALID_EMAIL':
-                    return '이메일 형식이 올바르지 않습니다.';
-                  case 'INVALID_RECAPTCHA':
-                    return '다른 브라우저에서 시도해주세요.';
-                  case 'DUPLICATED':
-                    return '이미 등록된 이메일 주소입니다.';
-                  case 'ALREADY_SENT':
-                    return '인증메일이 이미 발송되었습니다.';
-                  case 'EXPIRED':
-                    return '인증번호 입력 시간이 초과되었습니다.';
-                  case 'INVALID_CODE':
-                    return '인증번호가 올바르지 않습니다.';
-                }
-              }
-            },
-          },
-        })}
-      />
-      {errors.username && <span>{errors.username.message}</span>}
-      <Button
-        type="button"
-        onClick={onClick}
-        disabled={
-          !(
-            state.status === 'PENDING' ||
-            (state.status === 'ERROR' && state.error === 'EXPIRED')
-          )
-        }
-      >
-        인증메일 발송
-      </Button>
+        {errors.username && (
+          <p className="ml-2 text-sm text-red-600">
+            <span>{errors.username.message}</span>
+          </p>
+        )}
+      </div>
     </>
   );
 };

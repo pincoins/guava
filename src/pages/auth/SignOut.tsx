@@ -50,25 +50,25 @@ const SignOut = () => {
             개인정보보호를 위해 서비스를 이용하지 않을 때는 로그아웃하세요.
           </p>
         </PanelTitle>
-        <div className="w-full">
-          <form onSubmit={handleSubmit(onValid)}>
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              loading={isSubmitting}
-              inline
-              preset="danger"
-              className="font-semibold w-full justify-center"
-            >
-              {isSubmitting ? (
-                <GoSync className="animate-spin" />
-              ) : (
-                <MdLogout />
-              )}
-              로그아웃
-            </Button>
-          </form>
-        </div>
+
+        <form
+          onSubmit={handleSubmit(onValid)}
+          className="grid grid-cols-1 gap-6"
+        >
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            loading={isSubmitting}
+            inline
+            center
+            rounded="full"
+            preset="danger"
+            className="font-semibold py-2"
+          >
+            {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogout />}
+            로그아웃
+          </Button>
+        </form>
       </Panel>
     </ContainerFixed>
   );

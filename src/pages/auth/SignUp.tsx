@@ -5,6 +5,7 @@ import { GoSync } from 'react-icons/go';
 import { MdPersonAdd } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
+import className from 'classnames';
 import EmailVerificationCode from '../../components/forms/EmailVerificationCode';
 import EmailVerificationSend from '../../components/forms/EmailVerificationSend';
 import PasswordConfirm from '../../components/forms/PasswordConfirm';
@@ -353,23 +354,48 @@ const SignUp = () => {
         <FormProvider {...formMethods}>
           <form
             onSubmit={formMethods.handleSubmit(onValid)}
-            className="flex flex-col"
+            className="grid grid-cols-1 gap-6"
           >
-            <input
-              type="text"
-              placeholder="이름"
-              {...formMethods.register('fullName', {
-                required: true,
-                onChange: (_) => {
-                  if (formMethods.formState.errors.fullName) {
-                    formMethods.clearErrors('fullName');
-                  }
-                },
-              })}
-            />
-            {formMethods.formState.errors.fullName && (
-              <span>{formMethods.formState.errors.fullName.message}</span>
-            )}
+            <div className="flex flex-col gap-y-1.5">
+              <div
+                className={className(
+                  'rounded-md shadow-sm w-full border-0 px-3 pb-1.5 pt-2.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset',
+                  !formMethods.formState.errors.fullName
+                    ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
+                    : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
+                )}
+              >
+                <label
+                  htmlFor="fullName"
+                  className="block text-xs font-medium text-gray-900 mb-1"
+                >
+                  이름
+                </label>
+                <input
+                  type="text"
+                  {...formMethods.register('fullName', {
+                    required: true,
+                    onChange: (_) => {
+                      if (formMethods.formState.errors.fullName) {
+                        formMethods.clearErrors('fullName');
+                      }
+                    },
+                  })}
+                  className={className(
+                    'block w-full border-0 focus:ring-0 p-0',
+                    !formMethods.formState.errors.fullName
+                      ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
+                      : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
+                  )}
+                  placeholder="핀코인"
+                />
+              </div>
+              {formMethods.formState.errors.fullName && (
+                <p className="ml-2 text-sm text-red-600">
+                  <span>{formMethods.formState.errors.fullName.message}</span>
+                </p>
+              )}
+            </div>
 
             <EmailVerificationSend
               state={emailVerification}
@@ -386,6 +412,7 @@ const SignUp = () => {
                 onClick={handleSendEmailCode}
               />
             )}
+
             <p>
               오류메시지: timer: {timerState.status} / {timerState.remaining} /
               status:
@@ -400,9 +427,10 @@ const SignUp = () => {
               disabled={formMethods.formState.isSubmitting}
               loading={formMethods.formState.isSubmitting}
               inline
+              rounded="full"
               center
               preset="primary"
-              className="text-sm font-semibold"
+              className="font-semibold py-2"
             >
               {formMethods.formState.isSubmitting ? (
                 <GoSync className="animate-spin" />

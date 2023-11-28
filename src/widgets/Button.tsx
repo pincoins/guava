@@ -18,7 +18,7 @@ const Button = ({
   outline?: boolean;
   flat?: boolean;
   center?: boolean;
-  rounded?: boolean;
+  rounded?: 'base' | 'sm' | 'md' | 'full';
   loading?: boolean;
   animate?: 'bounce' | 'ping';
 } & ComponentPropsWithoutRef<'button'> & { children?: ReactNode }) => {
@@ -34,8 +34,10 @@ const Button = ({
     'animate-bounce': animate === 'bounce',
     'animate-ping': animate === 'ping',
 
-    'rounded-md': !rounded,
-    'rounded-full': rounded,
+    rounded: rounded === 'base',
+    'rounded-sm': rounded === 'sm',
+    'rounded-md': rounded === 'md',
+    'rounded-full': rounded === 'full',
 
     'border shadow-sm': !flat,
     'px-2 py-1': inline && !flat,
