@@ -5,7 +5,7 @@ import Panel from '../../widgets/Panel';
 
 const Profile = () => {
   return (
-    <ContainerFixed className="flex p-1 md:p-0 md:justify-center">
+    <ContainerFixed className="flex p-2 md:p-0 md:justify-center">
       <Suspense fallback={<Skeleton className="h-10 w-full" times={3} />}>
         <Panel shadow rounded>
           profile

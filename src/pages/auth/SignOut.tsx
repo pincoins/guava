@@ -36,7 +36,7 @@ const SignOut = () => {
 
   // 9. JSX 반환
   return (
-    <ContainerFixed className="flex p-1 md:p-0 md:justify-center">
+    <ContainerFixed className="flex p-2 md:p-0 md:justify-center">
       <Panel
         shadow
         rounded
