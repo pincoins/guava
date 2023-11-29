@@ -51,7 +51,9 @@ const schema = yup
       .string()
       .oneOf([yup.ref('password')], '확인 비밀번호가 일치하지 않습니다.')
       .required('필수'),
-    code: yup.string().matches(/^[0-9]{6}$/),
+    code: yup
+      .string()
+      .matches(/^[0-9]{6}$/, '6자리 숫자를 정확하게 입력해주세요.'),
   })
   .required();
 

@@ -8,7 +8,7 @@ import {
   VerificationAction,
   VerificationState,
 } from '../../hooks/useEmailVerification';
-import { MdPassword } from 'react-icons/md';
+import { MdOutlineKeyboardAlt } from 'react-icons/md';
 
 const EmailVerificationCode = ({
   state,
@@ -85,10 +85,10 @@ const EmailVerificationCode = ({
             inline
             center
             preset={errors.code ? 'danger' : 'secondary'}
-            className="text-sm font-semibold relative -ml-1 w-24 rounded-br-md rounded-tr-md"
+            className="font-semibold relative -ml-1 w-24 rounded-br-md rounded-tr-md"
             disabled={state.status !== 'SENT'}
           >
-            <MdPassword /> 입력
+            <MdOutlineKeyboardAlt /> 입력
           </Button>
         </div>
 

@@ -7,7 +7,7 @@ import { useFormContext } from 'react-hook-form';
 import className from 'classnames';
 import { SignUpForm } from '../../pages/auth/SignUp';
 import Button from '../../widgets/Button';
-import { MdSendToMobile } from 'react-icons/md';
+import { MdOutlineMailLock } from 'react-icons/md';
 
 const EmailVerificationSend = ({
   state,
@@ -79,7 +79,7 @@ const EmailVerificationSend = ({
             inline
             center
             preset={errors.username ? 'danger' : 'secondary'}
-            className="text-sm font-semibold relative -ml-1 w-24 rounded-br-md rounded-tr-md"
+            className="font-semibold relative -ml-1 w-24 rounded-br-md rounded-tr-md"
             disabled={
               !(
                 state.status === 'PENDING' ||
@@ -87,7 +87,7 @@ const EmailVerificationSend = ({
               )
             }
           >
-            <MdSendToMobile /> 발송
+            <MdOutlineMailLock /> 인증
           </Button>
         </div>
 
