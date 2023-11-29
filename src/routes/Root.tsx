@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
 import signOut from '../pages/auth/SignOut';
 import { RootState } from '../store';
 import { useRefreshMutation } from '../store/services/authApi';
-import { setViewportSize } from '../store/slices/viewportSlice';
+import { setViewportSize } from '../store/slices/uiSlice';
 
 const Root = () => {
   // 1. 리덕스 스토어 객체 가져오기
