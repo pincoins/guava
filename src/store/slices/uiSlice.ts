@@ -4,12 +4,9 @@ interface UiSlice {
   width?: number;
   height?: number;
   isMobile?: boolean;
-  isModalOpen: boolean;
 }
 
-const initialState: UiSlice = {
-  isModalOpen: false,
-};
+const initialState: UiSlice = {};
 
 const breakpoint = 640;
 
@@ -25,21 +22,9 @@ export const uiSlice = createSlice({
         isMobile: action.payload.width < breakpoint,
       };
     },
-    openModal: (state) => {
-      return {
-        ...state,
-        isModalOpen: true,
-      };
-    },
-    closeModal: (state) => {
-      return {
-        ...state,
-        isModalOpen: false,
-      };
-    },
   },
 });
 
-export const { setViewportSize, openModal, closeModal } = uiSlice.actions;
+export const { setViewportSize } = uiSlice.actions;
 
 export default uiSlice.reducer;

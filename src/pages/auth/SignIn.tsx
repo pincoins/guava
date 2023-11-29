@@ -9,13 +9,10 @@ import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 import { useSignInMutation } from '../../store/services/authApi';
 import Button from '../../widgets/Button';
 import ContainerFixed from '../../widgets/ContainerFixed';
-import React from 'react';
+import React, { useState } from 'react';
 import Panel from '../../widgets/Panel';
 import PanelTitle from '../../widgets/PanelTitle';
 import Modal from '../../widgets/Modal';
-import { useAppDispatch, useAppSelector } from '../../hooks/rtk-hooks';
-import { RootState } from '../../store';
-import { closeModal, openModal } from '../../store/slices/uiSlice';
 
 export interface SignInForm {
   username: string;
@@ -37,9 +34,6 @@ const schema = yup
 
 const SignIn = () => {
   // 1. 리덕스 스토어 객체 가져오기
-  const { isModalOpen } = useAppSelector((state: RootState) => state.ui);
-
-  const dispatch = useAppDispatch();
 
   // 2. 리액트 라우터 네비게이션 객체 가져오기
   const navigate = useNavigate();
@@ -82,17 +76,22 @@ const SignIn = () => {
           })
           .catch((rejected) => {
             console.error(rejected);
-            dispatch(openModal());
+            handleModalOpen();
           });
       }
     }
   };
 
   // 7. useEffect
-  // 8. 이벤트 핸들러
+  const [isOpen, setIsOpen] = useState(false);
 
-  const closeModalHandler = () => {
-    dispatch(closeModal());
+  // 8. 이벤트 핸들러
+  const handleModalOpen = () => {
+    setIsOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsOpen(false);
   };
 
   // 9. JSX 반환
@@ -211,8 +210,8 @@ const SignIn = () => {
       <Modal
         title={'로그인 실패'}
         messages={['이메일 주소 또는 비밀번호가 올바르지 않습니다.']}
-        isOpen={isModalOpen}
-        onClose={closeModalHandler}
+        isOpen={isOpen}
+        onClose={handleModalClose}
       />
     </ContainerFixed>
   );

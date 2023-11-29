@@ -8,11 +8,11 @@ const NavbarMobile = ({ ...rest }) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const openDrawerHandler = () => {
+  const handleDrawerOpen = () => {
     setIsOpen(true);
   };
 
-  const closeDrawerHandler = () => {
+  const handleDrawerClose = () => {
     setIsOpen(false);
   };
 
@@ -29,8 +29,8 @@ const NavbarMobile = ({ ...rest }) => {
         <div>
           <Drawer
             isOpen={isOpen}
-            onOpen={openDrawerHandler}
-            onClose={closeDrawerHandler}
+            onOpen={handleDrawerOpen}
+            onClose={handleDrawerClose}
           />
         </div>
       </div>
