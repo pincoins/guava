@@ -3,12 +3,12 @@ import { categoryApi } from './services/categoryApi';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { authSlice } from './slices/authSlice';
 import { authApi } from './services/authApi';
-import { viewportSlice } from './slices/viewportSlice';
 import { saveState } from './storages';
+import { uiSlice } from './slices/uiSlice';
 
 export const store = configureStore({
   reducer: {
-    viewport: viewportSlice.reducer,
+    ui: uiSlice.reducer,
     auth: authSlice.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,

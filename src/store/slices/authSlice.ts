@@ -33,7 +33,7 @@ const initialState: AuthState = {
 };
 
 export const authSlice = createSlice({
-  name: 'authState',
+  name: 'authSlice',
   initialState,
   reducers: {
     // not async action
