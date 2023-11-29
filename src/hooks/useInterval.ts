@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useReducer, useRef } from 'react';
 
-export type Status = 'READY' | 'RUNNING' | 'PAUSED' | 'REMAINING';
+export type IntervalStatus = 'READY' | 'RUNNING' | 'PAUSED' | 'REMAINING';
 
 export type IntervalState = {
-  status: Status;
+  status: IntervalStatus;
   remaining: number;
 };
 

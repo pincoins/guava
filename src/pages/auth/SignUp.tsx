@@ -113,14 +113,14 @@ const SignUp = () => {
           );
 
         if (duration <= 0) {
-          formMethods.setValue('username', emailVerified, {
-            shouldValidate: true,
-            shouldDirty: true,
-            shouldTouch: true,
-          });
           dispatchEmailVerification({
             type: 'ERROR',
             error: 'EXPIRED',
+          });
+          // 인증번호 입력 만료 시 username 이메일 필드 폼 검증 에러 처리
+          formMethods.setError('username', {
+            type: 'EXPIRED',
+            message: '인증번호 입력시간이 초과했습니다.',
           });
         }
       }
@@ -212,8 +212,12 @@ const SignUp = () => {
           .unwrap()
           .then(({ success }) => {
             if (success) {
-              // 상태변경
-              if (emailVerification.status === 'PENDING') {
+              // 상태변경 - 인증번호 만료 시 재발송 처리
+              if (
+                emailVerification.status === 'PENDING' ||
+                (emailVerification.status === 'ERROR' &&
+                  emailVerification.error === 'EXPIRED')
+              ) {
                 dispatchEmailVerification({ type: 'SENT' });
               }
 
@@ -235,15 +239,27 @@ const SignUp = () => {
                 type: 'ERROR',
                 error: 'INVALID_RECAPTCHA',
               });
+              formMethods.setError('username', {
+                type: 'INVALID_RECAPTCHA',
+                message: '크롬, 엣지, 사파리 등 일반 브라우저로 접속바랍니다.',
+              });
             } else if (data.message === 'Duplicated email address') {
               dispatchEmailVerification({
                 type: 'ERROR',
                 error: 'DUPLICATED',
               });
+              formMethods.setError('username', {
+                type: 'DUPLICATED',
+                message: '이미 등록된 이메일 주소입니다.',
+              });
             } else if (data.message === 'Email already sent') {
               dispatchEmailVerification({
                 type: 'ERROR',
                 error: 'ALREADY_SENT',
+              });
+              formMethods.setError('username', {
+                type: 'ALREADY_SENT',
+                message: '이메일이 이미 발송되었습니다.',
               });
             }
           });
@@ -261,6 +277,10 @@ const SignUp = () => {
       dispatchEmailVerification({
         type: 'ERROR',
         error: 'INVALID_CODE',
+      });
+      formMethods.setError('code', {
+        type: 'INVALID_CODE',
+        message: '인증번호가 올바르지 않습니다.',
       });
       return; // throw 해도 catch 해줄 곳이 없음
     }
@@ -292,10 +312,17 @@ const SignUp = () => {
                 type: 'ERROR',
                 error: 'INVALID_CODE',
               });
+              formMethods.setError('code', {
+                type: 'INVALID_CODE',
+                message: '인증번호가 올바르지 않습니다.',
+              });
             }
           })
-          .catch(({ data }) => {
-            console.error(data);
+          .catch(() => {
+            formMethods.setError('code', {
+              type: 'INVALID_CODE',
+              message: '인증번호가 올바르지 않습니다.',
+            });
           });
       })
       .catch((error) => {
@@ -307,14 +334,19 @@ const SignUp = () => {
     captcha: string;
     username: string;
   }> = async () => {
-    const { invalid, isDirty, isTouched } =
-      formMethods.getFieldState('username');
+    // 인증코드 입력 시간 만료 시 에러 상태이므로 에러를 지우기 위해 다시 검증
+    await formMethods.trigger('username');
 
-    // 이메일 필드가 변경되고 나서 그 값이 유효한지 확인
-    if (!isDirty || !isTouched || invalid) {
+    const { invalid } = formMethods.getFieldState('username');
+
+    if (invalid) {
       dispatchEmailVerification({
         type: 'ERROR',
         error: 'INVALID_EMAIL',
+      });
+      formMethods.setError('code', {
+        type: 'INVALID_EMAIL',
+        message: '이메일주소가 올바르지 않습니다.',
       });
       throw new Error('Invalid email address');
     }
@@ -331,6 +363,10 @@ const SignUp = () => {
     dispatchEmailVerification({
       type: 'ERROR',
       error: 'INVALID_RECAPTCHA',
+    });
+    formMethods.setError('code', {
+      type: 'INVALID_RECAPTCHA',
+      message: '크롬, 엣지, 사파리 등 일반 브라우저로 접속바랍니다.',
     });
     throw new Error('Google reCAPTCHA element not found');
   };
@@ -409,16 +445,10 @@ const SignUp = () => {
               <EmailVerificationCode
                 state={emailVerification}
                 dispatch={dispatchEmailVerification}
+                remaining={timerState.remaining}
                 onClick={handleSendEmailCode}
               />
             )}
-
-            <p>
-              오류메시지: timer: {timerState.status} / {timerState.remaining} /
-              status:
-              <span>{emailVerification.status}</span>/ error:
-              <span>{emailVerification.error}</span>
-            </p>
 
             <PasswordConfirm />
 

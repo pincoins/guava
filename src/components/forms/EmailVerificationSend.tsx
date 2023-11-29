@@ -63,26 +63,6 @@ const EmailVerificationSend = ({
                     dispatch({ type: 'RESET' });
                   }
                 },
-                validate: {
-                  error: (_) => {
-                    if (state.status !== 'COMPLETED') {
-                      switch (state.error) {
-                        case 'INVALID_EMAIL':
-                          return '이메일 형식이 올바르지 않습니다.';
-                        case 'INVALID_RECAPTCHA':
-                          return '다른 브라우저에서 시도해주세요.';
-                        case 'DUPLICATED':
-                          return '이미 등록된 이메일 주소입니다.';
-                        case 'ALREADY_SENT':
-                          return '인증메일이 이미 발송되었습니다.';
-                        case 'EXPIRED':
-                          return '인증번호 입력 시간이 초과되었습니다.';
-                        case 'INVALID_CODE':
-                          return '인증번호가 올바르지 않습니다.';
-                      }
-                    }
-                  },
-                },
               })}
               className={className(
                 'block w-full border-0 focus:ring-0 p-0',

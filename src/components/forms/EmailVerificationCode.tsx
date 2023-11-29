@@ -8,14 +8,17 @@ import {
   VerificationAction,
   VerificationState,
 } from '../../hooks/useEmailVerification';
+import { MdPassword } from 'react-icons/md';
 
 const EmailVerificationCode = ({
   state,
   dispatch,
+  remaining,
   onClick,
 }: {
   state: VerificationState;
   dispatch: Dispatch<VerificationAction>;
+  remaining: number;
   onClick: (_: React.MouseEvent<HTMLElement>) => Promise<void>;
 }) => {
   const {
@@ -31,62 +34,70 @@ const EmailVerificationCode = ({
   return (
     <>
       <div className="flex flex-col gap-y-1.5">
-        <div
-          className={className(
-            'rounded-md shadow-sm w-full border-0 px-3 pb-1.5 pt-2.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset',
-            !errors.code
-              ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
-              : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
-          )}
-        >
-          <label
-            htmlFor="code"
-            className="block text-xs font-medium text-gray-900 mb-1"
-          >
-            인증번호
-          </label>
-          <input
-            type="text"
-            minLength={6}
-            maxLength={6}
-            placeholder="000000"
-            readOnly={!editable}
-            {...register('code', {
-              required: false,
-              onChange: (_) => {
-                if (errors.code) {
-                  clearErrors('code');
-                }
-
-                if (editable) {
-                  dispatch({ type: 'SENT' });
-                }
-              },
-            })}
+        <div className="flex">
+          <div
             className={className(
-              'block w-full border-0 focus:ring-0 p-0',
+              'rounded-md shadow-sm w-full border-0 px-3 pb-1.5 pt-2.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset relative',
               !errors.code
                 ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
                 : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
             )}
-          />
+          >
+            <label
+              htmlFor="code"
+              className="block text-xs font-medium text-gray-900 mb-1"
+            >
+              인증번호&nbsp;
+              {remaining &&
+                '[' +
+                  new Date(remaining * 1000).toISOString().substring(14, 19) +
+                  ']'}
+            </label>
+            <input
+              type="text"
+              minLength={6}
+              maxLength={6}
+              placeholder="000000"
+              readOnly={!editable}
+              {...register('code', {
+                required: false,
+                onChange: (_) => {
+                  if (errors.code) {
+                    clearErrors('code');
+                  }
+
+                  if (editable) {
+                    dispatch({ type: 'SENT' });
+                  }
+                },
+              })}
+              className={className(
+                'block w-full border-0 focus:ring-0 p-0',
+                !errors.code
+                  ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
+                  : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
+              )}
+            />
+          </div>
+          <Button
+            type="button"
+            onClick={onClick}
+            inline
+            center
+            preset={errors.code ? 'danger' : 'secondary'}
+            className="text-sm font-semibold relative -ml-1 w-24 rounded-br-md rounded-tr-md"
+            disabled={state.status !== 'SENT'}
+          >
+            <MdPassword /> 입력
+          </Button>
         </div>
+
         {errors.code && (
           <p className="ml-2 text-sm text-red-600">
             <span>{errors.code.message}</span>
           </p>
         )}
       </div>
-
-      <Button
-        type="button"
-        onClick={onClick}
-        disabled={state.status !== 'SENT'}
-        preset="primary"
-        className="text-sm font-semibold"
-      >
-        인증번호 입력
-      </Button>
     </>
   );
 };

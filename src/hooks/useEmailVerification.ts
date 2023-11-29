@@ -1,8 +1,8 @@
 import { useReducer } from 'react';
 
-export type Status = 'PENDING' | 'SENT' | 'COMPLETED' | 'ERROR';
+export type VerificationStatus = 'PENDING' | 'SENT' | 'COMPLETED' | 'ERROR';
 
-export type Error =
+export type VerificationError =
   | 'INVALID_EMAIL'
   | 'INVALID_RECAPTCHA'
   | 'ALREADY_SENT'
@@ -12,8 +12,8 @@ export type Error =
   | null;
 
 export type VerificationState = {
-  status: Status;
-  error: Error;
+  status: VerificationStatus;
+  error: VerificationError;
   timeout: number;
 };
 
@@ -22,7 +22,7 @@ export type VerificationAction =
   | { type: 'COMPLETED' }
   | { type: 'RESET' }
   | { type: 'RELOADED'; timeout: number }
-  | { type: 'ERROR'; error: Error };
+  | { type: 'ERROR'; error: VerificationError };
 
 const initialState: VerificationState = {
   status: 'PENDING',
