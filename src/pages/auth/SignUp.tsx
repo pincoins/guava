@@ -278,7 +278,7 @@ const SignUp = () => {
         type: 'ERROR',
         error: 'INVALID_CODE',
       });
-      formMethods.setError('username', {
+      formMethods.setError('code', {
         type: 'INVALID_CODE',
         message: '인증번호가 올바르지 않습니다.',
       });
@@ -318,8 +318,11 @@ const SignUp = () => {
               });
             }
           })
-          .catch(({ data }) => {
-            console.error(data);
+          .catch(() => {
+            formMethods.setError('code', {
+              type: 'INVALID_CODE',
+              message: '인증번호가 올바르지 않습니다.',
+            });
           });
       })
       .catch((error) => {
@@ -441,16 +444,10 @@ const SignUp = () => {
               <EmailVerificationCode
                 state={emailVerification}
                 dispatch={dispatchEmailVerification}
+                remaining={timerState.remaining}
                 onClick={handleSendEmailCode}
               />
             )}
-
-            <p>
-              오류메시지: timer: {timerState.status} / {timerState.remaining} /
-              status:
-              <span>{emailVerification.status}</span>/ error:
-              <span>{emailVerification.error}</span>
-            </p>
 
             <PasswordConfirm />
 
