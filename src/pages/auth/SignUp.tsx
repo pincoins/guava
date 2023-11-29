@@ -113,15 +113,11 @@ const SignUp = () => {
           );
 
         if (duration <= 0) {
-          formMethods.setValue('username', emailVerified, {
-            shouldValidate: true,
-            shouldDirty: true,
-            shouldTouch: true,
-          });
           dispatchEmailVerification({
             type: 'ERROR',
             error: 'EXPIRED',
           });
+          // 인증번호 입력 만료 시 username 이메일 필드 폼 검증 에러 처리
           formMethods.setError('username', {
             type: 'EXPIRED',
             message: '인증번호 입력시간이 초과했습니다.',
@@ -216,8 +212,12 @@ const SignUp = () => {
           .unwrap()
           .then(({ success }) => {
             if (success) {
-              // 상태변경
-              if (emailVerification.status === 'PENDING') {
+              // 상태변경 - 인증번호 만료 시 재발송 처리
+              if (
+                emailVerification.status === 'PENDING' ||
+                (emailVerification.status === 'ERROR' &&
+                  emailVerification.error === 'EXPIRED')
+              ) {
                 dispatchEmailVerification({ type: 'SENT' });
               }
 
@@ -334,11 +334,12 @@ const SignUp = () => {
     captcha: string;
     username: string;
   }> = async () => {
-    const { invalid, isDirty, isTouched } =
-      formMethods.getFieldState('username');
+    // 인증코드 입력 시간 만료 시 에러 상태이므로 에러를 지우기 위해 다시 검증
+    await formMethods.trigger('username');
 
-    // 이메일 필드가 변경되고 나서 그 값이 유효한지 확인
-    if (!isDirty || !isTouched || invalid) {
+    const { invalid } = formMethods.getFieldState('username');
+
+    if (invalid) {
       dispatchEmailVerification({
         type: 'ERROR',
         error: 'INVALID_EMAIL',
