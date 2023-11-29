@@ -122,6 +122,10 @@ const SignUp = () => {
             type: 'ERROR',
             error: 'EXPIRED',
           });
+          formMethods.setError('username', {
+            type: 'EXPIRED',
+            message: '인증번호 입력시간이 초과했습니다.',
+          });
         }
       }
     },
@@ -235,15 +239,27 @@ const SignUp = () => {
                 type: 'ERROR',
                 error: 'INVALID_RECAPTCHA',
               });
+              formMethods.setError('username', {
+                type: 'INVALID_RECAPTCHA',
+                message: '크롬, 엣지, 사파리 등 일반 브라우저로 접속바랍니다.',
+              });
             } else if (data.message === 'Duplicated email address') {
               dispatchEmailVerification({
                 type: 'ERROR',
                 error: 'DUPLICATED',
               });
+              formMethods.setError('username', {
+                type: 'DUPLICATED',
+                message: '이미 등록된 이메일 주소입니다.',
+              });
             } else if (data.message === 'Email already sent') {
               dispatchEmailVerification({
                 type: 'ERROR',
                 error: 'ALREADY_SENT',
+              });
+              formMethods.setError('username', {
+                type: 'ALREADY_SENT',
+                message: '이메일이 이미 발송되었습니다.',
               });
             }
           });
@@ -261,6 +277,10 @@ const SignUp = () => {
       dispatchEmailVerification({
         type: 'ERROR',
         error: 'INVALID_CODE',
+      });
+      formMethods.setError('username', {
+        type: 'INVALID_CODE',
+        message: '인증번호가 올바르지 않습니다.',
       });
       return; // throw 해도 catch 해줄 곳이 없음
     }
@@ -292,6 +312,10 @@ const SignUp = () => {
                 type: 'ERROR',
                 error: 'INVALID_CODE',
               });
+              formMethods.setError('code', {
+                type: 'INVALID_CODE',
+                message: '인증번호가 올바르지 않습니다.',
+              });
             }
           })
           .catch(({ data }) => {
@@ -316,6 +340,10 @@ const SignUp = () => {
         type: 'ERROR',
         error: 'INVALID_EMAIL',
       });
+      formMethods.setError('code', {
+        type: 'INVALID_EMAIL',
+        message: '이메일주소가 올바르지 않습니다.',
+      });
       throw new Error('Invalid email address');
     }
 
@@ -331,6 +359,10 @@ const SignUp = () => {
     dispatchEmailVerification({
       type: 'ERROR',
       error: 'INVALID_RECAPTCHA',
+    });
+    formMethods.setError('code', {
+      type: 'INVALID_RECAPTCHA',
+      message: '크롬, 엣지, 사파리 등 일반 브라우저로 접속바랍니다.',
     });
     throw new Error('Google reCAPTCHA element not found');
   };
