@@ -28,7 +28,7 @@ const Button = ({
     'inline-flex gap-x-2': inline,
     'p-1': !inline,
 
-    'opacity-80': disabled,
+    'opacity-50': disabled,
 
     'animate-bounce': animate === 'bounce',
     'animate-ping': animate === 'ping',
