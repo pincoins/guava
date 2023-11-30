@@ -1,68 +1,9 @@
 import className from 'classnames';
-import {
-  MdInfoOutline,
-  MdLogin,
-  MdLogout,
-  MdPerson,
-  MdPersonAdd,
-  MdSendToMobile,
-  MdShoppingBag,
-} from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import ContainerFixed from '../../widgets/ContainerFixed';
-
-const authenticated = [
-  {
-    id: 1,
-    title: '마이페이지',
-    to: '/auth/profile',
-    icon: MdPerson,
-  },
-  {
-    id: 2,
-    title: '로그아웃',
-    to: '/auth/sign-out',
-    icon: MdLogout,
-  },
-];
-
-const unauthenticated = [
-  {
-    id: 1,
-    title: '로그인',
-    to: '/auth/sign-in',
-    icon: MdLogin,
-  },
-  {
-    id: 2,
-    title: '회원가입',
-    to: '/auth/sign-up',
-    icon: MdPersonAdd,
-  },
-];
-
-const menu = [
-  {
-    id: 1,
-    title: '장바구니',
-    to: '/shop/cart',
-    icon: MdShoppingBag,
-  },
-  {
-    id: 2,
-    title: '고객센터',
-    to: '/help/faq',
-    icon: MdInfoOutline,
-  },
-  {
-    id: 3,
-    title: '주문/발송',
-    to: '/shop/orders',
-    icon: MdSendToMobile,
-  },
-];
+import { authenticated, menu, unauthenticated } from './navarItems';
 
 const NavbarDesktop = ({ ...rest }) => {
   const { loginState } = useAppSelector((state: RootState) => state.auth);
@@ -83,7 +24,7 @@ const NavbarDesktop = ({ ...rest }) => {
                 alt={process.env.SITE_TITLE}
                 className="h-4 w-4"
               />
-              <span className="font-bold whitespace-nowrap text-[#e88f2f]">
+              <span className="text-xl font-bold whitespace-nowrap text-[#e88f2f]">
                 {process.env.SITE_TITLE}
               </span>
             </Link>

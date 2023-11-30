@@ -195,10 +195,10 @@ const SignIn = () => {
             type="submit"
             disabled={isSubmitting}
             className="font-semibold py-2"
-            inline
-            rounded="full"
-            center
             preset="primary"
+            inline
+            center
+            rounded="full"
           >
             {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogin />}
             로그인

@@ -58,11 +58,11 @@ const SignOut = () => {
           <Button
             type="submit"
             disabled={isSubmitting}
+            className="font-semibold py-2"
+            preset="danger"
             inline
             center
             rounded="full"
-            preset="danger"
-            className="font-semibold py-2"
           >
             {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogout />}
             로그아웃
