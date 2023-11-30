@@ -67,12 +67,12 @@ const Modal = ({
                   <div className="mt-4 flex justify-center">
                     <Button
                       type="button"
-                      className="text-sm font-semibold block w-full py-2"
-                      inline
-                      rounded="md"
-                      center
-                      preset="primary"
                       onClick={onClose}
+                      className="text-sm font-semibold block w-full py-2"
+                      preset="primary"
+                      inline
+                      center
+                      rounded="md"
                     >
                       확인
                     </Button>

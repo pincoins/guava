@@ -76,16 +76,16 @@ const EmailVerificationSend = ({
           <Button
             type="button"
             onClick={onClick}
-            inline
-            center
-            preset={errors.username ? 'danger' : 'secondary'}
-            className="text-sm font-semibold relative w-24 rounded-br-md rounded-tr-md"
             disabled={
               !(
                 state.status === 'PENDING' ||
                 (state.status === 'ERROR' && state.error === 'EXPIRED')
               )
             }
+            className="text-sm font-semibold relative w-24 rounded-br-md rounded-tr-md"
+            preset={errors.username ? 'danger' : 'secondary'}
+            inline
+            center
           >
             <MdOutlineMailLock /> 인증
           </Button>

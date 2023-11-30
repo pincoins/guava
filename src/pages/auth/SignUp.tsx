@@ -465,11 +465,11 @@ const SignUp = () => {
             <Button
               type="submit"
               disabled={formMethods.formState.isSubmitting}
-              inline
-              rounded="full"
-              center
-              preset="primary"
               className="font-semibold py-2"
+              preset="primary"
+              inline
+              center
+              rounded="full"
             >
               {formMethods.formState.isSubmitting ? (
                 <GoSync className="animate-spin" />

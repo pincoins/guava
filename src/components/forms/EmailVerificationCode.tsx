@@ -82,11 +82,11 @@ const EmailVerificationCode = ({
           <Button
             type="button"
             onClick={onClick}
+            disabled={state.status !== 'SENT'}
+            className="text-sm font-semibold relative w-24 rounded-br-md rounded-tr-md"
+            preset={errors.code ? 'danger' : 'secondary'}
             inline
             center
-            preset={errors.code ? 'danger' : 'secondary'}
-            className="text-sm font-semibold relative w-24 rounded-br-md rounded-tr-md"
-            disabled={state.status !== 'SENT'}
           >
             <MdOutlineKeyboardAlt /> 입력
           </Button>

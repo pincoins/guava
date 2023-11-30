@@ -116,8 +116,8 @@ const Drawer = ({
     <>
       <Button
         onClick={onOpen}
-        rounded="sm"
         className="text-2xl border-green-950"
+        rounded="sm"
       >
         <MdOutlineMenu />
       </Button>
