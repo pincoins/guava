@@ -15,7 +15,7 @@ const PasswordConfirm = () => {
       <div className="flex flex-col gap-y-1.5">
         <div
           className={className(
-            'rounded-md shadow-sm w-full border-0 px-3 pb-1.5 pt-2.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset',
+            'rounded-md shadow-sm w-full border-0 px-2 pb-0.5 pt-1.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset',
             !errors.password
               ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
               : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
@@ -23,7 +23,7 @@ const PasswordConfirm = () => {
         >
           <label
             htmlFor="password"
-            className="block text-xs font-medium text-gray-900 mb-1"
+            className="block text-xs font-medium text-gray-900 mb-0.5"
           >
             비밀번호
           </label>
@@ -55,7 +55,7 @@ const PasswordConfirm = () => {
       <div className="flex flex-col gap-y-1.5">
         <div
           className={className(
-            'rounded-md shadow-sm w-full border-0 px-3 pb-1.5 pt-2.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset',
+            'rounded-md shadow-sm w-full border-0 px-2 pb-0.5 pt-1.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset',
             !errors.passwordRepeat
               ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
               : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
@@ -63,7 +63,7 @@ const PasswordConfirm = () => {
         >
           <label
             htmlFor="passwordRepeat"
-            className="block text-xs font-medium text-gray-900 mb-1"
+            className="block text-xs font-medium text-gray-900 mb-0.5"
           >
             비밀번호 확인
           </label>

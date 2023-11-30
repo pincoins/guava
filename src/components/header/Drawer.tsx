@@ -114,7 +114,11 @@ const Drawer = ({
 
   return (
     <>
-      <Button onClick={onOpen} className="text-2xl border-green-950">
+      <Button
+        onClick={onOpen}
+        rounded="sm"
+        className="text-2xl border-green-950"
+      >
         <MdOutlineMenu />
       </Button>
       {/* 트랜지션 효과 2개를 감쌀 것 */}
