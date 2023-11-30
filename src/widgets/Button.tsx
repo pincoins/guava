@@ -10,7 +10,6 @@ const Button = ({
   flat,
   center,
   rounded,
-  loading,
   animate,
   ...rest
 }: {
@@ -20,7 +19,6 @@ const Button = ({
   flat?: boolean;
   center?: boolean;
   rounded?: 'base' | 'sm' | 'md' | 'full';
-  loading?: boolean;
   animate?: 'bounce' | 'ping';
 } & ComponentPropsWithoutRef<'button'> & { children?: ReactNode }) => {
   const classes = className(rest.className, 'items-center', {
@@ -30,7 +28,6 @@ const Button = ({
     'inline-flex gap-x-2': inline,
     'p-1': !inline,
 
-    'opacity-80': loading,
     'opacity-50': disabled,
 
     'animate-bounce': animate === 'bounce',
@@ -74,7 +71,7 @@ const Button = ({
   });
 
   return (
-    <button {...rest} disabled={loading} className={classes}>
+    <button {...rest} disabled={disabled} className={classes}>
       {children}
     </button>
   );

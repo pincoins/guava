@@ -194,7 +194,6 @@ const SignIn = () => {
           <Button
             type="submit"
             disabled={isSubmitting}
-            loading={isSubmitting}
             className="font-semibold py-2"
             inline
             rounded="full"
