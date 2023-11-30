@@ -83,7 +83,7 @@ const NavbarDesktop = ({ ...rest }) => {
                 alt={process.env.SITE_TITLE}
                 className="h-4 w-4"
               />
-              <span className="font-bold whitespace-nowrap text-[#e88f2f]">
+              <span className="text-xl font-bold whitespace-nowrap text-[#e88f2f]">
                 {process.env.SITE_TITLE}
               </span>
             </Link>
