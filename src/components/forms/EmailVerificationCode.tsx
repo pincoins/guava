@@ -37,7 +37,7 @@ const EmailVerificationCode = ({
         <div className="flex">
           <div
             className={className(
-              'rounded-md shadow-sm w-full border-0 px-3 pb-1.5 pt-2.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset relative',
+              'rounded-tl-md rounded-bl-md shadow-sm w-full border-0 px-3 pb-1.5 pt-2.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset relative',
               !errors.code
                 ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
                 : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
@@ -85,7 +85,7 @@ const EmailVerificationCode = ({
             inline
             center
             preset={errors.code ? 'danger' : 'secondary'}
-            className="font-semibold relative -ml-1 w-24 rounded-br-md rounded-tr-md"
+            className="font-semibold relative w-24 rounded-br-md rounded-tr-md"
             disabled={state.status !== 'SENT'}
           >
             <MdOutlineKeyboardAlt /> 입력
