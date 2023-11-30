@@ -6,7 +6,8 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Link } from 'react-router-dom';
 import { MdOutlineMenu } from 'react-icons/md';
 import DrawerHeading from './DrawerHeading';
-import { authenticated, menu, unauthenticated, products } from './navarItems';
+import { authenticated, menu, unauthenticated } from './navarItems';
+import { products } from './products';
 
 const Drawer = ({
   isOpen,
