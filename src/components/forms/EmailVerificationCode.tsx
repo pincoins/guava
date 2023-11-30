@@ -85,7 +85,7 @@ const EmailVerificationCode = ({
             inline
             center
             preset={errors.code ? 'danger' : 'secondary'}
-            className="font-semibold relative w-24 rounded-br-md rounded-tr-md"
+            className="text-sm font-semibold relative w-24 rounded-br-md rounded-tr-md"
             disabled={state.status !== 'SENT'}
           >
             <MdOutlineKeyboardAlt /> 입력

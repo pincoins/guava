@@ -79,7 +79,7 @@ const EmailVerificationSend = ({
             inline
             center
             preset={errors.username ? 'danger' : 'secondary'}
-            className="font-semibold relative w-24 rounded-br-md rounded-tr-md"
+            className="text-sm font-semibold relative w-24 rounded-br-md rounded-tr-md"
             disabled={
               !(
                 state.status === 'PENDING' ||
