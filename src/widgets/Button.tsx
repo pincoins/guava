@@ -3,6 +3,7 @@ import { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 const Button = ({
   children,
+  disabled,
   preset,
   inline,
   outline,
@@ -30,6 +31,7 @@ const Button = ({
     'p-1': !inline,
 
     'opacity-80': loading,
+    'opacity-50': disabled,
 
     'animate-bounce': animate === 'bounce',
     'animate-ping': animate === 'ping',

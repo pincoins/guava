@@ -7,7 +7,7 @@ import { useFormContext } from 'react-hook-form';
 import className from 'classnames';
 import { SignUpForm } from '../../pages/auth/SignUp';
 import Button from '../../widgets/Button';
-import { MdSendToMobile } from 'react-icons/md';
+import { MdOutlineMailLock } from 'react-icons/md';
 
 const EmailVerificationSend = ({
   state,
@@ -30,7 +30,7 @@ const EmailVerificationSend = ({
         <div className="flex">
           <div
             className={className(
-              'rounded-md shadow-sm w-full border-0 px-3 pb-1.5 pt-2.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset relative',
+              'rounded-tl-md rounded-bl-md shadow-sm w-full border-0 px-3 pb-1.5 pt-2.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset relative',
               !errors.username
                 ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
                 : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
@@ -79,7 +79,7 @@ const EmailVerificationSend = ({
             inline
             center
             preset={errors.username ? 'danger' : 'secondary'}
-            className="text-sm font-semibold relative -ml-1 w-24 rounded-br-md rounded-tr-md"
+            className="font-semibold relative w-24 rounded-br-md rounded-tr-md"
             disabled={
               !(
                 state.status === 'PENDING' ||
@@ -87,7 +87,7 @@ const EmailVerificationSend = ({
               )
             }
           >
-            <MdSendToMobile /> 발송
+            <MdOutlineMailLock /> 인증
           </Button>
         </div>
 
