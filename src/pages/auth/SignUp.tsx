@@ -201,10 +201,18 @@ const SignUp = () => {
     }
   }, []);
 
+  if (process.env.NODE_ENV === 'development') {
+    useEffect(() => {
+      console.log(emailVerification, timerState);
+    }, [emailVerification, timerState]);
+  }
+
   // 8. 이벤트 핸들러
   const handleSendEmailVerification = async (
     _: React.MouseEvent<HTMLElement>
   ) => {
+    console.log('send click', emailVerification, timerState);
+
     await validateUsernameAndCaptcha()
       .then(({ username, captcha }) => {
         sendEmailVerification({
@@ -457,7 +465,6 @@ const SignUp = () => {
             <Button
               type="submit"
               disabled={formMethods.formState.isSubmitting}
-              loading={formMethods.formState.isSubmitting}
               inline
               rounded="full"
               center

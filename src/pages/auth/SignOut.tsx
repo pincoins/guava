@@ -58,7 +58,6 @@ const SignOut = () => {
           <Button
             type="submit"
             disabled={isSubmitting}
-            loading={isSubmitting}
             inline
             center
             rounded="full"
