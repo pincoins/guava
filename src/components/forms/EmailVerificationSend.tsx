@@ -30,7 +30,7 @@ const EmailVerificationSend = ({
         <div className="flex">
           <div
             className={className(
-              'rounded-tl-md rounded-bl-md shadow-sm w-full border-0 px-3 pb-1.5 pt-2.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset relative',
+              'rounded-tl-md rounded-bl-md shadow-sm w-full border-0 px-2 pb-0.5 pt-1.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset relative',
               !errors.username
                 ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
                 : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
@@ -38,7 +38,7 @@ const EmailVerificationSend = ({
           >
             <label
               htmlFor="username"
-              className="block text-xs font-medium text-gray-900 mb-1"
+              className="block text-xs font-medium text-gray-900 mb-0.5"
             >
               이메일
             </label>

@@ -77,11 +77,16 @@ const NavbarDesktop = ({ ...rest }) => {
       <div className="">
         <ContainerFixed className="py-2">
           <div className="flex justify-between">
-            <div className="font-bold">
-              <Link to="/">
-                <img src={process.env.SITE_LOGO} alt={process.env.SITE_TITLE} />
-              </Link>
-            </div>
+            <Link to="/" className="inline-flex items-center gap-x-1">
+              <img
+                src={process.env.SITE_LOGO}
+                alt={process.env.SITE_TITLE}
+                className="h-4 w-4"
+              />
+              <span className="font-bold whitespace-nowrap text-[#e88f2f]">
+                {process.env.SITE_TITLE}
+              </span>
+            </Link>
             <div className="flex-none flex gap-x-4">
               {menu.map((item) => {
                 return (
