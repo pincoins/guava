@@ -23,7 +23,7 @@ const Home = () => {
         <PanelBody>
           <ul
             role="list"
-            className="marker:text-[#03353e] text-sm list-disc pl-5 space-y-2 mb-4 leading-8"
+            className="marker:text-[#03353e] text-sm list-disc pl-4 space-y-2 mb-4 leading-8"
           >
             <li>
               게임에서 알게 된 사람으로부터 상품권 구매로 일부 또는 전체 금액을
