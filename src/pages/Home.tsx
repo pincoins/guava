@@ -23,7 +23,7 @@ const Home = () => {
         <PanelBody>
           <ul
             role="list"
-            className="marker:text-[#03353e] text-sm list-disc pl-4 space-y-2 mb-4 leading-8"
+            className="marker:text-[#03353e] text-sm list-disc pl-4 space-y-2 mb-4 leading-6"
           >
             <li>
               게임에서 알게 된 사람으로부터 상품권 구매로 일부 또는 전체 금액을
@@ -42,7 +42,7 @@ const Home = () => {
               상품권으로 요구 받았습니까?
             </li>
           </ul>
-          <p className="text-red-600 font-bold leading-8">
+          <p className="text-red-600 font-bold leading-6">
             위 질문 중 하나라도 해당하면 사기꾼과 메신저 또는 전화 연락을 끊고
             바로 경찰서에 연락하시기 바랍니다.
           </p>
@@ -56,7 +56,7 @@ const Home = () => {
           <h3 className="text-lg font-semibold text-[#e88f2f]">공지사항</h3>
         </PanelHeading>
         <PanelBody>
-          <div className="grid grid-cols-1">
+          <div className="grid grid-cols-1 gap-y-1">
             <div className="flex gap-x-4">
               <span className="flex-none">[말머리]</span>
               <span className="flex-1 truncate">
@@ -130,65 +130,67 @@ const Home = () => {
           <h3 className="text-lg font-semibold text-[#e88f2f]">이용후기</h3>
         </PanelHeading>
         <PanelBody>
-          <div className="flex gap-x-4">
-            <span className="flex-1 truncate">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </span>
-            <span className="flex-none">2023.12.01</span>
-          </div>
-          <div className="flex gap-x-4">
-            <span className="flex-1 truncate">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </span>
-            <span className="flex-none">2023.12.01</span>
-          </div>
-          <div className="flex gap-x-4">
-            <span className="flex-1 truncate">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </span>
-            <span className="flex-none">2023.12.01</span>
-          </div>
-          <div className="flex gap-x-4">
-            <span className="flex-1 truncate">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </span>
-            <span className="flex-none">2023.12.01</span>
-          </div>
-          <div className="flex gap-x-4">
-            <span className="flex-1 truncate">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </span>
-            <span className="flex-none">2023.12.01</span>
+          <div className="grid grid-cols-1 gap-y-1">
+            <div className="flex gap-x-4">
+              <span className="flex-1 truncate">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </span>
+              <span className="flex-none">2023.12.01</span>
+            </div>
+            <div className="flex gap-x-4">
+              <span className="flex-1 truncate">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </span>
+              <span className="flex-none">2023.12.01</span>
+            </div>
+            <div className="flex gap-x-4">
+              <span className="flex-1 truncate">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </span>
+              <span className="flex-none">2023.12.01</span>
+            </div>
+            <div className="flex gap-x-4">
+              <span className="flex-1 truncate">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </span>
+              <span className="flex-none">2023.12.01</span>
+            </div>
+            <div className="flex gap-x-4">
+              <span className="flex-1 truncate">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </span>
+              <span className="flex-none">2023.12.01</span>
+            </div>
           </div>
         </PanelBody>
       </Panel>
