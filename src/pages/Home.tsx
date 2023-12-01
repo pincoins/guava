@@ -26,7 +26,7 @@ const products = [
     name: '문화상품권',
 
     href: '#',
-    imageSrc: 'https://placehold.co/468x300/red/white',
+    imageSrc: 'https://placehold.co/468x300/pink/white',
     imageAlt: '상품권이미지',
     price: '4%',
   },
@@ -71,7 +71,7 @@ const products = [
     name: '스마트문화상품권',
 
     href: '#',
-    imageSrc: 'https://placehold.co/468x300/yellow/white',
+    imageSrc: 'https://placehold.co/468x300/violet/white',
     imageAlt: '상품권이미지',
     price: '3%',
   },
@@ -120,7 +120,13 @@ const Home = () => {
                     <h3 className="font-medium text-gray-900 text-center">
                       {product.name}
                     </h3>
-                    <p className="mt-1 flex gap-x-2 justify-center">
+                  </div>
+                  <div className="absolute inset-x-0 top-0 flex h-32 items-end justify-end overflow-hidden rounded-lg p-4">
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white opacity-50"
+                    />
+                    <p className="relative flex gap-x-2 text-sm font-semibold text-white">
                       최대
                       <span className="inline-flex font-bold items-center text-red-600">
                         {product.price} <MdArrowDownward />
