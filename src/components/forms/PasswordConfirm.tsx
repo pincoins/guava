@@ -12,7 +12,7 @@ const PasswordConfirm = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-y-1.5">
+      <div className="grid grid-cols-1 gap-y-1.5">
         <div
           className={className(
             'rounded-md shadow-sm w-full border-0 px-2 pb-0.5 pt-1.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset',
@@ -52,7 +52,7 @@ const PasswordConfirm = () => {
           </p>
         )}
       </div>
-      <div className="flex flex-col gap-y-1.5">
+      <div className="grid grid-cols-1 gap-y-1.5">
         <div
           className={className(
             'rounded-md shadow-sm w-full border-0 px-2 pb-0.5 pt-1.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset',
