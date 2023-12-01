@@ -2,6 +2,98 @@ import ContainerFixed from '../widgets/ContainerFixed';
 import Panel from '../widgets/panel/Panel';
 import PanelHeading from '../widgets/panel/PanelHeading';
 import PanelBody from '../widgets/panel/PanelBody';
+import { MdArrowDownward } from 'react-icons/md';
+
+const products = [
+  {
+    id: 1,
+    name: '구글기프트카드',
+    href: '#',
+    imageSrc: 'https://placehold.co/468x300/orange/white',
+    imageAlt: '상품권이미지',
+    price: '6%',
+  },
+  {
+    id: 2,
+    name: '넥슨카드',
+    href: '#',
+    imageSrc: 'https://placehold.co/468x300/blue/white',
+    imageAlt: '상품권이미지',
+    price: '5%',
+  },
+  {
+    id: 3,
+    name: '문화상품권',
+
+    href: '#',
+    imageSrc: 'https://placehold.co/468x300/red/white',
+    imageAlt: '상품권이미지',
+    price: '4%',
+  },
+  {
+    id: 4,
+    name: '해피머니',
+
+    href: '#',
+    imageSrc: 'https://placehold.co/468x300/green/white',
+    imageAlt: '상품권이미지',
+    price: '7%',
+  },
+  {
+    id: 5,
+    name: '컬쳐랜드상품권',
+
+    href: '#',
+    imageSrc: 'https://placehold.co/468x300/gray/white',
+    imageAlt: '상품권이미지',
+    price: '7%',
+  },
+  {
+    id: 6,
+    name: '도서문화상품권',
+
+    href: '#',
+    imageSrc: 'https://placehold.co/468x300/teal/white',
+    imageAlt: '상품권이미지',
+    price: '5%',
+  },
+  {
+    id: 7,
+    name: '플레이스테이션',
+
+    href: '#',
+    imageSrc: 'https://placehold.co/468x300/magenta/white',
+    imageAlt: '상품권이미지',
+    price: '2%',
+  },
+  {
+    id: 8,
+    name: '스마트문화상품권',
+
+    href: '#',
+    imageSrc: 'https://placehold.co/468x300/yellow/white',
+    imageAlt: '상품권이미지',
+    price: '3%',
+  },
+  {
+    id: 9,
+    name: '요기요',
+
+    href: '#',
+    imageSrc: 'https://placehold.co/468x300/black/white',
+    imageAlt: '상품권이미지',
+    price: '3%',
+  },
+  {
+    id: 10,
+    name: '한게임상품권',
+
+    href: '#',
+    imageSrc: 'https://placehold.co/468x300/aqua/white',
+    imageAlt: '상품권이미지',
+    price: '1%',
+  },
+];
 
 const Home = () => {
   return (
@@ -12,7 +104,34 @@ const Home = () => {
             오늘의 최저가 상품권
           </h3>
         </PanelHeading>
-        <PanelBody>상품들 나열</PanelBody>
+        <PanelBody>
+          <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-2 sm:gap-x-6 md:grid-cols-6 md:gap-x-8">
+            {products.map((product) => (
+              <div key={product.id}>
+                <div className="relative">
+                  <div className="relative h-32 w-full overflow-hidden rounded-lg">
+                    <img
+                      src={product.imageSrc}
+                      alt={product.imageAlt}
+                      className="h-full w-full object-cover object-center"
+                    />
+                  </div>
+                  <div className="relative mt-1">
+                    <h3 className="font-medium text-gray-900 text-center">
+                      {product.name}
+                    </h3>
+                    <p className="mt-1 flex gap-x-2 justify-center">
+                      최대
+                      <span className="inline-flex font-bold items-center text-red-600">
+                        {product.price} <MdArrowDownward />
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </PanelBody>
       </Panel>
       <Panel divided className="col-span-6 md:col-span-4 gap-y-2">
         <PanelHeading>
