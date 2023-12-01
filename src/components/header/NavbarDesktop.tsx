@@ -8,7 +8,7 @@ import { authenticated, menu, unauthenticated } from './navarItems';
 const NavbarDesktop = ({ ...rest }) => {
   const { loginState } = useAppSelector((state: RootState) => state.auth);
 
-  const classes = className(rest.className, 'flex flex-col');
+  const classes = className(rest.className, 'grid grid-cols-1');
 
   // 데스크탑 메뉴 (fluid 기본값)
   return (

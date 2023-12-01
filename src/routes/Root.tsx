@@ -78,7 +78,7 @@ const Root = () => {
   // - 푸터: 자신의 크기만큼 - flex: 0 0 auto;
 
   return (
-    <div className="flex flex-col gap-y-1 md:gap-y-4 h-screen">
+    <div className="flex flex-col gap-y-1 sm:gap-y-8 h-screen">
       <Header className="flex-none" />
       <div className="flex-1 bg-white">
         <Outlet />

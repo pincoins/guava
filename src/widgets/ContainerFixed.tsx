@@ -4,7 +4,7 @@ import { ComponentPropsWithoutRef, ReactNode } from 'react';
 const ContainerFixed = ({
   children,
   ...rest
-}: {} & ComponentPropsWithoutRef<'div'> & { children?: ReactNode }) => {
+}: { children?: ReactNode } & ComponentPropsWithoutRef<'div'>) => {
   const classes = className(rest.className, 'mx-auto max-w-7xl');
 
   // 가로 정렬

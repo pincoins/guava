@@ -13,6 +13,7 @@ const Button = ({
   animate,
   ...rest
 }: {
+  children?: ReactNode;
   preset?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
   inline?: boolean;
   outline?: boolean;
@@ -20,7 +21,7 @@ const Button = ({
   center?: boolean;
   rounded?: 'base' | 'sm' | 'md' | 'full';
   animate?: 'bounce' | 'ping';
-} & ComponentPropsWithoutRef<'button'> & { children?: ReactNode }) => {
+} & ComponentPropsWithoutRef<'button'>) => {
   const classes = className(rest.className, 'items-center', {
     // inline-flex
     // - 부모 요소에 적용하여 부모 요소 및 자식 요소를 인라인 블록 요소로 만든다.

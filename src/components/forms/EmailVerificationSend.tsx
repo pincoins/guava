@@ -26,7 +26,7 @@ const EmailVerificationSend = ({
 
   return (
     <>
-      <div className="flex flex-col gap-y-1.5">
+      <div className="grid grid-cols-1 gap-y-1.5">
         <div className="flex">
           <div
             className={className(

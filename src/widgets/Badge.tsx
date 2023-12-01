@@ -13,6 +13,7 @@ const Badge = ({
   animate,
   ...rest
 }: {
+  children?: ReactNode;
   preset?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
   inline?: boolean;
   outline?: boolean;
@@ -21,7 +22,7 @@ const Badge = ({
   pill?: boolean;
   loading?: boolean;
   animate?: 'bounce' | 'ping';
-} & ComponentPropsWithoutRef<'span'> & { children?: ReactNode }) => {
+} & ComponentPropsWithoutRef<'span'>) => {
   const classes = className(rest.className, 'items-center', {
     'inline-flex gap-x-2 px-2 py-1': inline,
     'p-1': !inline,
