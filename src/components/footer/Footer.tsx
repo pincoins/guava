@@ -12,8 +12,8 @@ const Footer = ({ ...rest }) => {
   return (
     <footer className={classes}>
       <div className="bg-green-50 text-green-950">
-        <ContainerFixed className="grid grid-cols-1 gap-y-1.5 p-2 sm:p-0">
-          <div className="flex-1 flex flex-col sm:flex-row justify-between gap-y-2 items-center">
+        <ContainerFixed className="grid grid-cols-1 gap-y-1.5 p-2 sm:pt-2">
+          <div className="flex-1 flex flex-col sm:flex-row justify-between gap-y-2 pl-1 sm:p-0 items-center">
             <div className="inline-flex flex-wrap gap-x-4 gap-y-2">
               <Link to="/">이용안내</Link>
               <Link to="/">자주묻는질문</Link>
@@ -24,7 +24,7 @@ const Footer = ({ ...rest }) => {
               <Link to="/">블로그</Link>
               <Link to="/">기술문서</Link>
             </div>
-            <div className="inline-flex gap-x-2">
+            <div className="inline-flex gap-x-2 mr-auto sm:mr-0">
               <div>
                 <label htmlFor="language" className="hidden">
                   언어
@@ -63,8 +63,10 @@ const Footer = ({ ...rest }) => {
               </Button>
             </div>
           </div>
-          <div className="text-lime-500 text-lg font-bold">주식회사 핀코인</div>
-          <div className="flex flex-col sm:flex-row gap-y-1 gap-x-4 pl-1 sm:p-0 text-sm">
+          <div className="text-lime-500 text-lg font-bold pl-1 sm:p-0">
+            주식회사 핀코인
+          </div>
+          <div className="flex flex-col sm:flex-row gap-y-1 gap-x-4 p-1 sm:p-0 text-sm">
             <div>대표: 서종화</div>
             <div>주소: 서울 서초구 방배로 32길 8 / 203호</div>
             <div>
