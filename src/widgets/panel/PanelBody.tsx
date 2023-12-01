@@ -1,17 +1,16 @@
 import { ComponentPropsWithoutRef, ReactNode } from 'react';
 import className from 'classnames';
 
-const Panel = ({
+const PanelBody = ({
   children,
-  shadow,
-  rounded,
+  noPadding,
   ...rest
-}: { shadow?: boolean; rounded?: boolean } & ComponentPropsWithoutRef<'div'> & {
-    children?: ReactNode;
-  }) => {
+}: {
+  children?: ReactNode;
+  noPadding?: boolean;
+} & ComponentPropsWithoutRef<'div'>) => {
   const classes = className(rest.className, {
-    'shadow-md': shadow,
-    'rounded-md': rounded,
+    'pt-3': !noPadding,
   });
 
   return (
@@ -21,4 +20,4 @@ const Panel = ({
   );
 };
 
-export default Panel;
+export default PanelBody;

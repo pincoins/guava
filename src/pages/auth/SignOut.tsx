@@ -5,8 +5,9 @@ import { useSignOutMutation } from '../../store/services/authApi';
 import Button from '../../widgets/Button';
 import React from 'react';
 import ContainerFixed from '../../widgets/ContainerFixed';
-import Panel from '../../widgets/Panel';
-import PanelTitle from '../../widgets/PanelTitle';
+import Panel from '../../widgets/panel/Panel';
+import PanelHeading from '../../widgets/panel/PanelHeading';
+import PanelBody from '../../widgets/panel/PanelBody';
 
 const SignOut = () => {
   // 1. 리덕스 스토어 객체 가져오기
@@ -36,38 +37,44 @@ const SignOut = () => {
 
   // 9. JSX 반환
   return (
-    <ContainerFixed className="flex p-2 md:p-0 md:justify-center">
+    <ContainerFixed className="flex p-2 sm:p-0 sm:justify-center">
       <Panel
         shadow
         rounded
-        className="md:w-1/2 flex flex-col gap-y-2 px-8 py-4"
+        divided
+        className="sm:w-1/2 flex flex-col gap-y-2 px-8 py-4"
       >
-        <PanelTitle>
-          <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
+        <PanelHeading>
+          <h3 className="text-lg font-semibold text-[#e88f2f] text-center">
             로그아웃
           </h3>
-          <p className="text-sm text-gray-500 mb-2">
+          <p className="text-sm text-gray-500 text-center">
             개인정보보호를 위해 서비스를 이용하지 않을 때는 로그아웃하세요.
           </p>
-        </PanelTitle>
-
-        <form
-          onSubmit={handleSubmit(onValid)}
-          className="grid grid-cols-1 gap-6"
-        >
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="font-semibold py-2"
-            preset="danger"
-            inline
-            center
-            rounded="full"
+        </PanelHeading>
+        <PanelBody>
+          <form
+            onSubmit={handleSubmit(onValid)}
+            className="grid grid-cols-1 gap-6"
           >
-            {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogout />}
-            로그아웃
-          </Button>
-        </form>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="font-semibold py-2"
+              preset="danger"
+              inline
+              center
+              rounded="full"
+            >
+              {isSubmitting ? (
+                <GoSync className="animate-spin" />
+              ) : (
+                <MdLogout />
+              )}
+              로그아웃
+            </Button>
+          </form>
+        </PanelBody>
       </Panel>
     </ContainerFixed>
   );

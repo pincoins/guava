@@ -1,28 +1,27 @@
-import { Suspense } from 'react';
-import Skeleton from '../../widgets/Skeleton';
 import ContainerFixed from '../../widgets/ContainerFixed';
 import { MdAttachFile } from 'react-icons/md';
 import Button from '../../widgets/Button';
+import Panel from '../../widgets/panel/Panel';
+import PanelHeading from '../../widgets/panel/PanelHeading';
+import PanelBody from '../../widgets/panel/PanelBody';
 
 const Profile = () => {
   return (
-    <ContainerFixed className="p-2 md:p-0 md:justify-center">
-      <Suspense fallback={<Skeleton className="h-10 w-full" times={3} />}>
-        <div className="md:w-1/3">
-          <div className="px-4 sm:px-0">
-            <h3 className="text-base font-semibold leading-7 text-gray-900">
-              마이페이지
-            </h3>
-          </div>
-          <div className="mt-2">
+    <ContainerFixed className="p-2 sm:p-0 sm:justify-center">
+      <Panel divided className="grid grid-cols-1 gap-y-2">
+        <PanelHeading>
+          <h3 className="text-lg font-semibold text-[#e88f2f]">마이페이지</h3>
+        </PanelHeading>
+        <PanelBody noPadding>
+          <div className="shadow p-1 sm:shadow-none sm:p-0">
             <dl className="divide-y divide-gray-100">
-              <div className="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className=" py-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
                 <dt className="font-medium leading-6 text-gray-900">이름</dt>
                 <dd className="mt-1 flex  leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                   <span className="flex-grow">홍길동</span>
                 </dd>
               </div>
-              <div className="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="py-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
                 <dt className="font-medium leading-6 text-gray-900">
                   이메일주소
                 </dt>
@@ -35,7 +34,7 @@ const Profile = () => {
                   </span>
                 </dd>
               </div>
-              <div className="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="py-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
                 <dt className="font-medium leading-6 text-gray-900">
                   휴대전화
                 </dt>
@@ -48,7 +47,7 @@ const Profile = () => {
                   </span>
                 </dd>
               </div>
-              <div className="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="py-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
                 <dt className="font-medium leading-6 text-gray-900">
                   첨부파일
                 </dt>
@@ -132,8 +131,8 @@ const Profile = () => {
               </div>
             </dl>
           </div>
-        </div>
-      </Suspense>
+        </PanelBody>
+      </Panel>
     </ContainerFixed>
   );
 };
