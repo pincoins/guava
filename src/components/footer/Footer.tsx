@@ -12,8 +12,8 @@ const Footer = ({ ...rest }) => {
   return (
     <footer className={classes}>
       <div className="bg-green-50 text-green-950">
-        <ContainerFixed className="flex flex-col p-2">
-          <div className="flex-1 flex flex-col md:flex-row justify-between gap-y-2 items-center">
+        <ContainerFixed className="grid grid-cols-1 gap-y-2 p-2 sm:p-0">
+          <div className="flex-1 flex flex-col sm:flex-row justify-between gap-y-2 items-center">
             <div className="inline-flex flex-wrap gap-x-4 gap-y-2">
               <Link to="/">이용안내</Link>
               <Link to="/">자주묻는질문</Link>
@@ -63,10 +63,8 @@ const Footer = ({ ...rest }) => {
               </Button>
             </div>
           </div>
-          <div className="text-lime-500 text-lg font-bold pt-3 pb-0.5">
-            주식회사 핀코인
-          </div>
-          <div className="flex flex-col md:flex-row gap-y-1 gap-x-4 items-center text-sm">
+          <div className="text-lime-500 text-lg font-bold">주식회사 핀코인</div>
+          <div className="flex flex-col sm:flex-row gap-y-1 gap-x-4 items-center text-sm">
             <div>대표: 서종화</div>
             <div>주소: 서울 서초구 방배로 32길 8 / 203호</div>
             <div>
@@ -95,12 +93,12 @@ const Footer = ({ ...rest }) => {
         </ContainerFixed>
       </div>
       <div className="bg-green-950 text-center text-sm">
-        <div className="flex flex-col md:flex-row gap-x-4 py-2 text-white text-center">
-          <div className="flex-1 md:text-right">
+        <div className="flex flex-col sm:flex-row gap-x-4 p-2 text-white text-center">
+          <div className="flex-1 sm:text-right">
             Copyright &copy; 2012-{new Date().getFullYear()}&nbsp;
             {window.location.hostname}
           </div>
-          <div className="flex-1 md:text-left">All Rights Reserved.</div>
+          <div className="flex-1 sm:text-left">All Rights Reserved.</div>
         </div>
       </div>
     </footer>
