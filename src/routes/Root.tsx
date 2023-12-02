@@ -149,7 +149,7 @@ const Root = () => {
           </ContainerFixed>
         )}
         {!hasSidebar && (
-          <ContainerFixed className="flex p-2 sm:p-0 sm:justify-center">
+          <ContainerFixed className="flex sm:justify-center">
             <Outlet />
           </ContainerFixed>
         )}
