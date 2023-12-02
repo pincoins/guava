@@ -9,7 +9,7 @@ const PrivateRoute = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loginState !== 'AUTHENTICATED') {
+    if (!['AUTHENTICATED', 'EXPIRED'].includes(loginState)) {
       navigate('/auth/sign-in');
     }
   }, [loginState]);

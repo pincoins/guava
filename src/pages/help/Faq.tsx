@@ -1,11 +1,5 @@
-import { Suspense } from 'react';
-
 const Faq = () => {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div>faq</div>
-    </Suspense>
-  );
+  return <div>faq</div>;
 };
 
 export default Faq;
