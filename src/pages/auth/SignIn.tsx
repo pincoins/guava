@@ -8,7 +8,6 @@ import className from 'classnames';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
 import { useSignInMutation } from '../../store/services/authApi';
 import Button from '../../widgets/Button';
-import ContainerFixed from '../../widgets/ContainerFixed';
 import React, { useState } from 'react';
 import Panel from '../../widgets/panel/Panel';
 import PanelHeading from '../../widgets/panel/PanelHeading';
@@ -97,7 +96,7 @@ const SignIn = () => {
 
   // 9. JSX 반환
   return (
-    <ContainerFixed className="flex p-2 sm:p-0 sm:justify-center">
+    <>
       <Panel
         shadow
         rounded
@@ -216,7 +215,7 @@ const SignIn = () => {
         isOpen={isOpen}
         onClose={handleModalClose}
       />
-    </ContainerFixed>
+    </>
   );
 };
 

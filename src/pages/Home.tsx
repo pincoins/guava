@@ -1,4 +1,3 @@
-import ContainerFixed from '../widgets/ContainerFixed';
 import Panel from '../widgets/panel/Panel';
 import PanelHeading from '../widgets/panel/PanelHeading';
 import PanelBody from '../widgets/panel/PanelBody';
@@ -26,7 +25,7 @@ const products = [
     name: '문화상품권',
 
     href: '#',
-    imageSrc: 'https://placehold.co/468x300/red/white',
+    imageSrc: 'https://placehold.co/468x300/pink/white',
     imageAlt: '상품권이미지',
     price: '4%',
   },
@@ -71,7 +70,7 @@ const products = [
     name: '스마트문화상품권',
 
     href: '#',
-    imageSrc: 'https://placehold.co/468x300/yellow/white',
+    imageSrc: 'https://placehold.co/468x300/violet/white',
     imageAlt: '상품권이미지',
     price: '3%',
   },
@@ -97,7 +96,7 @@ const products = [
 
 const Home = () => {
   return (
-    <ContainerFixed className="grid grid-cols-6 p-2 sm:p-0 sm:justify-center gap-x-8 gap-y-8">
+    <div className="grid grid-cols-6 p-2 sm:p-0 sm:justify-center gap-x-8 gap-y-8">
       <Panel divided className="col-span-6 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#e88f2f]">
@@ -120,7 +119,10 @@ const Home = () => {
                     <h3 className="font-medium text-gray-900 text-center">
                       {product.name}
                     </h3>
-                    <p className="mt-1 flex gap-x-2 justify-center">
+                  </div>
+                  <div className="absolute inset-x-0 top-0 flex h-32 items-end justify-end overflow-hidden rounded-lg p-4">
+                    <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-br from-white to-black opacity-60" />
+                    <p className="relative flex gap-x-2 text-sm font-semibold text-white">
                       최대
                       <span className="inline-flex font-bold items-center text-red-600">
                         {product.price} <MdArrowDownward />
@@ -313,7 +315,7 @@ const Home = () => {
           </div>
         </PanelBody>
       </Panel>
-    </ContainerFixed>
+    </div>
   );
 };
 

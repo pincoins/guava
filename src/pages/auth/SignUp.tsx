@@ -18,7 +18,6 @@ import {
   useSignUpMutation,
 } from '../../store/services/authApi';
 import Button from '../../widgets/Button';
-import ContainerFixed from '../../widgets/ContainerFixed';
 import Panel from '../../widgets/panel/Panel';
 import PanelHeading from '../../widgets/panel/PanelHeading';
 import PanelBody from '../../widgets/panel/PanelBody';
@@ -384,109 +383,107 @@ const SignUp = () => {
 
   // 9. JSX 반환
   return (
-    <ContainerFixed className="flex p-2 sm:p-0 sm:justify-center">
-      <Panel
-        shadow
-        rounded
-        divided
-        className="sm:w-1/2 flex flex-col gap-y-2 px-8 py-4"
-      >
-        <PanelHeading>
-          <h3 className="text-lg font-semibold text-[#e88f2f] text-center">
-            회원가입
-          </h3>
-          <p className="text-sm text-gray-500 text-center">
-            핀코인 회원가입을 환영합니다.
-          </p>
-        </PanelHeading>
-        <PanelBody>
-          <FormProvider {...formMethods}>
-            <form
-              onSubmit={formMethods.handleSubmit(onValid)}
-              className="grid grid-cols-1 gap-6"
-            >
-              <div className="grid grid-cols-1 gap-y-1.5">
-                <div
+    <Panel
+      shadow
+      rounded
+      divided
+      className="sm:w-1/2 flex flex-col gap-y-2 px-8 py-4"
+    >
+      <PanelHeading>
+        <h3 className="text-lg font-semibold text-[#e88f2f] text-center">
+          회원가입
+        </h3>
+        <p className="text-sm text-gray-500 text-center">
+          핀코인 회원가입을 환영합니다.
+        </p>
+      </PanelHeading>
+      <PanelBody>
+        <FormProvider {...formMethods}>
+          <form
+            onSubmit={formMethods.handleSubmit(onValid)}
+            className="grid grid-cols-1 gap-6"
+          >
+            <div className="grid grid-cols-1 gap-y-1.5">
+              <div
+                className={className(
+                  'rounded-md shadow-sm w-full border-0 px-2 pb-0.5 pt-1.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset',
+                  !formMethods.formState.errors.fullName
+                    ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
+                    : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
+                )}
+              >
+                <label
+                  htmlFor="fullName"
+                  className="block text-xs font-medium text-gray-900 mb-0.5"
+                >
+                  이름
+                </label>
+                <input
+                  type="text"
+                  {...formMethods.register('fullName', {
+                    required: true,
+                    onChange: (_) => {
+                      if (formMethods.formState.errors.fullName) {
+                        formMethods.clearErrors('fullName');
+                      }
+                    },
+                  })}
                   className={className(
-                    'rounded-md shadow-sm w-full border-0 px-2 pb-0.5 pt-1.5 ring-1 ring-inset focus-within:ring-1 focus-within:ring-inset',
+                    'block w-full border-0 focus:ring-0 p-0',
                     !formMethods.formState.errors.fullName
                       ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
                       : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
                   )}
-                >
-                  <label
-                    htmlFor="fullName"
-                    className="block text-xs font-medium text-gray-900 mb-0.5"
-                  >
-                    이름
-                  </label>
-                  <input
-                    type="text"
-                    {...formMethods.register('fullName', {
-                      required: true,
-                      onChange: (_) => {
-                        if (formMethods.formState.errors.fullName) {
-                          formMethods.clearErrors('fullName');
-                        }
-                      },
-                    })}
-                    className={className(
-                      'block w-full border-0 focus:ring-0 p-0',
-                      !formMethods.formState.errors.fullName
-                        ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600'
-                        : 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
-                    )}
-                    placeholder="OOO"
-                  />
-                </div>
-                {formMethods.formState.errors.fullName && (
-                  <p className="ml-2 text-sm text-red-600">
-                    <span>{formMethods.formState.errors.fullName.message}</span>
-                  </p>
-                )}
+                  placeholder="OOO"
+                />
               </div>
+              {formMethods.formState.errors.fullName && (
+                <p className="ml-2 text-sm text-red-600">
+                  <span>{formMethods.formState.errors.fullName.message}</span>
+                </p>
+              )}
+            </div>
 
-              <EmailVerificationSend
+            <EmailVerificationSend
+              state={emailVerification}
+              dispatch={dispatchEmailVerification}
+              onClick={handleSendEmailVerification}
+            />
+
+            {(emailVerification.status === 'SENT' ||
+              (emailVerification.status === 'ERROR' &&
+                emailVerification.error === 'INVALID_CODE')) && (
+              <EmailVerificationCode
                 state={emailVerification}
                 dispatch={dispatchEmailVerification}
-                onClick={handleSendEmailVerification}
+                remaining={timerState.remaining}
+                onClick={handleSendEmailCode}
               />
+            )}
 
-              {(emailVerification.status === 'SENT' ||
-                (emailVerification.status === 'ERROR' &&
-                  emailVerification.error === 'INVALID_CODE')) && (
-                <EmailVerificationCode
-                  state={emailVerification}
-                  dispatch={dispatchEmailVerification}
-                  remaining={timerState.remaining}
-                  onClick={handleSendEmailCode}
-                />
+            <PasswordConfirm />
+
+            <Button
+              type="submit"
+              disabled={formMethods.formState.isSubmitting}
+              className="font-semibold py-2"
+              preset="primary"
+              inline
+              center
+              rounded="full"
+            >
+              {formMethods.formState.isSubmitting ? (
+                <GoSync className="animate-spin" />
+              ) : (
+                <MdPersonAdd />
               )}
-
-              <PasswordConfirm />
-
-              <Button
-                type="submit"
-                disabled={formMethods.formState.isSubmitting}
-                className="font-semibold py-2"
-                preset="primary"
-                inline
-                center
-                rounded="full"
-              >
-                {formMethods.formState.isSubmitting ? (
-                  <GoSync className="animate-spin" />
-                ) : (
-                  <MdPersonAdd />
-                )}
-                회원가입
-              </Button>
-              {reCaptchaElement}
-            </form>
-          </FormProvider>
-        </PanelBody>
-      </Panel>
-    </ContainerFixed>
+              회원가입
+            </Button>
+            {reCaptchaElement}
+          </form>
+        </FormProvider>
+      </PanelBody>
+    </Panel>
   );
 };
 

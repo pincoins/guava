@@ -7,6 +7,7 @@ import signOut from '../pages/auth/SignOut';
 import { RootState } from '../store';
 import { useRefreshMutation } from '../store/services/authApi';
 import { setViewportSize } from '../store/slices/uiSlice';
+import ContainerFixed from '../widgets/ContainerFixed';
 
 const Root = () => {
   // 1. 리덕스 스토어 객체 가져오기
@@ -81,7 +82,9 @@ const Root = () => {
     <div className="flex flex-col gap-y-1 sm:gap-y-8 h-screen">
       <Header className="flex-none" />
       <div className="flex-1 bg-white">
-        <Outlet />
+        <ContainerFixed className="flex p-2 sm:p-0 sm:justify-center">
+          <Outlet />
+        </ContainerFixed>
       </div>
       <Footer className="flex-none" />
     </div>
