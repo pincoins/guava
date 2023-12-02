@@ -122,10 +122,7 @@ const Home = () => {
                     </h3>
                   </div>
                   <div className="absolute inset-x-0 top-0 flex h-32 items-end justify-end overflow-hidden rounded-lg p-4">
-                    <div
-                      aria-hidden="true"
-                      className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white opacity-50"
-                    />
+                    <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-br from-white to-black opacity-60" />
                     <p className="relative flex gap-x-2 text-sm font-semibold text-white">
                       최대
                       <span className="inline-flex font-bold items-center text-red-600">
