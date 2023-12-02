@@ -1,4 +1,3 @@
-import ContainerFixed from '../widgets/ContainerFixed';
 import Panel from '../widgets/panel/Panel';
 import PanelHeading from '../widgets/panel/PanelHeading';
 import PanelBody from '../widgets/panel/PanelBody';
@@ -97,7 +96,7 @@ const products = [
 
 const Home = () => {
   return (
-    <ContainerFixed className="grid grid-cols-6 p-2 sm:p-0 sm:justify-center gap-x-8 gap-y-8">
+    <div className="grid grid-cols-6 p-2 sm:p-0 sm:justify-center gap-x-8 gap-y-8">
       <Panel divided className="col-span-6 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#e88f2f]">
@@ -316,7 +315,7 @@ const Home = () => {
           </div>
         </PanelBody>
       </Panel>
-    </ContainerFixed>
+    </div>
   );
 };
 

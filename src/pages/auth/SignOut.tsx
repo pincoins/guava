@@ -4,7 +4,6 @@ import { MdLogout } from 'react-icons/md';
 import { useSignOutMutation } from '../../store/services/authApi';
 import Button from '../../widgets/Button';
 import React from 'react';
-import ContainerFixed from '../../widgets/ContainerFixed';
 import Panel from '../../widgets/panel/Panel';
 import PanelHeading from '../../widgets/panel/PanelHeading';
 import PanelBody from '../../widgets/panel/PanelBody';
@@ -37,46 +36,40 @@ const SignOut = () => {
 
   // 9. JSX 반환
   return (
-    <ContainerFixed className="flex p-2 sm:p-0 sm:justify-center">
-      <Panel
-        shadow
-        rounded
-        divided
-        className="sm:w-1/2 flex flex-col gap-y-2 px-8 py-4"
-      >
-        <PanelHeading>
-          <h3 className="text-lg font-semibold text-[#e88f2f] text-center">
-            로그아웃
-          </h3>
-          <p className="text-sm text-gray-500 text-center">
-            개인정보보호를 위해 서비스를 이용하지 않을 때는 로그아웃하세요.
-          </p>
-        </PanelHeading>
-        <PanelBody>
-          <form
-            onSubmit={handleSubmit(onValid)}
-            className="grid grid-cols-1 gap-6"
+    <Panel
+      shadow
+      rounded
+      divided
+      className="sm:w-1/2 flex flex-col gap-y-2 px-8 py-4"
+    >
+      <PanelHeading>
+        <h3 className="text-lg font-semibold text-[#e88f2f] text-center">
+          로그아웃
+        </h3>
+        <p className="text-sm text-gray-500 text-center">
+          개인정보보호를 위해 서비스를 이용하지 않을 때는 로그아웃하세요.
+        </p>
+      </PanelHeading>
+      <PanelBody>
+        <form
+          onSubmit={handleSubmit(onValid)}
+          className="grid grid-cols-1 gap-6"
+        >
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="font-semibold py-2"
+            preset="danger"
+            inline
+            center
+            rounded="full"
           >
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="font-semibold py-2"
-              preset="danger"
-              inline
-              center
-              rounded="full"
-            >
-              {isSubmitting ? (
-                <GoSync className="animate-spin" />
-              ) : (
-                <MdLogout />
-              )}
-              로그아웃
-            </Button>
-          </form>
-        </PanelBody>
-      </Panel>
-    </ContainerFixed>
+            {isSubmitting ? <GoSync className="animate-spin" /> : <MdLogout />}
+            로그아웃
+          </Button>
+        </form>
+      </PanelBody>
+    </Panel>
   );
 };
 
