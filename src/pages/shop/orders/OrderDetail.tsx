@@ -1,11 +1,5 @@
-import { Suspense } from 'react';
-
 const OrderList = () => {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div>orders</div>
-    </Suspense>
-  );
+  return <div>orders</div>;
 };
 
 export default OrderList;

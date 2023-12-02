@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import Footer from '../components/footer/Footer';
 import Header from '../components/header/Header';
 import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
@@ -8,11 +8,16 @@ import { RootState } from '../store';
 import { useRefreshMutation } from '../store/services/authApi';
 import { setViewportSize } from '../store/slices/uiSlice';
 import ContainerFixed from '../widgets/ContainerFixed';
+import { noSidebarRoutes } from './noSidebarRoutes';
+import { products } from '../components/header/products';
+import { MdCardGiftcard, MdOutlineStarBorder } from 'react-icons/md';
 
 const Root = () => {
   // 1. 리덕스 스토어 객체 가져오기
   const { rememberMe, accessToken, validUntil, expiresIn, loginState } =
     useAppSelector((state: RootState) => state.auth);
+
+  const { isMobile } = useAppSelector((state: RootState) => state.ui);
 
   const dispatch = useAppDispatch();
 
@@ -22,6 +27,9 @@ const Root = () => {
 
   // 4. 리액트 훅 폼 정의
   // 5. 주요 상태 선언 (useState, useReducer 및 커스텀 훅) 및 함수 정의
+
+  const hasSidebar =
+    !isMobile && !noSidebarRoutes.includes(useLocation().pathname);
 
   const handleWindowResize = useCallback(() => {
     dispatch(
@@ -78,13 +86,73 @@ const Root = () => {
   // - 본문: 부모 크기만큼 커지거나 작아짐 - flex: 1 1 0;
   // - 푸터: 자신의 크기만큼 - flex: 0 0 auto;
 
+  console.log('hasSidebar', hasSidebar);
+
   return (
-    <div className="flex flex-col gap-y-1 sm:gap-y-8 h-screen">
+    <div className="flex flex-col sm:gap-y-8 h-screen">
       <Header className="flex-none" />
-      <div className="flex-1 bg-white">
-        <ContainerFixed className="flex p-2 sm:p-0 sm:justify-center">
-          <Outlet />
-        </ContainerFixed>
+      <div className="flex-1">
+        {/* sidebar 있으면 무조건 데스크톱 */}
+        {hasSidebar && (
+          <ContainerFixed className="flex">
+            <div className="flex-1 grid grid-cols-6 gap-x-16">
+              <div className="grid grid-cols-1 gap-y-8 text-sm">
+                <div className="bg-gray-50">
+                  <div className="font-bold text-green-950 bg-gray-300 px-2 py-1 inline-flex items-center w-full gap-x-2">
+                    <MdOutlineStarBorder />
+                    즐겨찾기
+                  </div>
+                  <ul role="list">
+                    {products.map((item) => {
+                      return (
+                        <li className="">
+                          <Link
+                            key={item.id}
+                            to={item.to}
+                            className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
+                          >
+                            {<item.icon />}
+                            {item.title}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+                <div className="bg-gray-50">
+                  <div className="font-bold text-green-950 bg-gray-300 px-2 py-1 inline-flex items-center w-full gap-x-2">
+                    <MdCardGiftcard />
+                    상품권
+                  </div>
+                  <ul role="list">
+                    {products.map((item) => {
+                      return (
+                        <li className="">
+                          <Link
+                            key={item.id}
+                            to={item.to}
+                            className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
+                          >
+                            {<item.icon />}
+                            {item.title}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </div>
+              <div className="col-span-5 bg-white">
+                <Outlet />
+              </div>
+            </div>
+          </ContainerFixed>
+        )}
+        {!hasSidebar && (
+          <ContainerFixed className="flex p-2 sm:p-0 sm:justify-center">
+            <Outlet />
+          </ContainerFixed>
+        )}
       </div>
       <Footer className="flex-none" />
     </div>

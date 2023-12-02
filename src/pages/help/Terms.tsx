@@ -1,11 +1,5 @@
-import { Suspense } from 'react';
-
 const Terms = () => {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div>Terms</div>
-    </Suspense>
-  );
+  return <div>Terms</div>;
 };
 
 export default Terms;

@@ -7,7 +7,7 @@ const PanelHeading = ({
 }: { children?: ReactNode } & ComponentPropsWithoutRef<'div'>) => {
   const classes = className(
     rest.className,
-    'grid grid-cols-1 items-center justify-center bg-white'
+    'grid grid-cols-1 items-center justify-center'
   );
 
   return (

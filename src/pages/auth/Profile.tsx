@@ -6,20 +6,20 @@ import PanelBody from '../../widgets/panel/PanelBody';
 
 const Profile = () => {
   return (
-    <Panel divided className="grid grid-cols-1 gap-y-2">
+    <Panel divided className="flex-1 grid grid-cols-1 gap-y-2">
       <PanelHeading>
         <h3 className="text-lg font-semibold text-[#e88f2f]">마이페이지</h3>
       </PanelHeading>
       <PanelBody noPadding>
         <div className="shadow p-1 sm:shadow-none sm:p-0">
           <dl className="divide-y divide-gray-100">
-            <div className=" py-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
+            <div className="p-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
               <dt className="font-medium leading-6 text-gray-900">이름</dt>
               <dd className="mt-1 flex  leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 <span className="flex-grow">홍길동</span>
               </dd>
             </div>
-            <div className="py-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
+            <div className="p-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
               <dt className="font-medium leading-6 text-gray-900">
                 이메일주소
               </dt>
@@ -32,7 +32,7 @@ const Profile = () => {
                 </span>
               </dd>
             </div>
-            <div className="py-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
+            <div className="p-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
               <dt className="font-medium leading-6 text-gray-900">휴대전화</dt>
               <dd className="mt-1 flex items-center leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 <span className="flex-grow">010-1234-1234</span>
@@ -43,7 +43,7 @@ const Profile = () => {
                 </span>
               </dd>
             </div>
-            <div className="py-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
+            <div className="p-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
               <dt className="font-medium leading-6 text-gray-900">첨부파일</dt>
               <dd className="mt-1 leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 <ul role="list" className="divide-y divide-gray-100 rounded-md">
