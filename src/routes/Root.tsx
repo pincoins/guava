@@ -105,9 +105,8 @@ const Root = () => {
                   <ul role="list">
                     {products.map((item) => {
                       return (
-                        <li className="">
+                        <li key={item.id}>
                           <Link
-                            key={item.id}
                             to={item.to}
                             className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
                           >
@@ -127,9 +126,8 @@ const Root = () => {
                   <ul role="list">
                     {products.map((item) => {
                       return (
-                        <li className="">
+                        <li key={item.id}>
                           <Link
-                            key={item.id}
                             to={item.to}
                             className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
                           >
