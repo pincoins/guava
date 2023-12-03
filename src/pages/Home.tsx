@@ -96,7 +96,7 @@ const products = [
 
 const Home = () => {
   return (
-    <div className="grid grid-cols-6 p-2 sm:p-0 sm:justify-center gap-x-4 gap-y-4">
+    <div className="grid grid-cols-6 p-2 sm:p-0 sm:justify-center gap-x-4 gap-y-4 sm:gap-y-12">
       <Panel divided className="col-span-6 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#e88f2f]">
@@ -104,7 +104,7 @@ const Home = () => {
           </h3>
         </PanelHeading>
         <PanelBody>
-          <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-2 sm:gap-x-6 md:grid-cols-6 md:gap-x-8">
+          <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-6 sm:gap-x-8">
             {products.map((product) => (
               <div key={product.id}>
                 <div className="relative">
@@ -135,7 +135,7 @@ const Home = () => {
           </div>
         </PanelBody>
       </Panel>
-      <Panel divided className="col-span-6 md:col-span-4 gap-y-2">
+      <Panel divided className="col-span-6 sm:col-span-4 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#e88f2f]">
             상품권 금융사기 예방 수칙
@@ -169,10 +169,10 @@ const Home = () => {
           </p>
         </PanelBody>
       </Panel>
-      <Panel divided className="col-span-6 md:col-span-2 gap-y-2">
+      <Panel divided className="col-span-6 sm:col-span-2 gap-y-2">
         <PanelBody>애드센스</PanelBody>
       </Panel>
-      <Panel divided className="col-span-6 md:col-span-3 gap-y-2">
+      <Panel divided className="col-span-6 sm:col-span-3 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#e88f2f]">공지사항</h3>
         </PanelHeading>
@@ -246,7 +246,7 @@ const Home = () => {
           </div>
         </PanelBody>
       </Panel>
-      <Panel divided className="col-span-6 md:col-span-3 gap-y-2">
+      <Panel divided className="col-span-6 sm:col-span-3 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#e88f2f]">이용후기</h3>
         </PanelHeading>

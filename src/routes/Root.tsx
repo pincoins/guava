@@ -96,8 +96,8 @@ const Root = () => {
         {hasSidebar && (
           <ContainerFixed className="flex">
             <div className="flex-1 grid grid-cols-6 gap-x-16">
-              <div className="grid grid-cols-1 gap-y-8 text-sm">
-                <div className="bg-gray-50">
+              <div className="flex flex-col gap-y-8 text-sm">
+                <div className="f-none bg-gray-50">
                   <div className="font-bold text-green-950 bg-gray-300 px-2 py-1 inline-flex items-center w-full gap-x-2">
                     <MdOutlineStarBorder />
                     즐겨찾기
@@ -119,7 +119,7 @@ const Root = () => {
                     })}
                   </ul>
                 </div>
-                <div className="bg-gray-50">
+                <div className="f-none bg-gray-50">
                   <div className="font-bold text-green-950 bg-gray-300 px-2 py-1 inline-flex items-center w-full gap-x-2">
                     <MdCardGiftcard />
                     상품권
