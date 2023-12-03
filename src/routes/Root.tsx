@@ -81,7 +81,9 @@ const Root = () => {
   // 9. JSX 반환
 
   // 사이트 기본 레이아웃
-  // 컨테이너: 뷰포트 100vh 높이로 공간 확보 - display: flex; flex-direction: column; height: 100vh;
+  // 고정 푸터 - 100vh;
+  // 스크롤바 여백 발생해도 로고 고정 - 100vw;
+  // 컨테이너: 뷰포트 100vh 높이로 공간 확보 - display: flex; flex-direction: column; height: 100vh; width: 100vw;
   // - 헤더: 자신의 크기만큼 - flex: 0 0 auto;
   // - 본문: 부모 크기만큼 커지거나 작아짐 - flex: 1 1 0;
   // - 푸터: 자신의 크기만큼 - flex: 0 0 auto;
@@ -89,8 +91,8 @@ const Root = () => {
   console.log('hasSidebar', hasSidebar);
 
   return (
-    <div className="flex flex-col sm:gap-y-8 h-screen">
-      <Header className="flex-none" />
+    <div className="flex flex-col sm:gap-y-8 w-screen h-screen">
+      <Header className="flex-none w-screen" />
       <div className="flex-1">
         {/* sidebar 있으면 무조건 데스크톱 */}
         {hasSidebar && (
