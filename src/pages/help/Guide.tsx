@@ -1,18 +1,20 @@
 import Panel from '../../widgets/panel/Panel';
 import PanelBody from '../../widgets/panel/PanelBody';
 import PanelHeading from '../../widgets/panel/PanelHeading';
+import Divider from '../../widgets/dividers/Divider';
 
 const Guide = () => {
   return (
     <div className="flex-1 grid grid-cols-1 p-2 sm:p-0 sm:justify-center gap-x-4 gap-y-4">
-      <Panel divided className="grid grid-cols-1 gap-y-2">
+      <Panel className="grid grid-cols-1 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#1d915c]">
             회원가입 및 탈퇴
           </h3>
         </PanelHeading>
-        <PanelBody>
-          <ul className="text-sm leading-6 marker:text-[#03353e] list-disc space-y-1">
+        <Divider />
+        <PanelBody className="text-sm leading-7">
+          <ul className="marker:text-[#03353e] list-disc list-inside space-y-1">
             <li>
               핀코인(pincoin)은 회원제로 운영하며 반드시 회원가입해야 상품권을
               주문할 수 있습니다.
@@ -27,7 +29,7 @@ const Guide = () => {
               한하여 서비스 이용에 관한 동의를 철회한 경우에도 이를 보존할 수
               있으며, 동법 시행령 제6조에 의거 다음과 같이 거래 기록을
               보관합니다.
-              <ul className="marker:text-[#03353e] list-disc space-y-1 pl-4">
+              <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-4">
                 <li>표시, 광고에 관한 기록 : 6개월</li>
                 <li>계약 또는 청약철회 등에 관한 기록 : 5년</li>
                 <li>대금결제 및 재화 등의 공급에 관한 기록 : 5년</li>
@@ -38,17 +40,18 @@ const Guide = () => {
           </ul>
         </PanelBody>
       </Panel>
-      <Panel divided className="grid grid-cols-1 gap-y-2">
+      <Panel className="grid grid-cols-1 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#1d915c]">본인 인증</h3>
         </PanelHeading>
-        <PanelBody>
-          <ul className="text-sm leading-6 marker:text-[#03353e] list-disc space-y-1">
+        <Divider />
+        <PanelBody className="text-sm leading-7">
+          <ul className="marker:text-[#03353e] list-disc list-inside space-y-1">
             <li>
               핀코인은 보이스피싱 및 파밍 사기 피해 방지를 위하여&nbsp;
               <span className="font-bold">휴대폰본인인증(필수)</span>을 요청하고
               있습니다.
-              <ul className="marker:text-[#03353e] list-disc space-y-1 pl-4">
+              <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-4">
                 <li>
                   해외에서 페이팔 결제하시는 경우 서류본인인증을 대신 완료해야
                   합니다.
@@ -60,7 +63,7 @@ const Guide = () => {
               따라&nbsp;
               <span className="font-bold">서류본인인증(선택)</span>을 요청하고
               있습니다.
-              <ul className="marker:text-[#03353e] list-disc space-y-1 pl-4">
+              <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-4">
                 <li>
                   컬쳐랜드상품권, 해피머니, 도서문화상품권, 구글기프트카드를
                   포함하고 일일 액면가 기준 누계 20만원 이상 첫 구매 시 반드시
@@ -78,10 +81,10 @@ const Guide = () => {
             </li>
             <li>
               서류본인인증을 위해 확인되야 하는 정보는 다음과 같습니다.
-              <ul className="marker:text-[#03353e] list-disc space-y-1 pl-4">
+              <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-4">
                 <li>
                   신분증 (주민등록증, 운전면허증) - 여권 및 등초본 불가
-                  <ul className="marker:text-[#03353e] list-disc space-y-1 pl-8">
+                  <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-8">
                     <li>
                       주민등록번호 뒷자리 및 사진 가리고 이름, 생년월일, 주소
                       전체가 보여야 합니다.
@@ -94,7 +97,7 @@ const Guide = () => {
                   </ul>
                 </li>
                 <li>통장 또는 ATM 카드, 체크카드</li>
-                <ul className="marker:text-[#03353e] list-disc space-y-1 pl-8">
+                <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-8">
                   <li>
                     통장번호 또는 카드번호를 가리고 이름, 은행 이름 또는 카드
                     회사가 보여야 합니다.
@@ -110,7 +113,7 @@ const Guide = () => {
             <li>
               저희 핀코인은 고객 여러분의 안전한 상품권 구매와 개인정보 보호
               관리를 위해 노력합니다.
-              <ul className="marker:text-[#03353e] list-disc space-y-1 pl-4">
+              <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-4">
                 <li>
                   고객 여러분께서 제출한 개인정보 사진은 어디에도 노출되지
                   않으며 암호화하여 파일을 저장합니다.
@@ -128,12 +131,13 @@ const Guide = () => {
           </ul>
         </PanelBody>
       </Panel>
-      <Panel divided className="grid grid-cols-1 gap-y-2">
+      <Panel className="grid grid-cols-1 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#1d915c]">주문 방법</h3>
         </PanelHeading>
-        <PanelBody>
-          <ul className="text-sm leading-6 marker:text-[#03353e] list-disc space-y-1">
+        <Divider />
+        <PanelBody className="text-sm leading-7">
+          <ul className="marker:text-[#03353e] list-disc list-inside space-y-1">
             <li>
               핀코인은 반드시 회원가입 후 로그인해야 상품권을 주문할 수
               있습니다.
@@ -149,15 +153,16 @@ const Guide = () => {
           </ul>
         </PanelBody>
       </Panel>
-      <Panel divided className="grid grid-cols-1 gap-y-2">
+      <Panel className="grid grid-cols-1 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#1d915c]">결제 방법</h3>
         </PanelHeading>
-        <PanelBody>
-          <ul className="text-sm leading-6 marker:text-[#03353e] list-disc space-y-1">
+        <Divider />
+        <PanelBody className="text-sm leading-7">
+          <ul className="marker:text-[#03353e] list-disc list-inside space-y-1">
             <li>
               핀코인에서 주문을 완료하시면 다음 방법으로 결제 가능합니다.
-              <ul className="marker:text-[#03353e] list-disc space-y-1 pl-4">
+              <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-4">
                 <li>계좌이체 / 무통장입금</li>
                 <li>국민은행</li>
                 <li>에스크로</li>
@@ -167,7 +172,7 @@ const Guide = () => {
             <li>
               핀코인에서 주문을 완료하시면 다음 은행으로 계좌이체 또는 무통장
               입금 가능합니다.
-              <ul className="marker:text-[#03353e] list-disc space-y-1 pl-4">
+              <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-4">
                 <li>국민은행</li>
                 <li>신한은행</li>
                 <li>기업은행</li>
@@ -185,10 +190,10 @@ const Guide = () => {
             <li>
               페이팔 결제 시 아래의 경우에는 무효 처리하고 12시간 이내 무조건
               환불 처리됩니다.
-              <ul className="marker:text-[#03353e] list-disc space-y-1 pl-4">
+              <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-4">
                 <li>
                   핀코인 계정 기본 이메일 주소와 페이팔 계정 이메일 주소 불일치
-                  <ul className="marker:text-[#03353e] list-disc space-y-1 pl-8">
+                  <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-8">
                     <li>
                       핀코인 계정의 기본 이메일 주소와 페이팔 계정의 이메일
                       주소가 동일해야 합니다. 기본 이메일 주소 등록을 위해서는
@@ -198,7 +203,7 @@ const Guide = () => {
                 </li>
                 <li>
                   unverified 또는 unregistered 페이팔 계정
-                  <ul className="marker:text-[#03353e] list-disc space-y-1 pl-8">
+                  <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-8">
                     <li>
                       verified (확인된) 페이팔 계정으로만 결제 가능합니다.
                     </li>
@@ -206,13 +211,13 @@ const Guide = () => {
                 </li>
                 <li>
                   echeck 결제
-                  <ul className="marker:text-[#03353e] list-disc space-y-1 pl-8">
+                  <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-8">
                     <li>instant (즉시) 결제로만 결제 가능합니다.</li>
                   </ul>
                 </li>
                 <li>
                   서류본인인증 미완료
-                  <ul className="marker:text-[#03353e] list-disc space-y-1 pl-8">
+                  <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-8">
                     <li>
                       페이팔로 최근 30일 이내 액면가 기준 누계 15만원 이상 구매
                       시 반드시 한국 내 주소 확인 가능한 신분증으로
@@ -222,7 +227,7 @@ const Guide = () => {
                 </li>
                 <li>
                   페이팔 최소 결제 금액 9천원 미만
-                  <ul className="marker:text-[#03353e] list-disc space-y-1 pl-8">
+                  <ul className="marker:text-[#03353e] list-disc list-inside space-y-1 pl-8">
                     <li>
                       페이팔 수수료 문제로 인하여 원화 기준 최소 9천원 이상일 때
                       결제 가능합니다.
@@ -234,14 +239,15 @@ const Guide = () => {
           </ul>
         </PanelBody>
       </Panel>
-      <Panel divided className="grid grid-cols-1 gap-y-2">
+      <Panel className="grid grid-cols-1 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#1d915c]">
             상품권 발송 및 확인
           </h3>
         </PanelHeading>
-        <PanelBody>
-          <ul className="text-sm leading-6 marker:text-[#03353e] list-disc space-y-1">
+        <Divider />
+        <PanelBody className="text-sm leading-7">
+          <ul className="marker:text-[#03353e] list-disc list-inside space-y-1">
             <li>
               핀코인에서 판매되는 상품권은 온라인 상품권으로 실물이 아닌
               핀번호만 발송됩니다.
@@ -262,12 +268,13 @@ const Guide = () => {
           </ul>
         </PanelBody>
       </Panel>
-      <Panel divided className="grid grid-cols-1 gap-y-2">
+      <Panel className="grid grid-cols-1 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#1d915c]">주문 취소</h3>
         </PanelHeading>
-        <PanelBody>
-          <ul className="text-sm leading-6 marker:text-[#03353e] list-disc space-y-1">
+        <Divider />
+        <PanelBody className="text-sm leading-7">
+          <ul className="marker:text-[#03353e] list-disc list-inside space-y-1">
             <li>
               무통장 입금의 경우 주문 완료 후 다음 날 입금하지 않으면 자동으로
               주문취소 됩니다.
@@ -279,12 +286,13 @@ const Guide = () => {
           </ul>
         </PanelBody>
       </Panel>
-      <Panel divided className="grid grid-cols-1 gap-y-2">
+      <Panel className="grid grid-cols-1 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#1d915c]">교환 및 환불</h3>
         </PanelHeading>
-        <PanelBody>
-          <ul className="text-sm leading-6 marker:text-[#03353e] list-disc space-y-1">
+        <Divider />
+        <PanelBody className="text-sm leading-7">
+          <ul className="marker:text-[#03353e] list-disc list-inside space-y-1">
             <li>핀코인은 소비자보호를 위해서 규정한 제반 법규를 준수합니다.</li>
             <li>
               상품권을 받기 전에 고객님의 교환 또는 환불 요청이 있은 날로부터
@@ -301,14 +309,15 @@ const Guide = () => {
           </ul>
         </PanelBody>
       </Panel>
-      <Panel divided className="grid grid-cols-1 gap-y-2">
+      <Panel className="grid grid-cols-1 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#1d915c]">
             상품권 구매한도
           </h3>
         </PanelHeading>
-        <PanelBody>
-          <ul className="text-sm leading-6 marker:text-[#03353e] list-disc space-y-1">
+        <Divider />
+        <PanelBody className="text-sm leading-7">
+          <ul className="marker:text-[#03353e] list-disc list-inside space-y-1">
             <li>
               문화상품권, 해피머니, 도서문화상품권, 구글기프트카드를 포함하고
               일일 액면가 기준 누계 20만원 이상 첫 구매 시 반드시 서류본인인증을
@@ -325,14 +334,15 @@ const Guide = () => {
           </ul>
         </PanelBody>
       </Panel>
-      <Panel divided className="grid grid-cols-1 gap-y-2">
+      <Panel className="grid grid-cols-1 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#1d915c]">
             적립금 제도 미운영
           </h3>
         </PanelHeading>
-        <PanelBody>
-          <ul className="text-sm leading-6 marker:text-[#03353e] list-disc space-y-1">
+        <Divider />
+        <PanelBody className="text-sm leading-7">
+          <ul className="marker:text-[#03353e] list-disc list-inside space-y-1">
             <li>핀코인은 적립금 제도를 운영하지 않습니다.</li>
             <li>
               과거 100원 이익이 발생하면 50원 적립금을 드렸으나 현재는 차라리

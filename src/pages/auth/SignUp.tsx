@@ -21,6 +21,7 @@ import Button from '../../widgets/Button';
 import Panel from '../../widgets/panel/Panel';
 import PanelHeading from '../../widgets/panel/PanelHeading';
 import PanelBody from '../../widgets/panel/PanelBody';
+import Divider from '../../widgets/dividers/Divider';
 
 export interface SignUpForm {
   username: string;
@@ -383,12 +384,7 @@ const SignUp = () => {
 
   // 9. JSX 반환
   return (
-    <Panel
-      shadow
-      rounded
-      divided
-      className="sm:w-1/2 flex flex-col gap-y-2 px-8 py-4"
-    >
+    <Panel shadow rounded className="sm:w-1/2 flex flex-col gap-y-2 px-8 py-4">
       <PanelHeading>
         <h3 className="text-lg font-semibold text-[#e88f2f] text-center">
           회원가입
@@ -397,6 +393,7 @@ const SignUp = () => {
           핀코인 회원가입을 환영합니다.
         </p>
       </PanelHeading>
+      <Divider />
       <PanelBody>
         <FormProvider {...formMethods}>
           <form
