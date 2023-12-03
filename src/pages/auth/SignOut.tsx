@@ -7,7 +7,7 @@ import React from 'react';
 import Panel from '../../widgets/panel/Panel';
 import PanelHeading from '../../widgets/panel/PanelHeading';
 import PanelBody from '../../widgets/panel/PanelBody';
-import Divider from '../../widgets/dividers/Divider';
+import Divider from '../../widgets/Divider';
 
 const SignOut = () => {
   // 1. 리덕스 스토어 객체 가져오기

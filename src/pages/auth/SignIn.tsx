@@ -13,7 +13,7 @@ import Panel from '../../widgets/panel/Panel';
 import PanelHeading from '../../widgets/panel/PanelHeading';
 import Modal from '../../widgets/Modal';
 import PanelBody from '../../widgets/panel/PanelBody';
-import Divider from '../../widgets/dividers/Divider';
+import Divider from '../../widgets/Divider';
 
 export interface SignInForm {
   username: string;

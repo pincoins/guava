@@ -3,7 +3,7 @@ import Button from '../../widgets/Button';
 import Panel from '../../widgets/panel/Panel';
 import PanelHeading from '../../widgets/panel/PanelHeading';
 import PanelBody from '../../widgets/panel/PanelBody';
-import Divider from '../../widgets/dividers/Divider';
+import Divider from '../../widgets/Divider';
 
 const Profile = () => {
   return (

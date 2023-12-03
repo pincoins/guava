@@ -1,7 +1,7 @@
 import Panel from '../../widgets/panel/Panel';
 import PanelBody from '../../widgets/panel/PanelBody';
 import PanelHeading from '../../widgets/panel/PanelHeading';
-import Divider from '../../widgets/dividers/Divider';
+import Divider from '../../widgets/Divider';
 
 const Guide = () => {
   return (
