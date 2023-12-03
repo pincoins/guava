@@ -10,7 +10,7 @@ const PanelBody = ({
   noPadding?: boolean;
 } & ComponentPropsWithoutRef<'div'>) => {
   const classes = className(rest.className, {
-    'pt-3': !noPadding,
+    'pt-2': !noPadding,
   });
 
   return (

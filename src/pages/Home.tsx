@@ -177,7 +177,7 @@ const Home = () => {
           <h3 className="text-lg font-semibold text-[#e88f2f]">공지사항</h3>
         </PanelHeading>
         <PanelBody>
-          <div className="grid grid-cols-1 gap-y-1">
+          <div className="grid grid-cols-1 gap-y-2">
             <div className="flex gap-x-4">
               <span className="flex-none">[말머리]</span>
               <span className="flex-1 truncate">
@@ -251,7 +251,7 @@ const Home = () => {
           <h3 className="text-lg font-semibold text-[#e88f2f]">이용후기</h3>
         </PanelHeading>
         <PanelBody>
-          <div className="grid grid-cols-1 gap-y-1">
+          <div className="grid grid-cols-1 gap-y-2">
             <div className="flex gap-x-4">
               <span className="flex-1 truncate">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

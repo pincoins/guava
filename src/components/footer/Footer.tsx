@@ -15,14 +15,13 @@ const Footer = ({ ...rest }) => {
         <ContainerFixed className="grid grid-cols-1 gap-y-1.5 px-2 py-2 sm:px-0">
           <div className="flex-1 flex flex-col sm:flex-row justify-between gap-y-2 items-center">
             <div className="inline-flex flex-wrap gap-x-4 gap-y-2">
-              <Link to="/">이용안내</Link>
-              <Link to="/">자주묻는질문</Link>
-              <Link to="/">문의하기</Link>
-              <Link to="/">이용약관</Link>
-              <Link to="/">개인정보처리방침</Link>
-              <Link to="/">카드몰</Link>
-              <Link to="/">블로그</Link>
-              <Link to="/">기술문서</Link>
+              <Link to="/help/guide">이용안내</Link>
+              <Link to="/help/faq">자주묻는질문</Link>
+              <Link to="/help/qna">문의하기</Link>
+              <Link to="/help/terms">이용약관</Link>
+              <Link to="/help/privacy">개인정보처리방침</Link>
+              <Link to="#">블로그</Link>
+              <Link to="#">기술문서</Link>
             </div>
             <div className="inline-flex gap-x-2 mr-auto sm:mr-0">
               <div>
