@@ -90,7 +90,7 @@ const Root = () => {
 
   return (
     <div className="flex flex-col sm:gap-y-8 w-screen h-screen">
-      <Header className="flex-none w-screen" />
+      <Header className="flex-none" />
       <div className="flex-1">
         {/* sidebar 있으면 무조건 데스크톱 */}
         {hasSidebar && (
