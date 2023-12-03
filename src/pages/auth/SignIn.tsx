@@ -108,7 +108,7 @@ const SignIn = () => {
             로그인
           </h3>
         </PanelHeading>
-        <Divider className="my-4" />
+        <Divider className="mt-3 mb-4" />
         <PanelBody>
           <form
             onSubmit={handleSubmit(onValid)}

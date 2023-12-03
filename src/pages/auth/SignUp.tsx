@@ -397,7 +397,7 @@ const SignUp = () => {
           핀코인 회원가입을 환영합니다.
         </p>
       </PanelHeading>
-      <Divider className="my-4" />
+      <Divider className="mt-3 mb-4" />
       <PanelBody>
         <FormProvider {...formMethods}>
           <form

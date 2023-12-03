@@ -50,7 +50,7 @@ const SignOut = () => {
           개인정보보호를 위해 서비스를 이용하지 않을 때는 로그아웃하세요.
         </p>
       </PanelHeading>
-      <Divider className="my-4" />
+      <Divider className="mt-3 mb-4" />
       <PanelBody>
         <form
           onSubmit={handleSubmit(onValid)}
