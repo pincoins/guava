@@ -97,14 +97,14 @@ const products = [
 
 const Home = () => {
   return (
-    <div className="grid grid-cols-6 p-2 sm:p-0 sm:justify-center gap-x-4 gap-y-4 sm:gap-y-12">
+    <div className="grid grid-cols-6 p-2 sm:p-0 sm:justify-center gap-x-4 gap-y-4 sm:gap-y-8">
       <Panel className="col-span-6 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#e88f2f]">
             오늘의 최저가 상품권
           </h3>
         </PanelHeading>
-        <Divider />
+        <Divider className="mt-1 mb-2" />
         <PanelBody>
           <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-6 sm:gap-x-8">
             {products.map((product) => (
@@ -143,7 +143,7 @@ const Home = () => {
             상품권 금융사기 예방 수칙
           </h3>
         </PanelHeading>
-        <Divider />
+        <Divider className="mt-1 mb-2" />
         <PanelBody className="text-sm leading-6">
           <ul
             role="list"
@@ -179,7 +179,7 @@ const Home = () => {
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#e88f2f]">공지사항</h3>
         </PanelHeading>
-        <Divider />
+        <Divider className="mt-1 mb-2" />
         <PanelBody>
           <div className="grid grid-cols-1 gap-y-2">
             <div className="flex gap-x-4">
@@ -254,7 +254,7 @@ const Home = () => {
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#e88f2f]">이용후기</h3>
         </PanelHeading>
-        <Divider />
+        <Divider className="mt-1 mb-2" />
         <PanelBody>
           <div className="grid grid-cols-1 gap-y-2">
             <div className="flex gap-x-4">

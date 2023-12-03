@@ -101,14 +101,14 @@ const SignIn = () => {
       <Panel
         shadow
         rounded
-        className="sm:w-1/2 flex flex-col gap-y-2 px-8 py-4"
+        className="flex flex-col w-full sm:w-1/2 gap-y-2 px-8 py-4"
       >
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#e88f2f] text-center">
             로그인
           </h3>
         </PanelHeading>
-        <Divider />
+        <Divider className="my-4" />
         <PanelBody>
           <form
             onSubmit={handleSubmit(onValid)}

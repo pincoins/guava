@@ -37,7 +37,11 @@ const SignOut = () => {
 
   // 9. JSX 반환
   return (
-    <Panel shadow rounded className="sm:w-1/2 flex flex-col gap-y-2 px-8 py-4">
+    <Panel
+      shadow
+      rounded
+      className="flex flex-col w-full sm:w-1/2 gap-y-2 px-8 py-4"
+    >
       <PanelHeading>
         <h3 className="text-lg font-semibold text-[#e88f2f] text-center">
           로그아웃
@@ -46,7 +50,7 @@ const SignOut = () => {
           개인정보보호를 위해 서비스를 이용하지 않을 때는 로그아웃하세요.
         </p>
       </PanelHeading>
-      <Divider />
+      <Divider className="my-4" />
       <PanelBody>
         <form
           onSubmit={handleSubmit(onValid)}
