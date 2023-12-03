@@ -212,8 +212,6 @@ const SignUp = () => {
   const handleSendEmailVerification = async (
     _: React.MouseEvent<HTMLElement>
   ) => {
-    console.log('send click', emailVerification, timerState);
-
     await validateUsernameAndCaptcha()
       .then(({ username, captcha }) => {
         sendEmailVerification({

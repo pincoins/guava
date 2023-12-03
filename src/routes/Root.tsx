@@ -88,8 +88,6 @@ const Root = () => {
   // - 본문: 부모 크기만큼 커지거나 작아짐 - flex: 1 1 0;
   // - 푸터: 자신의 크기만큼 - flex: 0 0 auto;
 
-  console.log('hasSidebar', hasSidebar);
-
   return (
     <div className="flex flex-col sm:gap-y-8 w-screen h-screen">
       <Header className="flex-none w-screen" />
