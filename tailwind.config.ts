@@ -13,6 +13,12 @@ export default {
         shimmer: 'shimmer 1.5s infinite',
       },
     },
+    typography: {
+      DEFAULT: {
+        // this is for prose class
+        css: {},
+      },
+    },
   },
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 } satisfies Config;

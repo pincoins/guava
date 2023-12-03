@@ -13,6 +13,7 @@ import Panel from '../../widgets/panel/Panel';
 import PanelHeading from '../../widgets/panel/PanelHeading';
 import Modal from '../../widgets/Modal';
 import PanelBody from '../../widgets/panel/PanelBody';
+import Divider from '../../widgets/Divider';
 
 export interface SignInForm {
   username: string;
@@ -100,14 +101,14 @@ const SignIn = () => {
       <Panel
         shadow
         rounded
-        divided
-        className="sm:w-1/2 flex flex-col gap-y-2 px-8 py-4"
+        className="flex flex-col w-full sm:w-1/2 gap-y-2 px-8 py-4"
       >
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#e88f2f] text-center">
             로그인
           </h3>
         </PanelHeading>
+        <Divider className="mt-3 mb-4" />
         <PanelBody>
           <form
             onSubmit={handleSubmit(onValid)}

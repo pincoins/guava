@@ -7,6 +7,7 @@ import React from 'react';
 import Panel from '../../widgets/panel/Panel';
 import PanelHeading from '../../widgets/panel/PanelHeading';
 import PanelBody from '../../widgets/panel/PanelBody';
+import Divider from '../../widgets/Divider';
 
 const SignOut = () => {
   // 1. 리덕스 스토어 객체 가져오기
@@ -39,8 +40,7 @@ const SignOut = () => {
     <Panel
       shadow
       rounded
-      divided
-      className="sm:w-1/2 flex flex-col gap-y-2 px-8 py-4"
+      className="flex flex-col w-full sm:w-1/2 gap-y-2 px-8 py-4"
     >
       <PanelHeading>
         <h3 className="text-lg font-semibold text-[#e88f2f] text-center">
@@ -50,6 +50,7 @@ const SignOut = () => {
           개인정보보호를 위해 서비스를 이용하지 않을 때는 로그아웃하세요.
         </p>
       </PanelHeading>
+      <Divider className="mt-3 mb-4" />
       <PanelBody>
         <form
           onSubmit={handleSubmit(onValid)}

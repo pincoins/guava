@@ -3,16 +3,18 @@ import Button from '../../widgets/Button';
 import Panel from '../../widgets/panel/Panel';
 import PanelHeading from '../../widgets/panel/PanelHeading';
 import PanelBody from '../../widgets/panel/PanelBody';
+import Divider from '../../widgets/Divider';
 
 const Profile = () => {
   return (
-    <Panel divided className="flex-1 grid grid-cols-1 gap-y-2">
+    <Panel className="flex-1 grid grid-cols-1 gap-y-2 p-2">
       <PanelHeading>
         <h3 className="text-lg font-semibold text-[#e88f2f]">마이페이지</h3>
       </PanelHeading>
-      <PanelBody noPadding>
+      <Divider />
+      <PanelBody>
         <div className="shadow p-1 sm:shadow-none sm:p-0">
-          <dl className="divide-y divide-gray-100">
+          <dl className="grid grid-cols-1 divide-y divide-gray-100">
             <div className="p-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-0">
               <dt className="font-medium leading-6 text-gray-900">이름</dt>
               <dd className="mt-1 flex  leading-6 text-gray-700 sm:col-span-2 sm:mt-0">

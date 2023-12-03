@@ -81,23 +81,23 @@ const Root = () => {
   // 9. JSX 반환
 
   // 사이트 기본 레이아웃
-  // 컨테이너: 뷰포트 100vh 높이로 공간 확보 - display: flex; flex-direction: column; height: 100vh;
+  // 고정 푸터 - 100vh;
+  // 스크롤바 여백 발생해도 로고 고정 - 100vw;
+  // 컨테이너: 뷰포트 100vh 높이로 공간 확보 - display: flex; flex-direction: column; height: 100vh; width: 100vw;
   // - 헤더: 자신의 크기만큼 - flex: 0 0 auto;
   // - 본문: 부모 크기만큼 커지거나 작아짐 - flex: 1 1 0;
   // - 푸터: 자신의 크기만큼 - flex: 0 0 auto;
 
-  console.log('hasSidebar', hasSidebar);
-
   return (
-    <div className="flex flex-col sm:gap-y-8 h-screen">
-      <Header className="flex-none" />
+    <div className="flex flex-col sm:gap-y-8 w-screen h-screen">
+      <Header className="flex-none w-screen" />
       <div className="flex-1">
         {/* sidebar 있으면 무조건 데스크톱 */}
         {hasSidebar && (
           <ContainerFixed className="flex">
             <div className="flex-1 grid grid-cols-6 gap-x-16">
-              <div className="grid grid-cols-1 gap-y-8 text-sm">
-                <div className="bg-gray-50">
+              <div className="flex flex-col gap-y-8 text-sm">
+                <div className="f-none bg-gray-50">
                   <div className="font-bold text-green-950 bg-gray-300 px-2 py-1 inline-flex items-center w-full gap-x-2">
                     <MdOutlineStarBorder />
                     즐겨찾기
@@ -119,7 +119,7 @@ const Root = () => {
                     })}
                   </ul>
                 </div>
-                <div className="bg-gray-50">
+                <div className="f-none bg-gray-50">
                   <div className="font-bold text-green-950 bg-gray-300 px-2 py-1 inline-flex items-center w-full gap-x-2">
                     <MdCardGiftcard />
                     상품권
@@ -149,7 +149,7 @@ const Root = () => {
           </ContainerFixed>
         )}
         {!hasSidebar && (
-          <ContainerFixed className="flex p-2 sm:p-0 sm:justify-center">
+          <ContainerFixed className="flex sm:justify-center">
             <Outlet />
           </ContainerFixed>
         )}

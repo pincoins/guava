@@ -3,15 +3,11 @@ import className from 'classnames';
 
 const PanelBody = ({
   children,
-  noPadding,
   ...rest
 }: {
   children?: ReactNode;
-  noPadding?: boolean;
 } & ComponentPropsWithoutRef<'div'>) => {
-  const classes = className(rest.className, {
-    'pt-3': !noPadding,
-  });
+  const classes = className(rest.className);
 
   return (
     <div {...rest} className={classes}>
