@@ -12,7 +12,7 @@ const PublicRoute = () => {
     if (loginState !== 'UNAUTHENTICATED') {
       navigate('/');
     }
-  }, [loginState]);
+  }, [loginState, navigate]);
 
   return <Outlet />;
 };

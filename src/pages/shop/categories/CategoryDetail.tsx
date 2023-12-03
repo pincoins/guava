@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 
 const CategoryList = () => {
-  let { category } = useParams();
+  const { category } = useParams();
 
   return <div>{category}</div>;
 };
