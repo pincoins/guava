@@ -24,7 +24,7 @@ export const loadState = () => {
 };
 
 // 스토어 상태 변경될 때마다 영속 상태 저장을 위해 스토어에서 구독하는 함수
-export const saveState = (state: any) => {
+export const saveState = (state: unknown) => {
   try {
     const serialized = JSON.stringify(state);
 

@@ -200,13 +200,7 @@ const SignUp = () => {
         }
       }
     }
-  }, []);
-
-  if (process.env.NODE_ENV === 'development') {
-    useEffect(() => {
-      console.log(emailVerification, timerState);
-    }, [emailVerification, timerState]);
-  }
+  });
 
   // 8. 이벤트 핸들러
   const handleSendEmailVerification = async (

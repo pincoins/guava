@@ -121,7 +121,7 @@ const useInterval = ({
         }
       }
     };
-  }, [state.status, lap]);
+  }, [state.status, lap, endTask]);
 
   const start = useCallback(
     (remainingArg?: number) => {
@@ -134,7 +134,7 @@ const useInterval = ({
         beginTask();
       }
     },
-    [initialRemaining]
+    [initialRemaining, beginTask]
   );
 
   const terminate = useCallback(() => {

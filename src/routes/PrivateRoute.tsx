@@ -12,7 +12,7 @@ const PrivateRoute = () => {
     if (!['AUTHENTICATED', 'EXPIRED'].includes(loginState)) {
       navigate('/auth/sign-in');
     }
-  }, [loginState]);
+  }, [loginState, navigate]);
 
   return <Outlet />;
 };

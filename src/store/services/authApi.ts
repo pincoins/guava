@@ -8,7 +8,7 @@ const authApi = createApi({
   baseQuery: baseQueryWithRetry,
   endpoints: (builder) => ({
     signUp: builder.mutation<
-      any,
+      unknown,
       { username: string; fullName: string; password: string; captcha: string }
     >({
       query: (data) => {

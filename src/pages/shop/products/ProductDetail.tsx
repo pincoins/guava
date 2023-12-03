@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 
 const ProductList = () => {
-  let { product } = useParams();
+  const { product } = useParams();
 
   return <div>{product}</div>;
 };

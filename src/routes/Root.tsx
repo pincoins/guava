@@ -27,15 +27,15 @@ const Root = () => {
 
   // 4. 리액트 훅 폼 정의
   // 5. 주요 상태 선언 (useState, useReducer 및 커스텀 훅) 및 함수 정의
+  const pathname = noSidebarRoutes.includes(useLocation().pathname);
 
-  const hasSidebar =
-    !isMobile && !noSidebarRoutes.includes(useLocation().pathname);
+  const hasSidebar = !isMobile && !pathname;
 
   const handleWindowResize = useCallback(() => {
     dispatch(
       setViewportSize({ width: window.innerWidth, height: window.innerHeight })
     );
-  }, []);
+  }, [dispatch]);
 
   // 6. onValid 폼 제출 핸들러
   // 7. useEffect
@@ -44,7 +44,7 @@ const Root = () => {
     handleWindowResize();
     window.addEventListener('resize', handleWindowResize);
     return () => window.removeEventListener('resize', handleWindowResize);
-  }, []);
+  }, [handleWindowResize]);
 
   useEffect(() => {
     // 타임아웃 자동 로그아웃 설정
@@ -75,7 +75,15 @@ const Root = () => {
     if (loginState === 'EXPIRED') {
       refresh();
     }
-  }, [rememberMe, accessToken, validUntil, expiresIn, loginState, dispatch]);
+  }, [
+    rememberMe,
+    accessToken,
+    validUntil,
+    expiresIn,
+    loginState,
+    dispatch,
+    refresh,
+  ]);
 
   // 8. 이벤트 핸들러
   // 9. JSX 반환
@@ -90,7 +98,7 @@ const Root = () => {
 
   return (
     <div className="flex flex-col sm:gap-y-8 w-screen h-screen">
-      <Header className="flex-none w-screen" />
+      <Header className="flex-none" />
       <div className="flex-1">
         {/* sidebar 있으면 무조건 데스크톱 */}
         {hasSidebar && (
