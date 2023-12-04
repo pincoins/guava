@@ -4,10 +4,11 @@ import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import { Dialog, Transition } from '@headlessui/react';
 import { Link } from 'react-router-dom';
-import { MdOutlineMenu } from 'react-icons/md';
+import { MdOutlineArrowRight, MdOutlineMenu } from 'react-icons/md';
 import DrawerHeading from './DrawerHeading';
 import { authenticated, menu, unauthenticated } from './navarItems';
-import { products } from './products';
+import { useFetchCategoriesQuery } from '../../store/apis/categoryApi';
+import Skeleton from '../../widgets/Skeleton';
 
 const Drawer = ({
   isOpen,
@@ -19,6 +20,29 @@ const Drawer = ({
   onClose: () => void;
 } & ComponentPropsWithoutRef<'div'>) => {
   const { loginState } = useAppSelector((state: RootState) => state.auth);
+
+  const resultCategories = useFetchCategoriesQuery();
+
+  let categories;
+  if (resultCategories.isLoading) {
+    categories = <Skeleton className="h-32 w-full" times={1} />;
+  } else if (resultCategories.error) {
+    categories = <div>카테고리를 가져오지 못했습니다.</div>;
+  } else {
+    categories = resultCategories.data?.map((category) => {
+      return (
+        <Link
+          key={category.slug}
+          to={`shop/categories/${category.slug}`}
+          className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+          onClick={onClose}
+        >
+          {<MdOutlineArrowRight />}
+          {category.title}
+        </Link>
+      );
+    });
+  }
 
   return (
     <>
@@ -114,19 +138,7 @@ const Drawer = ({
                 <DrawerHeading>상품권</DrawerHeading>
                 {/* 스크롤 가능하게 한 번 감싸줄 것 /*/}
                 <div className="flex flex-col h-[calc(100vh_-_264px)] overflow-y-auto">
-                  {products.map((item) => {
-                    return (
-                      <Link
-                        key={item.id}
-                        to={item.to}
-                        className="inline-flex gap-x-2 items-center border-b px-3 py-1"
-                        onClick={onClose}
-                      >
-                        {<item.icon />}
-                        {item.title}
-                      </Link>
-                    );
-                  })}
+                  {categories}
                 </div>
                 <DrawerHeading>{window.location.hostname}</DrawerHeading>
               </Dialog.Panel>

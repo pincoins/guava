@@ -5,12 +5,17 @@ import Header from '../components/header/Header';
 import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
 import signOut from '../pages/auth/SignOut';
 import { RootState } from '../store';
-import { useRefreshMutation } from '../store/services/authApi';
+import { useRefreshMutation } from '../store/apis/authApi';
 import { setViewportSize } from '../store/slices/uiSlice';
 import ContainerFixed from '../widgets/ContainerFixed';
 import { noSidebarRoutes } from './noSidebarRoutes';
-import { products } from '../components/header/products';
-import { MdCardGiftcard, MdOutlineStarBorder } from 'react-icons/md';
+import {
+  MdCardGiftcard,
+  MdOutlineArrowRight,
+  MdOutlineStarBorder,
+} from 'react-icons/md';
+import { useFetchCategoriesQuery } from '../store/apis/categoryApi';
+import Skeleton from '../widgets/Skeleton';
 
 const Root = () => {
   // 1. 리덕스 스토어 객체 가져오기
@@ -24,6 +29,8 @@ const Root = () => {
   // 2. 리액트 라우터 네비게이션 객체 가져오
   // 3. RTK Query 객체 가져오기
   const [refresh] = useRefreshMutation();
+
+  const resultCategories = useFetchCategoriesQuery();
 
   // 4. 리액트 훅 폼 정의
   // 5. 주요 상태 선언 (useState, useReducer 및 커스텀 훅) 및 함수 정의
@@ -86,6 +93,28 @@ const Root = () => {
   ]);
 
   // 8. 이벤트 핸들러
+
+  let categories;
+  if (resultCategories.isLoading) {
+    categories = <Skeleton className="h-32 w-full" times={1} />;
+  } else if (resultCategories.error) {
+    categories = <div>카테고리를 가져오지 못했습니다.</div>;
+  } else {
+    categories = resultCategories.data?.map((category) => {
+      return (
+        <li key={category.slug}>
+          <Link
+            to={`shop/categories/${category.slug}`}
+            className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
+          >
+            {<MdOutlineArrowRight />}
+            {category.title}
+          </Link>
+        </li>
+      );
+    });
+  }
+
   // 9. JSX 반환
 
   // 사이트 기본 레이아웃
@@ -110,42 +139,14 @@ const Root = () => {
                     <MdOutlineStarBorder />
                     즐겨찾기
                   </div>
-                  <ul role="list">
-                    {products.map((item) => {
-                      return (
-                        <li key={item.id}>
-                          <Link
-                            to={item.to}
-                            className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
-                          >
-                            {<item.icon />}
-                            {item.title}
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                  <ul role="list">{categories}</ul>
                 </div>
                 <div className="f-none bg-gray-50">
                   <div className="font-bold text-green-950 bg-gray-300 px-2 py-1 inline-flex items-center w-full gap-x-2">
                     <MdCardGiftcard />
                     상품권
                   </div>
-                  <ul role="list">
-                    {products.map((item) => {
-                      return (
-                        <li key={item.id}>
-                          <Link
-                            to={item.to}
-                            className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
-                          >
-                            {<item.icon />}
-                            {item.title}
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                  <ul role="list">{categories}</ul>
                 </div>
               </div>
               <div className="col-span-5 bg-white">
