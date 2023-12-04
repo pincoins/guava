@@ -9,6 +9,7 @@ import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { setCredentials, signOut } from '../slices/authSlice';
 import { RootState } from '../index';
 import { Mutex } from 'async-mutex';
+import { TokenResponse } from '../models/interfaces';
 
 const mutex = new Mutex();
 
@@ -50,7 +51,7 @@ const baseQueryWithRetry: BaseQueryFn<
         // const refreshToken = localStorage.getItem('refreshToken');
 
         const response: QueryReturnValue<
-          any,
+          unknown,
           FetchBaseQueryError,
           FetchBaseQueryMeta
         > = await baseQueryForRefresh(
@@ -65,9 +66,8 @@ const baseQueryWithRetry: BaseQueryFn<
           extraOptions
         );
         if (response.data) {
-          const {
-            data: { accessToken, refreshToken, expiresIn },
-          } = response;
+          const { accessToken, refreshToken, expiresIn } =
+            response.data as TokenResponse;
 
           api.dispatch(
             setCredentials({
