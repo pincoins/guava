@@ -5,7 +5,7 @@ import Header from '../components/header/Header';
 import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
 import signOut from '../pages/auth/SignOut';
 import { RootState } from '../store';
-import { useRefreshMutation } from '../store/services/authApi';
+import { useRefreshMutation } from '../store/apis/authApi';
 import { setViewportSize } from '../store/slices/uiSlice';
 import ContainerFixed from '../widgets/ContainerFixed';
 import { noSidebarRoutes } from './noSidebarRoutes';

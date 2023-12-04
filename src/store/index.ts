@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { categoryApi } from './services/categoryApi';
+import { categoryApi } from './apis/categoryApi';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { authSlice } from './slices/authSlice';
-import { authApi } from './services/authApi';
+import { authApi } from './apis/authApi';
 import { saveState } from './storages';
 import { uiSlice } from './slices/uiSlice';
 

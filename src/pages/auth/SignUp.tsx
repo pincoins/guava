@@ -16,7 +16,7 @@ import {
   useSendEmailCodeMutation,
   useSendEmailVerificationMutation,
   useSignUpMutation,
-} from '../../store/services/authApi';
+} from '../../store/apis/authApi';
 import Button from '../../widgets/Button';
 import Panel from '../../widgets/panel/Panel';
 import PanelHeading from '../../widgets/panel/PanelHeading';

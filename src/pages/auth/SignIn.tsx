@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import className from 'classnames';
 import { useGoogleRecaptcha } from '../../hooks/useGoogleRecaptcha';
-import { useSignInMutation } from '../../store/services/authApi';
+import { useSignInMutation } from '../../store/apis/authApi';
 import Button from '../../widgets/Button';
 import React, { useState } from 'react';
 import Panel from '../../widgets/panel/Panel';
