@@ -10,6 +10,7 @@ import { setCredentials, signOut } from '../slices/authSlice';
 import { RootState } from '../index';
 import { Mutex } from 'async-mutex';
 import { TokenResponse } from '../models/interfaces';
+import { pause } from '../../utils/pause';
 
 const mutex = new Mutex();
 
@@ -37,6 +38,8 @@ const baseQueryWithRetry: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
+  await pause(1000);
+
   // wait until the mutex is available without locking it
   await mutex.waitForUnlock();
 
