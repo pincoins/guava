@@ -12,7 +12,7 @@ const Home = () => {
 
   let categories;
   if (resultCategories.isLoading) {
-    categories = <Skeleton className="h-32 w-full" times={1} />;
+    categories = <Skeleton className="h-32 w-full" times={6} />;
   } else if (resultCategories.error) {
     categories = <div>카테고리를 가져오지 못했습니다.</div>;
   } else {
