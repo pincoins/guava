@@ -20,12 +20,12 @@ const SignOut = () => {
   const {
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<Record<string, never>>();
+  } = useForm<Record<never, never>>();
 
   // 5. 주요 상태 선언 (useState, useReducer 및 커스텀 훅)
 
   // 6. onValid 폼 제출 핸들러
-  const onValid: SubmitHandler<Record<string, never>> = async () => {
+  const onValid: SubmitHandler<Record<never, never>> = async () => {
     await signOut()
       .unwrap()
       .then((_) => {})
