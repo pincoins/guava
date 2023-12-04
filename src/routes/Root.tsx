@@ -93,7 +93,7 @@ const Root = () => {
   ]);
 
   // 8. 이벤트 핸들러
-
+  // 9. 출력 데이터 구성
   let categories;
   if (resultCategories.isLoading) {
     categories = <Skeleton className="h-32 w-full" times={1} />;
@@ -115,7 +115,7 @@ const Root = () => {
     });
   }
 
-  // 9. JSX 반환
+  // 10. JSX 반환
 
   // 사이트 기본 레이아웃
   // 고정 푸터 - 100vh;

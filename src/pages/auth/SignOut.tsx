@@ -34,8 +34,9 @@ const SignOut = () => {
 
   // 7. useEffect
   // 8. 이벤트 핸들러
+  // 9. 출력 데이터 구성
 
-  // 9. JSX 반환
+  // 10. JSX 반환
   return (
     <Panel
       shadow

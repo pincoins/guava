@@ -3,99 +3,45 @@ import PanelHeading from '../widgets/panel/PanelHeading';
 import PanelBody from '../widgets/panel/PanelBody';
 import { MdArrowDownward } from 'react-icons/md';
 import Divider from '../widgets/Divider';
-
-const products = [
-  {
-    id: 1,
-    name: '구글기프트카드',
-    href: '#',
-    imageSrc: 'https://placehold.co/468x300/orange/white',
-    imageAlt: '상품권이미지',
-    price: '6%',
-  },
-  {
-    id: 2,
-    name: '넥슨카드',
-    href: '#',
-    imageSrc: 'https://placehold.co/468x300/blue/white',
-    imageAlt: '상품권이미지',
-    price: '5%',
-  },
-  {
-    id: 3,
-    name: '문화상품권',
-
-    href: '#',
-    imageSrc: 'https://placehold.co/468x300/pink/white',
-    imageAlt: '상품권이미지',
-    price: '4%',
-  },
-  {
-    id: 4,
-    name: '해피머니',
-
-    href: '#',
-    imageSrc: 'https://placehold.co/468x300/green/white',
-    imageAlt: '상품권이미지',
-    price: '7%',
-  },
-  {
-    id: 5,
-    name: '컬쳐랜드상품권',
-
-    href: '#',
-    imageSrc: 'https://placehold.co/468x300/gray/white',
-    imageAlt: '상품권이미지',
-    price: '7%',
-  },
-  {
-    id: 6,
-    name: '도서문화상품권',
-
-    href: '#',
-    imageSrc: 'https://placehold.co/468x300/teal/white',
-    imageAlt: '상품권이미지',
-    price: '5%',
-  },
-  {
-    id: 7,
-    name: '플레이스테이션',
-
-    href: '#',
-    imageSrc: 'https://placehold.co/468x300/magenta/white',
-    imageAlt: '상품권이미지',
-    price: '2%',
-  },
-  {
-    id: 8,
-    name: '스마트문화상품권',
-
-    href: '#',
-    imageSrc: 'https://placehold.co/468x300/violet/white',
-    imageAlt: '상품권이미지',
-    price: '3%',
-  },
-  {
-    id: 9,
-    name: '요기요',
-
-    href: '#',
-    imageSrc: 'https://placehold.co/468x300/black/white',
-    imageAlt: '상품권이미지',
-    price: '3%',
-  },
-  {
-    id: 10,
-    name: '한게임상품권',
-
-    href: '#',
-    imageSrc: 'https://placehold.co/468x300/aqua/white',
-    imageAlt: '상품권이미지',
-    price: '1%',
-  },
-];
+import { useFetchCategoriesQuery } from '../store/apis/categoryApi';
+import Skeleton from '../widgets/Skeleton';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
+  const resultCategories = useFetchCategoriesQuery();
+
+  let categories;
+  if (resultCategories.isLoading) {
+    categories = <Skeleton className="h-32 w-full" times={1} />;
+  } else if (resultCategories.error) {
+    categories = <div>카테고리를 가져오지 못했습니다.</div>;
+  } else {
+    categories = resultCategories.data?.map((category) => {
+      return (
+        <div className="grid grid-cols-1 gap-y-1" key={category.slug}>
+          <div className="h-32 w-full overflow-hidden rounded-lg">
+            <Link to={`shop/categories/${category.slug}`}>
+              <img
+                src="https://placehold.co/468x300/orange/white"
+                alt={category.title}
+                className="h-full w-full object-cover object-center"
+              />
+            </Link>
+          </div>
+          <h3 className="font-bold text-gray-900 text-center">
+            {category.title}
+          </h3>
+          <p className=" flex gap-x-2 text-sm font-semibold justify-center">
+            최대
+            <span className="inline-flex font-bold items-center text-red-600">
+              {category.discountRate}% <MdArrowDownward />
+            </span>
+          </p>
+        </div>
+      );
+    });
+  }
+
   return (
     <div className="grid grid-cols-6 p-2 sm:p-0 sm:justify-center gap-x-4 gap-y-4 sm:gap-y-8">
       <Panel className="col-span-6 gap-y-2">
@@ -106,34 +52,8 @@ const Home = () => {
         </PanelHeading>
         <Divider className="mt-1 mb-2" />
         <PanelBody>
-          <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-6 sm:gap-x-8">
-            {products.map((product) => (
-              <div key={product.id}>
-                <div className="relative">
-                  <div className="relative h-32 w-full overflow-hidden rounded-lg">
-                    <img
-                      src={product.imageSrc}
-                      alt={product.imageAlt}
-                      className="h-full w-full object-cover object-center"
-                    />
-                  </div>
-                  <div className="relative mt-1">
-                    <h3 className="font-medium text-gray-900 text-center">
-                      {product.name}
-                    </h3>
-                  </div>
-                  <div className="absolute inset-x-0 top-0 flex h-32 items-end justify-end overflow-hidden rounded-lg p-4">
-                    <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-br from-white to-black opacity-60" />
-                    <p className="relative flex gap-x-2 text-sm font-semibold text-white">
-                      최대
-                      <span className="inline-flex font-bold items-center text-red-600">
-                        {product.price} <MdArrowDownward />
-                      </span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-6 sm:gap-x-8 sm:gap-y-8">
+            {categories}
           </div>
         </PanelBody>
       </Panel>

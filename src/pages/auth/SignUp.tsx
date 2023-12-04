@@ -374,7 +374,9 @@ const SignUp = () => {
     throw new Error('Google reCAPTCHA element not found');
   };
 
-  // 9. JSX 반환
+  // 9. 출력 데이터 구성
+
+  // 10. JSX 반환
   return (
     <Panel
       shadow
