@@ -17,7 +17,7 @@ import Home from '../pages/Home';
 import NotFound from '../pages/NotFound';
 import Cart from '../pages/shop/Cart';
 import CategoryDetail from '../pages/shop/categories/CategoryDetail';
-import CategoryList from '../pages/shop/categories/CategoryList';
+import CategoryList from '../pages/dashboard/CategoryList';
 import OrderDetail from '../pages/shop/orders/OrderDetail';
 import OrderList from '../pages/shop/orders/OrderList';
 import ProductDetail from '../pages/shop/products/ProductDetail';
@@ -50,7 +50,6 @@ const BrowserRouter = createBrowserRouter(
           </Route>
         </Route>
         <Route path="categories">
-          <Route index={true} element={<CategoryList />} />
           <Route path=":category" element={<CategoryDetail />} />
         </Route>
         <Route path="products">
@@ -72,6 +71,7 @@ const BrowserRouter = createBrowserRouter(
       <Route path="dashboard" element={<PrivateRoute />}>
         <Route element={<RoleManagerRoute />}>
           <Route index={true} element={<Home />} />
+          <Route path="categories" element={<CategoryList />} />
         </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
