@@ -25,8 +25,6 @@ const Root = () => {
   // 3. RTK Query 객체 가져오기
   const [refresh] = useRefreshMutation();
 
-  const resultCategories = useFetchCategoriesQuery();
-
   // 4. 리액트 훅 폼 정의
   // 5. 주요 상태 선언 (useState, useReducer 및 커스텀 훅) 및 함수 정의
   const pathname = noSidebarRoutes.includes(useLocation().pathname);

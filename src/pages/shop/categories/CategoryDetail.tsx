@@ -81,7 +81,7 @@ const CategoryList = () => {
               <div className="h-18 flex flex-col text-sm justify-center text-center gap-y-1">
                 <div className="font-bold">{product.subtitle}</div>
                 <div className="">
-                  {Intl.NumberFormat('ko-KR').format(product.sellingPrice)}원
+                  {Intl.NumberFormat().format(product.sellingPrice)}원
                 </div>
               </div>
               <div className="col-span-2">
@@ -100,7 +100,7 @@ const CategoryList = () => {
                       type="number"
                       name="google"
                       id="google"
-                      className="w-20 border-0 py-1.5 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-700 text-center"
+                      className="w-24 border-0 py-1.5 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-700 text-center"
                       placeholder="0"
                     />
                   </div>
@@ -112,7 +112,9 @@ const CategoryList = () => {
                   </button>
                 </label>
               </div>
-              <div className="text-right "> 678원</div>
+              <div className="text-right">
+                {Intl.NumberFormat().format(product.listPrice * 100)}원
+              </div>
               <Divider className="col-span-4" />
             </>
           );
