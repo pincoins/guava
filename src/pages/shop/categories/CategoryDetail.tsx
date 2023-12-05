@@ -1,4 +1,3 @@
-import { MdAdd, MdRemove } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import Divider from '../../../widgets/Divider';
 
@@ -72,7 +71,7 @@ const CategoryList = () => {
     <>
       <div className="grid grid-cols-4 gap-x-1 gap-y-2 items-center sm:w-2/5 p-2 sm:p-0">
         <div className="text-center font-bold">상품권</div>
-        <div className="text-center font-bold col-span-2">수량</div>
+        <div className="text-center font-bold col-span-2">단가 / 수량</div>
         <div className="text-center font-bold">소계</div>
         <Divider className="col-span-4" />
         {products.map((product) => {
@@ -81,36 +80,24 @@ const CategoryList = () => {
               <div className="h-18 flex flex-col text-sm justify-center text-center gap-y-1">
                 <div className="font-bold">{product.name}</div>
                 <div className="font-bold">{product.subtitle}</div>
-                <div className="">
+              </div>
+              <div className="col-span-2 flex flex-col gap-y-1">
+                <div className="text-center text-sm">
                   {Intl.NumberFormat().format(product.sellingPrice)}원
                 </div>
-              </div>
-              <div className="col-span-2">
                 <label
                   htmlFor="google"
                   className="flex text-sm font-medium leading-6 text-black justify-center"
                 >
-                  <button
-                    type="button"
-                    className="inline-flex items-center rounded-l-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                  >
-                    <MdRemove className="h-5 w-5 text-red-500" />
-                  </button>
-                  <div className="flex focus-within:z-10 -ml-px">
+                  <div className="focus-within:z-10 -ml-px">
                     <input
                       type="number"
                       name="google"
                       id="google"
-                      className="w-14 sm:w-24 border-0 py-1.5 text-black text-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-700 text-center"
+                      className="w-14 sm:w-24 border-0 rounded-md py-1.5 text-black text-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-700 text-center"
                       placeholder="0"
                     />
                   </div>
-                  <button
-                    type="button"
-                    className="-ml-px inline-flex rounded-r-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                  >
-                    <MdAdd className="h-5 w-5 text-blue-800" />
-                  </button>
                 </label>
               </div>
               <div className="text-right text-sm">
