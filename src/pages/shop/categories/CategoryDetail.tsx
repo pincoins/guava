@@ -71,7 +71,7 @@ const CategoryList = () => {
   return (
     <>
       <div className="grid grid-cols-4 gap-x-1 gap-y-2 items-center sm:w-2/5 p-2 sm:p-0">
-        <div className="text-center font-bold">상품</div>
+        <div className="text-center font-bold">상품권</div>
         <div className="text-center font-bold col-span-2">수량</div>
         <div className="text-center font-bold">소계</div>
         <Divider className="col-span-4" />
@@ -79,6 +79,7 @@ const CategoryList = () => {
           return (
             <>
               <div className="h-18 flex flex-col text-sm justify-center text-center gap-y-1">
+                <div className="font-bold">{product.name}</div>
                 <div className="font-bold">{product.subtitle}</div>
                 <div className="">
                   {Intl.NumberFormat().format(product.sellingPrice)}원
@@ -113,7 +114,7 @@ const CategoryList = () => {
                 </label>
               </div>
               <div className="text-right text-sm">
-                {Intl.NumberFormat().format(product.listPrice * 300)}원
+                {Intl.NumberFormat().format(product.listPrice * 200)}원
               </div>
               <Divider className="col-span-4" />
             </>
