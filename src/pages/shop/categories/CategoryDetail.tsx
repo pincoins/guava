@@ -70,7 +70,7 @@ const CategoryList = () => {
 
   return (
     <>
-      <div className="grid grid-cols-4 gap-x-1 gap-y-2 items-center sm:w-2/5 p-2 sm:pb-2">
+      <div className="grid grid-cols-4 gap-x-1 gap-y-2 items-center sm:w-2/5 p-2 sm:p-0">
         <div className="text-center font-bold">상품</div>
         <div className="text-center font-bold col-span-2">수량</div>
         <div className="text-center font-bold">소계</div>
@@ -100,7 +100,7 @@ const CategoryList = () => {
                       type="number"
                       name="google"
                       id="google"
-                      className="w-24 border-0 py-1.5 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-700 text-center"
+                      className="w-14 sm:w-24 border-0 py-1.5 text-black text-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-700 text-center"
                       placeholder="0"
                     />
                   </div>
@@ -112,8 +112,8 @@ const CategoryList = () => {
                   </button>
                 </label>
               </div>
-              <div className="text-right">
-                {Intl.NumberFormat().format(product.listPrice * 100)}원
+              <div className="text-right text-sm">
+                {Intl.NumberFormat().format(product.listPrice * 300)}원
               </div>
               <Divider className="col-span-4" />
             </>
