@@ -7,7 +7,7 @@ import Divider from '../../widgets/Divider';
 
 const Profile = () => {
   return (
-    <Panel className="flex-1 grid grid-cols-1 gap-y-2 p-2">
+    <Panel className="flex-1 grid grid-cols-1 gap-y-2 p-2 sm:p-0">
       <PanelHeading>
         <h3 className="text-lg font-semibold text-[#e88f2f]">마이페이지</h3>
       </PanelHeading>

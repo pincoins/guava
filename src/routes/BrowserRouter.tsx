@@ -27,55 +27,65 @@ import PublicRoute from './PublicRoute';
 import RoleManagerRoute from './RoleManagerRoute';
 import Root from './Root';
 import RootBoundary from './RootBoundary';
+import RootDashboard from './RootDashboard';
 
 const BrowserRouter = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Root />} errorElement={<RootBoundary />}>
-      <Route index={true} element={<Home />} />
-      <Route path="auth">
-        <Route element={<PrivateRoute />}>
-          <Route path="profile" element={<Profile />} />
-          <Route path="sign-out" element={<SignOut />} />
-        </Route>
-        <Route element={<PublicRoute />}>
-          <Route path="sign-up" element={<SignUp />} />
-          <Route path="sign-in" element={<SignIn />} />
-        </Route>
-      </Route>
-      <Route path="shop">
-        <Route element={<PrivateRoute />}>
-          <Route path="orders">
-            <Route index={true} element={<OrderList />} />
-            <Route path=":order" element={<OrderDetail />} />
+    <>
+      <Route path="/" element={<Root />} errorElement={<RootBoundary />}>
+        <Route index={true} element={<Home />} />
+        <Route path="auth">
+          <Route element={<PrivateRoute />}>
+            <Route path="profile" element={<Profile />} />
+            <Route path="sign-out" element={<SignOut />} />
+          </Route>
+          <Route element={<PublicRoute />}>
+            <Route path="sign-up" element={<SignUp />} />
+            <Route path="sign-in" element={<SignIn />} />
           </Route>
         </Route>
-        <Route path="categories">
-          <Route path=":category" element={<CategoryDetail />} />
+        <Route path="shop">
+          <Route element={<PrivateRoute />}>
+            <Route path="orders">
+              <Route index={true} element={<OrderList />} />
+              <Route path=":order" element={<OrderDetail />} />
+            </Route>
+          </Route>
+          <Route path="categories">
+            <Route path=":category" element={<CategoryDetail />} />
+          </Route>
+          <Route path="products">
+            <Route index={true} element={<ProductList />} />
+            <Route path=":product" element={<ProductDetail />} />
+          </Route>
+          <Route path="cart" element={<Cart />} />
         </Route>
-        <Route path="products">
-          <Route index={true} element={<ProductList />} />
-          <Route path=":product" element={<ProductDetail />} />
+        <Route path="help">
+          <Route element={<PrivateRoute />}>
+            <Route path="qna" element={<Qna />} />
+          </Route>
+          <Route path="faq" element={<Faq />} />
+          <Route path="notice" element={<Notice />} />
+          <Route path="privacy" element={<Privacy />} />
+          <Route path="terms" element={<Terms />} />
+          <Route path="guide" element={<Guide />} />
         </Route>
-        <Route path="cart" element={<Cart />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
-      <Route path="help">
+      <Route
+        path="dashboard"
+        element={<RootDashboard />}
+        errorElement={<RootBoundary />}
+      >
         <Route element={<PrivateRoute />}>
-          <Route path="qna" element={<Qna />} />
+          <Route element={<RoleManagerRoute />}>
+            <Route index={true} element={<Home />} />
+            <Route path="categories" element={<CategoryList />} />
+          </Route>
         </Route>
-        <Route path="faq" element={<Faq />} />
-        <Route path="notice" element={<Notice />} />
-        <Route path="privacy" element={<Privacy />} />
-        <Route path="terms" element={<Terms />} />
-        <Route path="guide" element={<Guide />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
-      <Route path="dashboard" element={<PrivateRoute />}>
-        <Route element={<RoleManagerRoute />}>
-          <Route index={true} element={<Home />} />
-          <Route path="categories" element={<CategoryList />} />
-        </Route>
-      </Route>
-      <Route path="*" element={<NotFound />} />
-    </Route>
+    </>
   )
 );
 
