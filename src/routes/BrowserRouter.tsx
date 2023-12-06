@@ -52,11 +52,11 @@ const BrowserRouter = createBrowserRouter(
             </Route>
           </Route>
           <Route path="categories">
-            <Route path=":category" element={<CategoryDetail />} />
+            <Route path=":slug" element={<CategoryDetail />} />
           </Route>
           <Route path="products">
             <Route index={true} element={<ProductList />} />
-            <Route path=":product" element={<ProductDetail />} />
+            <Route path=":slug" element={<ProductDetail />} />
           </Route>
           <Route path="cart" element={<Cart />} />
         </Route>

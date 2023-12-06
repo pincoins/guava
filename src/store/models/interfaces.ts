@@ -8,6 +8,14 @@ export interface Category {
   status: string;
 }
 
+export interface Product {
+  productId: number;
+  name: string;
+  subtitle: string;
+  sellingPrice: number;
+  listPrice: number;
+}
+
 export interface ErrorResponse {
   status: string;
   message: string;
