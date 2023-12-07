@@ -14,7 +14,13 @@ const Home = () => {
   if (resultCategories.isLoading) {
     categories = <Skeleton className="h-32 w-full" times={6} />;
   } else if (resultCategories.error) {
-    categories = <div>카테고리를 가져오지 못했습니다.</div>;
+    categories = <div>상품분류정보를 가져오지 못했습니다.</div>;
+  } else if (resultCategories.data?.length === 0) {
+    categories = (
+      <div className="col-span-4 font-bold text-center">
+        구매 가능 상품이 없습니다.
+      </div>
+    );
   } else {
     categories = resultCategories.data?.map((category) => {
       return (

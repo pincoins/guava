@@ -14,11 +14,31 @@ const ProductList = () => {
 
   const resultProducts = useFetchProductsQuery({ slug: categorySlug });
 
+  const handleIncrease = (
+    productId: number,
+    e: React.FormEvent<HTMLButtonElement>
+  ) => {
+    console.log('add', productId);
+  };
+
+  const handleDecrease = (
+    productId: number,
+    e: React.FormEvent<HTMLButtonElement>
+  ) => {
+    console.log('remove', productId);
+  };
+
   let products;
   if (resultProducts.isLoading) {
     products = <Skeleton className="h-40 w-full col-span-4" times={1} />;
   } else if (resultProducts.error) {
-    products = <div>카테고리를 가져오지 못했습니다.</div>;
+    products = <div>상품 목록을 가져오지 못했습니다.</div>;
+  } else if (resultProducts.data?.length === 0) {
+    products = (
+      <div className="col-span-4 font-bold text-center">
+        구매 가능 상품이 없습니다.
+      </div>
+    );
   } else {
     products = resultProducts.data?.map((product) => {
       return (
@@ -37,6 +57,7 @@ const ProductList = () => {
             >
               <button
                 type="button"
+                onClick={(e) => handleDecrease(product.productId, e)}
                 className="inline-flex items-center rounded-l-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
               >
                 <MdRemove className="h-5 w-5 text-red-500" />
@@ -52,6 +73,7 @@ const ProductList = () => {
               </div>
               <button
                 type="button"
+                onClick={(e) => handleIncrease(product.productId, e)}
                 className="-ml-px inline-flex rounded-r-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
               >
                 <MdAdd className="h-5 w-5 text-blue-800" />
