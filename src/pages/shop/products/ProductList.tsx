@@ -3,15 +3,16 @@ import Skeleton from '../../../widgets/Skeleton';
 import Divider from '../../../widgets/Divider';
 import { useParams } from 'react-router-dom';
 import { MdAdd, MdRemove } from 'react-icons/md';
+import { Fragment } from 'react';
 
 const ProductList = () => {
-  const { slug } = useParams();
+  const { categorySlug: categorySlug } = useParams();
 
-  const resultProducts = useFetchProductsQuery({
-    slug: slug || '',
-  });
+  if (!categorySlug) {
+    throw new Error('파라미터 없음 잘못된 요청');
+  }
 
-  console.log(resultProducts);
+  const resultProducts = useFetchProductsQuery({ slug: categorySlug });
 
   let products;
   if (resultProducts.isLoading) {
@@ -21,7 +22,7 @@ const ProductList = () => {
   } else {
     products = resultProducts.data?.map((product) => {
       return (
-        <>
+        <Fragment key={product.productId}>
           <div className="h-18 flex flex-col text-sm justify-center text-center gap-y-1">
             <div className="font-bold">{product.name}</div>
             <div className="font-bold">{product.subtitle}</div>
@@ -61,7 +62,7 @@ const ProductList = () => {
             {Intl.NumberFormat().format(product.listPrice * 200)}원
           </div>
           <Divider className="col-span-4" />
-        </>
+        </Fragment>
       );
     });
   }

@@ -10,7 +10,6 @@ import { setViewportSize } from '../store/slices/uiSlice';
 import ContainerFixed from '../widgets/ContainerFixed';
 import { noSidebarRoutes } from './noSidebarRoutes';
 import { MdOutlineStarBorder } from 'react-icons/md';
-import { useFetchCategoriesQuery } from '../store/apis/categoryApi';
 
 const Root = () => {
   // 1. 리덕스 스토어 객체 가져오기
