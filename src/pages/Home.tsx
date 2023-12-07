@@ -20,7 +20,7 @@ const Home = () => {
       return (
         <div className="grid grid-cols-1 gap-y-1" key={category.slug}>
           <div className="h-32 w-full overflow-hidden rounded-lg">
-            <Link to={`shop/categories/${category.slug}`}>
+            <Link to={`shop/products/${category.slug}`}>
               <img
                 src="https://placehold.co/468x300/orange/white"
                 alt={category.title}

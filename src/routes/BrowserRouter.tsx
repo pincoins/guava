@@ -16,7 +16,6 @@ import Terms from '../pages/help/Terms';
 import Home from '../pages/Home';
 import NotFound from '../pages/NotFound';
 import Cart from '../pages/shop/Cart';
-import CategoryDetail from '../pages/shop/categories/CategoryDetail';
 import CategoryList from '../pages/dashboard/CategoryList';
 import OrderDetail from '../pages/shop/orders/OrderDetail';
 import OrderList from '../pages/shop/orders/OrderList';
@@ -51,11 +50,8 @@ const BrowserRouter = createBrowserRouter(
               <Route path=":order" element={<OrderDetail />} />
             </Route>
           </Route>
-          <Route path="categories">
-            <Route path=":slug" element={<CategoryDetail />} />
-          </Route>
           <Route path="products">
-            <Route index={true} element={<ProductList />} />
+            <Route path=":categorySlug" element={<ProductList />} />
             <Route path=":slug" element={<ProductDetail />} />
           </Route>
           <Route path="cart" element={<Cart />} />

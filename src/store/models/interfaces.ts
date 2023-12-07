@@ -10,10 +10,20 @@ export interface Category {
 
 export interface Product {
   productId: number;
+  slug: string;
   name: string;
   subtitle: string;
-  sellingPrice: number;
+  description: string;
+  position: number;
+  status: string;
+  stock: string;
   listPrice: number;
+  sellingPrice: number;
+  categoryId: number;
+  isRemoved: boolean;
+  buyingPrice: number;
+  minimumStockLevel: number;
+  maximumStockLevel: number;
 }
 
 export interface ErrorResponse {

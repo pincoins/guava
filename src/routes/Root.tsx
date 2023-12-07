@@ -104,7 +104,7 @@ const Root = () => {
       return (
         <li key={category.slug}>
           <Link
-            to={`shop/categories/${category.slug}`}
+            to={`shop/products/${category.slug}`}
             className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
           >
             {<MdOutlineArrowRight />}

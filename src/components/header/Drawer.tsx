@@ -33,7 +33,7 @@ const Drawer = ({
       return (
         <Link
           key={category.slug}
-          to={`shop/categories/${category.slug}`}
+          to={`shop/products/${category.slug}`}
           className="inline-flex gap-x-2 items-center border-b px-3 py-1"
           onClick={onClose}
         >
