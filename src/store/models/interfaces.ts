@@ -8,6 +8,24 @@ export interface Category {
   status: string;
 }
 
+export interface Product {
+  productId: number;
+  slug: string;
+  name: string;
+  subtitle: string;
+  description: string;
+  position: number;
+  status: string;
+  stock: string;
+  listPrice: number;
+  sellingPrice: number;
+  categoryId: number;
+  isRemoved: boolean;
+  buyingPrice: number;
+  minimumStockLevel: number;
+  maximumStockLevel: number;
+}
+
 export interface ErrorResponse {
   status: string;
   message: string;

@@ -7,6 +7,7 @@ const RootBoundary = () => {
   // 컴포넌트 렌더링 끝나고 런타임 예외 발생 시 "Uncaught runtime errors" 검빨 화면
 
   if (isRouteErrorResponse(error)) {
+    // 리액트 라우터 수준 에러 핸들링
     if (error.status === 400) {
       return <div>잘못된 요청 파라미터</div>;
     }
@@ -26,6 +27,9 @@ const RootBoundary = () => {
     if (error.status === 503) {
       return <div>백엔드 API 오류</div>;
     }
+  } else if (error instanceof Error) {
+    // throw new Error('메시지'); 에러 핸들링
+    return <div>{error.message}</div>;
   }
 
   return <div>서버에 문제가 있습니다. 관리자에게 연락바랍니다.</div>;

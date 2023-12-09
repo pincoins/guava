@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Footer from '../components/footer/Footer';
 import Header from '../components/header/Header';
 import { useAppDispatch, useAppSelector } from '../hooks/rtk-hooks';
@@ -9,13 +9,7 @@ import { useRefreshMutation } from '../store/apis/authApi';
 import { setViewportSize } from '../store/slices/uiSlice';
 import ContainerFixed from '../widgets/ContainerFixed';
 import { noSidebarRoutes } from './noSidebarRoutes';
-import {
-  MdCardGiftcard,
-  MdOutlineArrowRight,
-  MdOutlineStarBorder,
-} from 'react-icons/md';
-import { useFetchCategoriesQuery } from '../store/apis/categoryApi';
-import Skeleton from '../widgets/Skeleton';
+import { MdOutlineStarBorder } from 'react-icons/md';
 
 const Root = () => {
   // 1. 리덕스 스토어 객체 가져오기
@@ -29,8 +23,6 @@ const Root = () => {
   // 2. 리액트 라우터 네비게이션 객체 가져오기
   // 3. RTK Query 객체 가져오기
   const [refresh] = useRefreshMutation();
-
-  const resultCategories = useFetchCategoriesQuery();
 
   // 4. 리액트 훅 폼 정의
   // 5. 주요 상태 선언 (useState, useReducer 및 커스텀 훅) 및 함수 정의
@@ -94,33 +86,6 @@ const Root = () => {
 
   // 8. 이벤트 핸들러
   // 9. 출력 데이터 구성
-  let categories;
-  if (resultCategories.isLoading) {
-    categories = <Skeleton className="h-32 w-full" times={1} />;
-  } else if (resultCategories.error) {
-    categories = <div>상품분류정보를 가져오지 못했습니다.</div>;
-  } else if (resultCategories.data?.length === 0) {
-    categories = (
-      <div className="col-span-4 font-bold text-center">
-        구매 가능 상품이 없습니다.
-      </div>
-    );
-  } else {
-    categories = resultCategories.data?.map((category) => {
-      return (
-        <li key={category.slug}>
-          <Link
-            to={`shop/products/${category.slug}`}
-            className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
-          >
-            {<MdOutlineArrowRight />}
-            {category.title}
-          </Link>
-        </li>
-      );
-    });
-  }
-
   // 10. JSX 반환
 
   // 사이트 기본 레이아웃
@@ -143,16 +108,8 @@ const Root = () => {
                 <div className="f-none bg-gray-50">
                   <div className="font-bold text-green-950 bg-gray-300 px-2 py-1 inline-flex items-center w-full gap-x-2">
                     <MdOutlineStarBorder />
-                    즐겨찾기
+                    메뉴
                   </div>
-                  <ul role="list">{categories}</ul>
-                </div>
-                <div className="f-none bg-gray-50">
-                  <div className="font-bold text-green-950 bg-gray-300 px-2 py-1 inline-flex items-center w-full gap-x-2">
-                    <MdCardGiftcard />
-                    상품권
-                  </div>
-                  <ul role="list">{categories}</ul>
                 </div>
               </div>
               <div className="col-span-5 bg-white">

@@ -14,13 +14,19 @@ const Home = () => {
   if (resultCategories.isLoading) {
     categories = <Skeleton className="h-32 w-full" times={6} />;
   } else if (resultCategories.error) {
-    categories = <div>카테고리를 가져오지 못했습니다.</div>;
+    categories = <div>상품분류정보를 가져오지 못했습니다.</div>;
+  } else if (resultCategories.data?.length === 0) {
+    categories = (
+      <div className="col-span-4 font-bold text-center">
+        구매 가능 상품이 없습니다.
+      </div>
+    );
   } else {
     categories = resultCategories.data?.map((category) => {
       return (
         <div className="grid grid-cols-1 gap-y-1" key={category.slug}>
           <div className="h-32 w-full overflow-hidden rounded-lg">
-            <Link to={`shop/categories/${category.slug}`}>
+            <Link to={`shop/products/${category.slug}`}>
               <img
                 src="https://placehold.co/468x300/orange/white"
                 alt={category.title}
