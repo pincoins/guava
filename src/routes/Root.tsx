@@ -96,35 +96,36 @@ const Root = () => {
 
   let favorites;
 
-  const resultFavorites = useFetchFavoritesQuery(sub || 0);
+  const resultFavorites = useFetchFavoritesQuery(sub || 0, {
+    skip: loginState !== 'AUTHENTICATED',
+  });
 
-  if (resultFavorites.isFetching || loginState === 'EXPIRED') {
+  if (resultFavorites.isLoading || resultFavorites.isUninitialized) {
     favorites = <Skeleton className="h-16 w-full" times={1} />;
-  } else if (resultFavorites.error) {
+  } else if (resultFavorites.isError) {
     favorites = <div>즐겨찾기를 가져오지 못했습니다.</div>;
-  } else if (
-    resultFavorites.status === 'fulfilled' &&
-    resultFavorites.data?.items.length === 0
-  ) {
-    favorites = (
-      <div className="col-span-4 px-2 py-1 text-center">
-        즐겨찾기가 비었습니다.
-      </div>
-    );
-  } else {
-    favorites = resultFavorites.data?.items.map((item) => {
-      return (
-        <li key={item.slug}>
-          <Link
-            to={`shop/products/${item.slug}`}
-            className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
-          >
-            {<MdOutlineArrowRight />}
-            {item.title}
-          </Link>
-        </li>
+  } else if (resultFavorites.isSuccess) {
+    if (resultFavorites.data.items.length === 0) {
+      favorites = (
+        <div className="col-span-4 px-2 py-1 text-center">
+          즐겨찾기가 비었습니다.
+        </div>
       );
-    });
+    } else {
+      favorites = resultFavorites.data.items.map((item) => {
+        return (
+          <li key={item.slug}>
+            <Link
+              to={`shop/products/${item.slug}`}
+              className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
+            >
+              {<MdOutlineArrowRight />}
+              {item.title}
+            </Link>
+          </li>
+        );
+      });
+    }
   }
 
   const resultCategories = useFetchCategoriesQuery();
@@ -133,31 +134,30 @@ const Root = () => {
 
   if (resultCategories.isLoading) {
     categories = <Skeleton className="h-32 w-full" times={1} />;
-  } else if (resultCategories.error) {
+  } else if (resultCategories.isError) {
     categories = <div>상품분류정보를 가져오지 못했습니다.</div>;
-  } else if (
-    resultCategories.status === 'fulfilled' &&
-    resultCategories.data?.length === 0
-  ) {
-    categories = (
-      <div className="col-span-4 font-bold text-center">
-        구매 가능 상품이 없습니다.
-      </div>
-    );
-  } else {
-    categories = resultCategories.data?.map((category) => {
-      return (
-        <li key={category.slug}>
-          <Link
-            to={`shop/products/${category.slug}`}
-            className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
-          >
-            {<MdOutlineArrowRight />}
-            {category.title}
-          </Link>
-        </li>
+  } else if (resultCategories.isSuccess) {
+    if (resultCategories.data.length === 0) {
+      categories = (
+        <div className="col-span-4 font-bold text-center">
+          구매 가능 상품이 없습니다.
+        </div>
       );
-    });
+    } else {
+      categories = resultCategories.data.map((category) => {
+        return (
+          <li key={category.slug}>
+            <Link
+              to={`shop/products/${category.slug}`}
+              className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
+            >
+              {<MdOutlineArrowRight />}
+              {category.title}
+            </Link>
+          </li>
+        );
+      });
+    }
   }
 
   // 10. JSX 반환
