@@ -4,6 +4,7 @@ import Divider from '../../../widgets/Divider';
 import { useParams } from 'react-router-dom';
 import { MdAdd, MdRemove } from 'react-icons/md';
 import { Fragment } from 'react';
+import { useFetchCategoryQuery } from '../../../store/apis/categoryApi';
 
 const ProductList = () => {
   const { categorySlug: categorySlug } = useParams();
@@ -11,8 +12,6 @@ const ProductList = () => {
   if (!categorySlug) {
     throw new Error('파라미터 없음 잘못된 요청');
   }
-
-  const resultProducts = useFetchProductsQuery({ slug: categorySlug });
 
   const handleIncrease = (
     productId: number,
@@ -28,7 +27,29 @@ const ProductList = () => {
     console.log('remove', productId);
   };
 
+  const resultCategory = useFetchCategoryQuery(categorySlug);
+  let category;
+
+  if (resultCategory.isLoading) {
+    category = <Skeleton className="h-12 w-full col-span-4" times={1} />;
+  } else if (resultCategory.isError) {
+    category = (
+      <div className="col-span-4 text-center font-bold text-lg">
+        상품 분류 없음
+      </div>
+    );
+  } else if (resultCategory.isSuccess) {
+    category = (
+      <div className="col-span-4 text-center font-bold text-lg">
+        {resultCategory.data.title}
+      </div>
+    );
+  }
+
+  const resultProducts = useFetchProductsQuery({ slug: categorySlug });
+
   let products;
+
   if (resultProducts.isLoading) {
     products = <Skeleton className="h-40 w-full col-span-4" times={1} />;
   } else if (resultProducts.isError) {
@@ -45,12 +66,8 @@ const ProductList = () => {
         return (
           <Fragment key={product.productId}>
             <div className="h-18 flex flex-col text-sm justify-center text-center gap-y-1">
-              <div className="font-bold">{product.name}</div>
               <div className="font-bold">{product.subtitle}&nbsp;</div>
-            </div>
-            <div className="col-span-2 flex flex-col gap-y-2 text-sm">
-              <div className="text-center">
-                {Intl.NumberFormat().format(product.sellingPrice)}원 (
+              <div className="font-bold">
                 {new Intl.NumberFormat('en-US', {
                   style: 'percent',
                   minimumFractionDigits: 1,
@@ -58,7 +75,11 @@ const ProductList = () => {
                 }).format(
                   (product.listPrice - product.sellingPrice) / product.listPrice
                 )}
-                )
+              </div>
+            </div>
+            <div className="col-span-2 flex flex-col gap-y-2 text-sm">
+              <div className="text-center">
+                {Intl.NumberFormat().format(product.sellingPrice)}원
               </div>
               <label
                 htmlFor="google"
@@ -101,8 +122,9 @@ const ProductList = () => {
 
   return (
     <>
-      <div className="grid grid-cols-4 gap-x-1 gap-y-2 items-center sm:w-2/5 p-2 sm:p-0">
-        <div className="text-center font-bold">상품권</div>
+      <div className="grid grid-cols-4 gap-x-1 gap-y-2 items-center w-full sm:w-2/5 p-2 sm:p-0">
+        {category}
+        <div className="text-center font-bold">권종</div>
         <div className="text-center font-bold col-span-2">단가 / 수량</div>
         <div className="text-center font-bold">소계</div>
         <Divider className="col-span-4" />
