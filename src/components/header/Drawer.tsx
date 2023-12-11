@@ -57,8 +57,8 @@ const Drawer = ({
     <>
       <Button
         onClick={onOpen}
-        className="text-2xl border-green-950"
-        rounded="sm"
+        className="text-2xl border-green-950 bg-green-900 text-white p-3.5 shadow-lg"
+        rounded="full"
       >
         <MdOutlineMenu />
       </Button>
