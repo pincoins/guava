@@ -2,12 +2,22 @@ import { useFetchProductsQuery } from '../../../store/apis/productApi';
 import Skeleton from '../../../widgets/Skeleton';
 import Divider from '../../../widgets/Divider';
 import { useParams } from 'react-router-dom';
-import { MdAdd, MdRemove } from 'react-icons/md';
+import {
+  MdAdd,
+  MdAddShoppingCart,
+  MdOutlineStarBorder,
+  MdRemove,
+} from 'react-icons/md';
 import { Fragment } from 'react';
 import { useFetchCategoryQuery } from '../../../store/apis/categoryApi';
+import Button from '../../../widgets/Button';
+import { useAppSelector } from '../../../hooks/rtk-hooks';
+import { RootState } from '../../../store';
 
 const ProductList = () => {
   const { categorySlug: categorySlug } = useParams();
+
+  const { isMobile } = useAppSelector((state: RootState) => state.ui);
 
   if (!categorySlug) {
     throw new Error('파라미터 없음 잘못된 요청');
@@ -40,8 +50,8 @@ const ProductList = () => {
     );
   } else if (resultCategory.isSuccess) {
     category = (
-      <div className="col-span-4 text-center font-bold text-lg">
-        {resultCategory.data.title}
+      <div className="col-span-4 font-bold text-xl leading-none inline-flex items-center justify-center gap-x-1">
+        {resultCategory.data.title} <MdOutlineStarBorder />
       </div>
     );
   }
@@ -124,12 +134,42 @@ const ProductList = () => {
     <>
       <div className="grid grid-cols-4 gap-x-1 gap-y-2 items-center w-full sm:w-2/5 p-2 sm:p-0">
         {category}
+        {isMobile && (
+          <div className="col-span-4 text-xs text-gray-600 inline-flex items-center justify-center">
+            상품권 수량 선택 후 하단 장바구니 담기 &nbsp;
+            <span className="bg-orange-500 text-white shadow-lg rounded-full p-1">
+              <MdAddShoppingCart />
+            </span>
+            &nbsp; 버튼을 눌러주세요.
+          </div>
+        )}
         <div className="text-center font-bold">권종</div>
         <div className="text-center font-bold col-span-2">단가 / 수량</div>
         <div className="text-center font-bold">소계</div>
         <Divider className="col-span-4" />
         {products}
+        {!isMobile && (
+          <div className="col-span-4 text-center">
+            <Button
+              className="w-full justify-center text-md bg-orange-500 text-white p-4"
+              inline
+              rounded="md"
+            >
+              <MdAddShoppingCart /> 장바구니 추가
+            </Button>
+          </div>
+        )}
       </div>
+      {isMobile && (
+        <div className="fixed bottom-6 right-6">
+          <Button
+            className="text-2xl bg-orange-500 text-white p-3.5 shadow-lg"
+            rounded="full"
+          >
+            <MdAddShoppingCart />
+          </Button>
+        </div>
+      )}
     </>
   );
 };
