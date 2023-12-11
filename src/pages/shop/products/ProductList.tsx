@@ -16,14 +16,14 @@ const ProductList = () => {
 
   const handleIncrease = (
     productId: number,
-    e: React.FormEvent<HTMLButtonElement>
+    _: React.FormEvent<HTMLButtonElement>
   ) => {
     console.log('add', productId);
   };
 
   const handleDecrease = (
     productId: number,
-    e: React.FormEvent<HTMLButtonElement>
+    _: React.FormEvent<HTMLButtonElement>
   ) => {
     console.log('remove', productId);
   };
@@ -45,11 +45,19 @@ const ProductList = () => {
         <Fragment key={product.productId}>
           <div className="h-18 flex flex-col text-sm justify-center text-center gap-y-1">
             <div className="font-bold">{product.name}</div>
-            <div className="font-bold">{product.subtitle}</div>
+            <div className="font-bold">{product.subtitle}&nbsp;</div>
           </div>
           <div className="col-span-2 flex flex-col gap-y-2 text-sm">
             <div className="text-center">
-              {Intl.NumberFormat().format(product.sellingPrice)}원
+              {Intl.NumberFormat().format(product.sellingPrice)}원 (
+              {new Intl.NumberFormat('en-US', {
+                style: 'percent',
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              }).format(
+                (product.listPrice - product.sellingPrice) / product.listPrice
+              )}
+              )
             </div>
             <label
               htmlFor="google"

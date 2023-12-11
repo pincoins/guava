@@ -3,9 +3,10 @@ import { categoryApi } from './apis/categoryApi';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { authSlice } from './slices/authSlice';
 import { authApi } from './apis/authApi';
-import { saveState } from './storages';
 import { uiSlice } from './slices/uiSlice';
 import { productApi } from './apis/productApi';
+import { favoritesApi } from './apis/favoritesApi';
+import { saveState } from './storages';
 
 export const store = configureStore({
   reducer: {
@@ -14,12 +15,14 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
+    [favoritesApi.reducerPath]: favoritesApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware()
       .concat(authApi.middleware)
       .concat(categoryApi.middleware)
-      .concat(productApi.middleware);
+      .concat(productApi.middleware)
+      .concat(favoritesApi.middleware);
   },
 });
 

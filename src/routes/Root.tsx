@@ -16,10 +16,11 @@ import {
 } from 'react-icons/md';
 import { useFetchCategoriesQuery } from '../store/apis/categoryApi';
 import Skeleton from '../widgets/Skeleton';
+import { useFetchFavoritesQuery } from '../store/apis/favoritesApi';
 
 const Root = () => {
   // 1. 리덕스 스토어 객체 가져오기
-  const { rememberMe, accessToken, validUntil, expiresIn, loginState } =
+  const { rememberMe, accessToken, validUntil, expiresIn, loginState, sub } =
     useAppSelector((state: RootState) => state.auth);
 
   const { isMobile } = useAppSelector((state: RootState) => state.ui);
@@ -29,8 +30,6 @@ const Root = () => {
   // 2. 리액트 라우터 네비게이션 객체 가져오기
   // 3. RTK Query 객체 가져오기
   const [refresh] = useRefreshMutation();
-
-  const resultCategories = useFetchCategoriesQuery();
 
   // 4. 리액트 훅 폼 정의
   // 5. 주요 상태 선언 (useState, useReducer 및 커스텀 훅) 및 함수 정의
@@ -94,12 +93,52 @@ const Root = () => {
 
   // 8. 이벤트 핸들러
   // 9. 출력 데이터 구성
+
+  let favorites;
+
+  const resultFavorites = useFetchFavoritesQuery(sub || 0);
+
+  if (resultFavorites.isFetching || loginState === 'EXPIRED') {
+    favorites = <Skeleton className="h-16 w-full" times={1} />;
+  } else if (resultFavorites.error) {
+    favorites = <div>즐겨찾기를 가져오지 못했습니다.</div>;
+  } else if (
+    resultFavorites.status === 'fulfilled' &&
+    resultFavorites.data?.items.length === 0
+  ) {
+    favorites = (
+      <div className="col-span-4 px-2 py-1 text-center">
+        즐겨찾기가 비었습니다.
+      </div>
+    );
+  } else {
+    favorites = resultFavorites.data?.items.map((item) => {
+      return (
+        <li key={item.slug}>
+          <Link
+            to={`shop/products/${item.slug}`}
+            className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
+          >
+            {<MdOutlineArrowRight />}
+            {item.title}
+          </Link>
+        </li>
+      );
+    });
+  }
+
+  const resultCategories = useFetchCategoriesQuery();
+
   let categories;
+
   if (resultCategories.isLoading) {
     categories = <Skeleton className="h-32 w-full" times={1} />;
   } else if (resultCategories.error) {
     categories = <div>상품분류정보를 가져오지 못했습니다.</div>;
-  } else if (resultCategories.data?.length === 0) {
+  } else if (
+    resultCategories.status === 'fulfilled' &&
+    resultCategories.data?.length === 0
+  ) {
     categories = (
       <div className="col-span-4 font-bold text-center">
         구매 가능 상품이 없습니다.
@@ -145,7 +184,7 @@ const Root = () => {
                     <MdOutlineStarBorder />
                     즐겨찾기
                   </div>
-                  <ul role="list">{categories}</ul>
+                  <ul role="list">{favorites}</ul>
                 </div>
                 <div className="f-none bg-gray-50">
                   <div className="font-bold text-green-950 bg-gray-300 px-2 py-1 inline-flex items-center w-full gap-x-2">

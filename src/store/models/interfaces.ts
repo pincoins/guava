@@ -26,6 +26,16 @@ export interface Product {
   maximumStockLevel: number;
 }
 
+export interface FavoritesItem {
+  id: number;
+  slug: string;
+  title: string;
+}
+
+export interface Favorites {
+  items: FavoritesItem[];
+}
+
 export interface ErrorResponse {
   status: string;
   message: string;

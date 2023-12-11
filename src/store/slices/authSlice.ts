@@ -9,6 +9,7 @@ interface AuthState {
   validUntil: string | null; // persisted
   accessToken: string | null;
   expiresIn: number | null;
+  sub: number | null;
   role: string | null;
   username: string | null;
   loginState: LoginState;
@@ -22,6 +23,7 @@ const initialState: AuthState = {
   validUntil: persistedState?.auth?.validUntil || null,
   accessToken: null,
   expiresIn: null,
+  sub: null,
   role: null,
   username: null,
   loginState:
@@ -49,6 +51,7 @@ export const authSlice = createSlice({
 
       const jwt = parseJwt(action.payload.accessToken);
 
+      state.sub = jwt.sub;
       state.role = jwt.role;
       state.username = jwt.username;
 
@@ -60,6 +63,7 @@ export const authSlice = createSlice({
 
       state.accessToken = null;
       state.expiresIn = null;
+      state.sub = null;
       state.role = null;
       state.username = null;
 

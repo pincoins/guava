@@ -12,7 +12,6 @@ const Skeleton = ({
     'overflow-hidden',
     'bg-gray-200',
     'rounded',
-    'mb-2.5',
     className
   );
 
