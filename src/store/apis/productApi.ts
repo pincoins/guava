@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { Product } from '../interfaces/interfaces';
 import baseQueryWithRetry from './baseQueryWithRetry';
+import { Product } from '../../types';
 
 const productApi = createApi({
   reducerPath: 'productApi',

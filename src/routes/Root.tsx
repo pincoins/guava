@@ -17,6 +17,7 @@ import {
 import { useFetchCategoriesQuery } from '../store/apis/categoryApi';
 import Skeleton from '../widgets/Skeleton';
 import { useFetchFavoritesQuery } from '../store/apis/favoritesApi';
+import { FavoritesItem } from '../types';
 
 const Root = () => {
   // 1. 리덕스 스토어 객체 가져오기
@@ -112,7 +113,7 @@ const Root = () => {
         </div>
       );
     } else {
-      favorites = resultFavorites.data.items.map((item) => {
+      favorites = resultFavorites.data.items.map((item: FavoritesItem) => {
         return (
           <li key={item.slug}>
             <Link

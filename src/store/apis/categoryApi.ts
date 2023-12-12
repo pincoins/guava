@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { Category } from '../interfaces/interfaces';
 import baseQueryWithRetry from './baseQueryWithRetry';
+import { Category } from '../../types';
 
 const categoryApi = createApi({
   reducerPath: 'categoryApi',
