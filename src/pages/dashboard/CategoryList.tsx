@@ -1,4 +1,4 @@
-import { Category } from '../../store/models/interfaces';
+import { Category } from '../../store/interfaces/interfaces';
 import { useFetchCategoriesQuery } from '../../store/apis/categoryApi';
 
 const CategoryList = () => {

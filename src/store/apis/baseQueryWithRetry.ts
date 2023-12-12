@@ -9,7 +9,7 @@ import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { setCredentials, signOut } from '../slices/authSlice';
 import { RootState } from '../index';
 import { Mutex } from 'async-mutex';
-import { TokenResponse } from '../models/interfaces';
+import { TokenResponse } from '../interfaces/interfaces';
 import { pause } from '../../utils/pause';
 
 const mutex = new Mutex();

@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { TokenResponse } from '../models/interfaces';
+import { TokenResponse } from '../interfaces/interfaces';
 import { setCredentials, signOut } from '../slices/authSlice';
 import baseQueryWithRetry from './baseQueryWithRetry';
 

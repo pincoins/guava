@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import baseQueryWithRetry from './baseQueryWithRetry';
-import { Favorites } from '../models/interfaces';
+import { Favorites } from '../interfaces/interfaces';
 
 const favoritesApi = createApi({
   reducerPath: 'favoritesApi',

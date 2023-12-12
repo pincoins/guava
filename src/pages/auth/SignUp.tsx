@@ -22,14 +22,7 @@ import Panel from '../../widgets/panel/Panel';
 import PanelHeading from '../../widgets/panel/PanelHeading';
 import PanelBody from '../../widgets/panel/PanelBody';
 import Divider from '../../widgets/Divider';
-
-export interface SignUpForm {
-  username: string;
-  fullName: string;
-  password: string;
-  passwordRepeat: string;
-  code?: string;
-}
+import { SignUpForm } from '../../types';
 
 const schema = yup
   .object({

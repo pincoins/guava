@@ -17,11 +17,15 @@ import { RootState } from '../../../store';
 const ProductList = () => {
   const { categorySlug: categorySlug } = useParams();
 
-  const { isMobile } = useAppSelector((state: RootState) => state.ui);
-
   if (!categorySlug) {
     throw new Error('파라미터 없음 잘못된 요청');
   }
+
+  const { isMobile } = useAppSelector((state: RootState) => state.ui);
+
+  const resultCategory = useFetchCategoryQuery(categorySlug);
+
+  const resultProducts = useFetchProductsQuery({ slug: categorySlug });
 
   const handleIncrease = (
     productId: number,
@@ -37,7 +41,6 @@ const ProductList = () => {
     console.log('remove', productId);
   };
 
-  const resultCategory = useFetchCategoryQuery(categorySlug);
   let category;
 
   if (resultCategory.isLoading) {
@@ -55,8 +58,6 @@ const ProductList = () => {
       </div>
     );
   }
-
-  const resultProducts = useFetchProductsQuery({ slug: categorySlug });
 
   let products;
 

@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { Category } from '../models/interfaces';
+import { Category } from '../interfaces/interfaces';
 import baseQueryWithRetry from './baseQueryWithRetry';
 
 const categoryApi = createApi({
