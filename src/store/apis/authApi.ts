@@ -1,7 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { TokenResponse } from '../interfaces/interfaces';
+
 import { setCredentials, signOut } from '../slices/authSlice';
 import baseQueryWithRetry from './baseQueryWithRetry';
+import { TokenResponse } from '../../types';
 
 const authApi = createApi({
   reducerPath: 'authApi',

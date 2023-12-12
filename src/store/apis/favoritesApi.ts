@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import baseQueryWithRetry from './baseQueryWithRetry';
-import { Favorites } from '../interfaces/interfaces';
+import { Favorites } from '../../types';
 
 const favoritesApi = createApi({
   reducerPath: 'favoritesApi',
@@ -14,9 +14,22 @@ const favoritesApi = createApi({
         };
       },
     }),
+    saveFavorites: builder.mutation<
+      Favorites,
+      { sub: number; favorites: Favorites }
+    >({
+      query: ({ sub, favorites }) => {
+        return {
+          url: `/members/${sub}/favorites`,
+          method: 'POST',
+          body: favorites,
+        };
+      },
+    }),
   }),
 });
 
-export const { useFetchFavoritesQuery } = favoritesApi;
+export const { useFetchFavoritesQuery, useSaveFavoritesMutation } =
+  favoritesApi;
 
 export { favoritesApi };

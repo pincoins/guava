@@ -13,6 +13,10 @@ import { useFetchCategoryQuery } from '../../../store/apis/categoryApi';
 import Button from '../../../widgets/Button';
 import { useAppSelector } from '../../../hooks/rtk-hooks';
 import { RootState } from '../../../store';
+import {
+  useFetchFavoritesQuery,
+  useSaveFavoritesMutation,
+} from '../../../store/apis/favoritesApi';
 
 const ProductList = () => {
   const { categorySlug: categorySlug } = useParams();
@@ -21,17 +25,56 @@ const ProductList = () => {
     throw new Error('파라미터 없음 잘못된 요청');
   }
 
+  const { loginState, sub } = useAppSelector((state: RootState) => state.auth);
+
   const { isMobile } = useAppSelector((state: RootState) => state.ui);
+
+  const resultFavorites = useFetchFavoritesQuery(sub || 0, {
+    skip: loginState !== 'AUTHENTICATED',
+  });
+
+  const [saveFavorites] = useSaveFavoritesMutation();
 
   const resultCategory = useFetchCategoryQuery(categorySlug);
 
   const resultProducts = useFetchProductsQuery({ slug: categorySlug });
+
+  const handleToggleFavorites = async () => {
+    if (
+      loginState === 'AUTHENTICATED' &&
+      sub &&
+      resultCategory.isSuccess &&
+      resultFavorites.isSuccess
+    ) {
+      const favorites = [
+        ...resultFavorites.data.items,
+        {
+          id: resultCategory.data.categoryId,
+          slug: resultCategory.data.slug,
+          title: resultCategory.data.title,
+        },
+      ];
+
+      console.log(resultCategory.data);
+      console.log(resultFavorites.data);
+      console.log(favorites);
+
+      await saveFavorites({ sub, favorites: { items: favorites } })
+        .unwrap()
+        .then((_) => {})
+        .catch((rejected) => {
+          console.error(rejected);
+        });
+    }
+  };
 
   const handleIncrease = (
     productId: number,
     _: React.FormEvent<HTMLButtonElement>
   ) => {
     console.log('add', productId);
+    console.log(resultCategory.data);
+    console.log(resultProducts.data);
   };
 
   const handleDecrease = (
@@ -53,8 +96,11 @@ const ProductList = () => {
     );
   } else if (resultCategory.isSuccess) {
     category = (
-      <div className="col-span-4 font-bold text-xl leading-none inline-flex items-center justify-center gap-x-1">
-        {resultCategory.data.title} <MdOutlineStarBorder />
+      <div className="col-span-4 font-bold text-xl leading-none inline-flex items-center justify-center gap-x-3">
+        {resultCategory.data.title}
+        <Button onClick={handleToggleFavorites} rounded="full">
+          <MdOutlineStarBorder />
+        </Button>
       </div>
     );
   }
