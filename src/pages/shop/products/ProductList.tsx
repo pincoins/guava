@@ -57,18 +57,27 @@ const ProductList = () => {
       resultCategory.isSuccess &&
       resultFavorites.isSuccess
     ) {
-      const favorites = [
-        ...resultFavorites.data.items,
-        {
-          id: resultCategory.data.categoryId,
-          slug: resultCategory.data.slug,
-          title: resultCategory.data.title,
-        },
-      ];
+      let favorites;
 
-      console.log(resultCategory.data);
-      console.log(resultFavorites.data);
-      console.log(favorites);
+      if (favorite) {
+        favorites = resultFavorites.data.items.filter(
+          (item) =>
+            !(
+              item.id === resultCategory.data.categoryId &&
+              item.title === resultCategory.data.title &&
+              item.slug === resultCategory.data.slug
+            )
+        );
+      } else {
+        favorites = [
+          ...resultFavorites.data.items,
+          {
+            id: resultCategory.data.categoryId,
+            slug: resultCategory.data.slug,
+            title: resultCategory.data.title,
+          },
+        ];
+      }
 
       await saveFavorites({ sub, favorites: { items: favorites } })
         .unwrap()
