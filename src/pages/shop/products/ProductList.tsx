@@ -126,8 +126,8 @@ const ProductList = () => {
         {favorite && (
           <Button
             onClick={handleToggleFavorites}
-            rounded="md"
-            className="text-sm text-orange-500 bg-yellow-400"
+            rounded="full"
+            className="text-sm text-orange-500 bg-yellow-400 border-orange-500"
           >
             <MdOutlineStar />
           </Button>
@@ -136,7 +136,7 @@ const ProductList = () => {
           <Button
             onClick={handleToggleFavorites}
             rounded="full"
-            className="bg-gray-100"
+            className="text-sm bg-gray-100 border-gray-600"
           >
             <MdOutlineStarBorder />
           </Button>
