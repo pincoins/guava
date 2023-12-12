@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import {
   MdAdd,
   MdAddShoppingCart,
+  MdOutlineStar,
   MdOutlineStarBorder,
   MdRemove,
 } from 'react-icons/md';
@@ -33,11 +34,21 @@ const ProductList = () => {
     skip: loginState !== 'AUTHENTICATED',
   });
 
-  const [saveFavorites] = useSaveFavoritesMutation();
+  let favorite = false;
 
   const resultCategory = useFetchCategoryQuery(categorySlug);
 
+  let category: JSX.Element | JSX.Element[] = (
+    <Skeleton className="h-12 w-full col-span-4" times={1} />
+  );
+
   const resultProducts = useFetchProductsQuery({ slug: categorySlug });
+
+  let products: JSX.Element | JSX.Element[] = (
+    <Skeleton className="h-40 w-full col-span-4" times={1} />
+  );
+
+  const [saveFavorites] = useSaveFavoritesMutation();
 
   const handleToggleFavorites = async () => {
     if (
@@ -84,11 +95,16 @@ const ProductList = () => {
     console.log('remove', productId);
   };
 
-  let category;
+  if (resultCategory.isSuccess && resultFavorites.isSuccess) {
+    favorite = !!resultFavorites.data.items.find(
+      (item) =>
+        item.id === resultCategory.data.categoryId &&
+        item.title === resultCategory.data.title &&
+        item.slug === resultCategory.data.slug
+    );
+  }
 
-  if (resultCategory.isLoading) {
-    category = <Skeleton className="h-12 w-full col-span-4" times={1} />;
-  } else if (resultCategory.isError) {
+  if (resultCategory.isError) {
     category = (
       <div className="col-span-4 text-center font-bold text-lg">
         상품 분류 없음
@@ -98,18 +114,29 @@ const ProductList = () => {
     category = (
       <div className="col-span-4 font-bold text-xl leading-none inline-flex items-center justify-center gap-x-3">
         {resultCategory.data.title}
-        <Button onClick={handleToggleFavorites} rounded="full">
-          <MdOutlineStarBorder />
-        </Button>
+        {favorite && (
+          <Button
+            onClick={handleToggleFavorites}
+            rounded="md"
+            className="text-sm text-orange-500 bg-yellow-400"
+          >
+            <MdOutlineStar />
+          </Button>
+        )}
+        {!favorite && (
+          <Button
+            onClick={handleToggleFavorites}
+            rounded="full"
+            className="bg-gray-100"
+          >
+            <MdOutlineStarBorder />
+          </Button>
+        )}
       </div>
     );
   }
 
-  let products;
-
-  if (resultProducts.isLoading) {
-    products = <Skeleton className="h-40 w-full col-span-4" times={1} />;
-  } else if (resultProducts.isError) {
+  if (resultProducts.isError) {
     products = <div>상품 목록을 가져오지 못했습니다.</div>;
   } else if (resultProducts.isSuccess) {
     if (resultProducts.data.length === 0) {

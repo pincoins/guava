@@ -5,6 +5,7 @@ import { Favorites } from '../../types';
 const favoritesApi = createApi({
   reducerPath: 'favoritesApi',
   baseQuery: baseQueryWithRetry,
+  tagTypes: ['Favorites'],
   endpoints: (builder) => ({
     fetchFavorites: builder.query<Favorites, number>({
       query: (sub) => {
@@ -12,6 +13,9 @@ const favoritesApi = createApi({
           url: `/members/${sub}/favorites`,
           method: 'GET',
         };
+      },
+      providesTags: (result, error, sub) => {
+        return [{ type: 'Favorites', id: sub }];
       },
     }),
     saveFavorites: builder.mutation<
@@ -24,6 +28,9 @@ const favoritesApi = createApi({
           method: 'POST',
           body: favorites,
         };
+      },
+      invalidatesTags: (result, error, { sub }) => {
+        return [{ type: 'Favorites', id: sub }];
       },
     }),
   }),

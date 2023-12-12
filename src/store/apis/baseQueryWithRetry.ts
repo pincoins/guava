@@ -9,8 +9,6 @@ import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { setCredentials, signOut } from '../slices/authSlice';
 import { RootState } from '../index';
 import { Mutex } from 'async-mutex';
-
-import { pause } from '../../utils/pause';
 import { TokenResponse } from '../../types';
 
 const mutex = new Mutex();
@@ -39,7 +37,7 @@ const baseQueryWithRetry: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  await pause(1000);
+  // await pause(1000);
 
   // wait until the mutex is available without locking it
   await mutex.waitForUnlock();
