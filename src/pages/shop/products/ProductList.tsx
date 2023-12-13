@@ -84,6 +84,15 @@ const ProductList = () => {
     }
   };
 
+  if (resultCategory.isSuccess && resultFavorites.isSuccess) {
+    favorite = !!resultFavorites.data.items.find(
+      (item) =>
+        item.id === resultCategory.data.categoryId &&
+        item.title === resultCategory.data.title &&
+        item.slug === resultCategory.data.slug
+    );
+  }
+
   if (resultCategory.isError) {
     category = (
       <div className="col-span-4 text-center font-bold text-lg">
@@ -99,8 +108,8 @@ const ProductList = () => {
           rounded="full"
           className={
             favorite
-              ? 'text-sm text-orange-500 bg-yellow-400 border-orange-500'
-              : 'text-sm text-gray-500 bg-gray-100 border-gray-600'
+              ? 'text-xs text-orange-500 bg-yellow-400 border-orange-500'
+              : 'text-xs text-gray-500 bg-gray-100 border-gray-600'
           }
         >
           <MdOutlineStar />
@@ -117,7 +126,7 @@ const ProductList = () => {
     } else {
       products = resultProducts.data.map((product) => {
         return (
-          <li key={product.productId} className="flex gap-x-4">
+          <li key={product.productId} className="flex gap-x-4 pl-4 sm:pl-0">
             <div className="flex items-center">
               <input
                 type="checkbox"
