@@ -6,7 +6,6 @@ import {
   MdAdd,
   MdAddShoppingCart,
   MdOutlineStar,
-  MdOutlineStarBorder,
   MdRemove,
 } from 'react-icons/md';
 import { Fragment } from 'react';
@@ -123,24 +122,17 @@ const ProductList = () => {
     category = (
       <div className="col-span-4 font-bold text-xl leading-none inline-flex items-center justify-center gap-x-3">
         {resultCategory.data.title}
-        {favorite && (
-          <Button
-            onClick={handleToggleFavorites}
-            rounded="full"
-            className="text-sm text-orange-500 bg-yellow-400 border-orange-500"
-          >
-            <MdOutlineStar />
-          </Button>
-        )}
-        {!favorite && (
-          <Button
-            onClick={handleToggleFavorites}
-            rounded="full"
-            className="text-sm bg-gray-100 border-gray-600"
-          >
-            <MdOutlineStarBorder />
-          </Button>
-        )}
+        <Button
+          onClick={handleToggleFavorites}
+          rounded="full"
+          className={
+            favorite
+              ? 'text-sm text-orange-500 bg-yellow-400 border-orange-500'
+              : 'text-sm bg-gray-100 border-gray-600'
+          }
+        >
+          <MdOutlineStar />
+        </Button>
       </div>
     );
   }
