@@ -1,14 +1,11 @@
 import { useFetchProductsQuery } from '../../../store/apis/productApi';
 import Skeleton from '../../../widgets/Skeleton';
-import Divider from '../../../widgets/Divider';
 import { useParams } from 'react-router-dom';
 import {
-  MdAdd,
   MdAddShoppingCart,
+  MdArrowDownward,
   MdOutlineStar,
-  MdRemove,
 } from 'react-icons/md';
-import { Fragment } from 'react';
 import { useFetchCategoryQuery } from '../../../store/apis/categoryApi';
 import Button from '../../../widgets/Button';
 import { useAppSelector } from '../../../hooks/rtk-hooks';
@@ -17,6 +14,8 @@ import {
   useFetchFavoritesQuery,
   useSaveFavoritesMutation,
 } from '../../../store/apis/favoritesApi';
+import Panel from '../../../widgets/panel/Panel';
+import PanelHeading from '../../../widgets/panel/PanelHeading';
 
 const ProductList = () => {
   const { categorySlug: categorySlug } = useParams();
@@ -27,8 +26,6 @@ const ProductList = () => {
 
   const { loginState, sub } = useAppSelector((state: RootState) => state.auth);
 
-  const { isMobile } = useAppSelector((state: RootState) => state.ui);
-
   const resultFavorites = useFetchFavoritesQuery(sub || 0, {
     skip: loginState !== 'AUTHENTICATED',
   });
@@ -38,7 +35,7 @@ const ProductList = () => {
   const resultCategory = useFetchCategoryQuery(categorySlug);
 
   let category: JSX.Element | JSX.Element[] = (
-    <Skeleton className="h-12 w-full col-span-4" times={1} />
+    <Skeleton className="h-12 w-full" times={1} />
   );
 
   const resultProducts = useFetchProductsQuery({ slug: categorySlug });
@@ -87,31 +84,6 @@ const ProductList = () => {
     }
   };
 
-  const handleIncrease = (
-    productId: number,
-    _: React.FormEvent<HTMLButtonElement>
-  ) => {
-    console.log('add', productId);
-    console.log(resultCategory.data);
-    console.log(resultProducts.data);
-  };
-
-  const handleDecrease = (
-    productId: number,
-    _: React.FormEvent<HTMLButtonElement>
-  ) => {
-    console.log('remove', productId);
-  };
-
-  if (resultCategory.isSuccess && resultFavorites.isSuccess) {
-    favorite = !!resultFavorites.data.items.find(
-      (item) =>
-        item.id === resultCategory.data.categoryId &&
-        item.title === resultCategory.data.title &&
-        item.slug === resultCategory.data.slug
-    );
-  }
-
   if (resultCategory.isError) {
     category = (
       <div className="col-span-4 text-center font-bold text-lg">
@@ -120,7 +92,7 @@ const ProductList = () => {
     );
   } else if (resultCategory.isSuccess) {
     category = (
-      <div className="col-span-4 font-bold text-xl leading-none inline-flex items-center justify-center gap-x-3">
+      <div className="text-[#e88f2f] font-bold text-xl leading-none inline-flex items-center justify-center gap-x-3">
         {resultCategory.data.title}
         <Button
           onClick={handleToggleFavorites}
@@ -128,7 +100,7 @@ const ProductList = () => {
           className={
             favorite
               ? 'text-sm text-orange-500 bg-yellow-400 border-orange-500'
-              : 'text-sm bg-gray-100 border-gray-600'
+              : 'text-sm text-gray-500 bg-gray-100 border-gray-600'
           }
         >
           <MdOutlineStar />
@@ -141,18 +113,23 @@ const ProductList = () => {
     products = <div>상품 목록을 가져오지 못했습니다.</div>;
   } else if (resultProducts.isSuccess) {
     if (resultProducts.data.length === 0) {
-      products = (
-        <div className="col-span-4 font-bold text-center">
-          구매 가능 상품이 없습니다.
-        </div>
-      );
+      products = <div className="font-bold">구매 가능 상품이 없습니다.</div>;
     } else {
       products = resultProducts.data.map((product) => {
         return (
-          <Fragment key={product.productId}>
-            <div className="h-18 flex flex-col text-sm justify-center text-center gap-y-1">
-              <div className="font-bold">{product.subtitle}&nbsp;</div>
-              <div className="font-bold">
+          <li key={product.productId} className="flex gap-x-4">
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                className="rounded border-gray-700 text-blue-700 focus:ring-blue-700"
+              />
+            </div>
+            <div className="grid grid-cols-1">
+              <label htmlFor={product.slug} className="font-bold text-sm">
+                {product.name} {product.subtitle}
+              </label>
+              <p className="text-sm text-gray-700 inline-flex items-center">
+                {Intl.NumberFormat().format(product.sellingPrice)}원 (
                 {new Intl.NumberFormat('en-US', {
                   style: 'percent',
                   minimumFractionDigits: 1,
@@ -160,92 +137,53 @@ const ProductList = () => {
                 }).format(
                   (product.listPrice - product.sellingPrice) / product.listPrice
                 )}
-              </div>
+                % <MdArrowDownward />)
+              </p>
             </div>
-            <div className="col-span-2 flex flex-col gap-y-2 text-sm">
-              <div className="text-center">
-                {Intl.NumberFormat().format(product.sellingPrice)}원
-              </div>
-              <label
-                htmlFor="google"
-                className="flex text-sm font-medium leading-6 text-black justify-center"
-              >
-                <button
-                  type="button"
-                  onClick={(e) => handleDecrease(product.productId, e)}
-                  className="inline-flex items-center rounded-l-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                >
-                  <MdRemove className="h-5 w-5 text-red-500" />
-                </button>
-                <div className="flex focus-within:z-10 -ml-px">
-                  <input
-                    type="number"
-                    name="google"
-                    id="google"
-                    className="w-14 sm:w-24 border-0 py-1.5 text-black text-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-700 text-center"
-                    placeholder="0"
-                  />
-                </div>
-                <button
-                  type="button"
-                  onClick={(e) => handleIncrease(product.productId, e)}
-                  className="-ml-px inline-flex rounded-r-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                >
-                  <MdAdd className="h-5 w-5 text-blue-800" />
-                </button>
-              </label>
-            </div>
-            <div className="text-right text-sm">
-              {Intl.NumberFormat().format(product.listPrice * 200)}원
-            </div>
-            <Divider className="col-span-4" />
-          </Fragment>
+          </li>
         );
       });
     }
   }
 
   return (
-    <>
-      <div className="grid grid-cols-4 gap-x-1 gap-y-2 items-center w-full sm:w-2/5 p-2 sm:p-0">
+    <Panel shadow rounded className="flex flex-col gap-y-2 px-8 py-4">
+      <PanelHeading className="gap-y-2">
         {category}
-        {isMobile && (
-          <div className="col-span-4 text-xs text-gray-600 inline-flex items-center justify-center">
-            상품권 수량 선택 후 하단 장바구니 담기 &nbsp;
-            <span className="bg-orange-500 text-white shadow-lg rounded-full p-1">
-              <MdAddShoppingCart />
-            </span>
-            &nbsp; 버튼을 눌러주세요.
-          </div>
-        )}
-        <div className="text-center font-bold">권종</div>
-        <div className="text-center font-bold col-span-2">단가 / 수량</div>
-        <div className="text-center font-bold">소계</div>
-        <Divider className="col-span-4" />
-        {products}
-        {!isMobile && (
-          <div className="col-span-4 text-center">
-            <Button
-              className="w-full justify-center text-md bg-orange-500 text-white p-4"
-              inline
-              rounded="md"
-            >
-              <MdAddShoppingCart /> 장바구니 추가
-            </Button>
-          </div>
-        )}
+        <ul className="marker:text-[#03353e] text-sm list-disc leading-6 rounded-md bg-yellow-50 px-4 py-2">
+          <li>한국 구글플레이스토어의 게임과 상품만 구매할 수 있습니다.</li>
+          <li>
+            지메일 계정의 국가 설정을 대한민국으로 해야 충전 및 결제할 수
+            있습니다.
+          </li>
+          <li>일일 충전한도는 50만원입니다.</li>
+          <li>
+            구글코리아는 국내법을 따르지 않고 취소/환불을 지원하지 않아 계정
+            오류 발생 등 어떤 경우에도 환불 처리되지 않습니다.
+          </li>
+          <li>
+            현재 등록할 수 없는 카드라는 오류 또는 사용 후 게임 내 아이템 충전
+            시 구글에서 추가 정보를 요구하는 경우가 발생해도 절대 환불 처리가 안
+            됩니다.
+          </li>
+          <li>
+            구글은 이의제기를 해도 거절되면 그 이유를 알려주지도 않고 계속
+            거절하기 때문에 어떠한 대응도 안 됩니다.
+          </li>
+        </ul>
+      </PanelHeading>
+
+      <ul className="space-y-2.5">{products}</ul>
+      <div className="text-center">
+        <Button
+          className="w-full justify-center text-md bg-orange-500 text-white p-4"
+          inline
+          rounded="md"
+        >
+          <MdAddShoppingCart /> 장바구니 추가
+        </Button>
       </div>
-      {isMobile && (
-        <div className="fixed bottom-6 right-6">
-          <Button
-            className="text-2xl bg-orange-500 text-white p-3.5 shadow-lg"
-            rounded="full"
-          >
-            <MdAddShoppingCart />
-          </Button>
-        </div>
-      )}
-    </>
+    </Panel>
   );
 };
 
