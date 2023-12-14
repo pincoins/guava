@@ -171,7 +171,7 @@ const ProductList = () => {
       <Divider />
       <PanelBody className="grid grid-cols-1 gap-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-x-8 gap-y-4">
-          <ul className="sm:order-2 sm:col-span-3 marker:text-[#03353e] text-sm list-disc list-inside leading-loose break-keep bg-yellow-100 rounded-md px-4 py-2">
+          <ul className="sm:order-2 sm:col-span-3 marker:text-[#03353e] text-sm list-disc list-inside leading-loose break-keep bg-amber-50 rounded-md px-4 py-2 sm:py-0">
             <li>일일 충전한도는 50만원입니다.</li>
             <li>
               대한민국 구글플레이스토어의 게임과 상품만 구매할 수 있습니다. 구글
@@ -188,18 +188,18 @@ const ProductList = () => {
               불가합니다.
             </li>
           </ul>
-          <ul className="sm:order-1 space-y-2.5">{products}</ul>
-        </div>
-        <div className="text-center">
-          <Button
-            type="button"
-            disabled={loginState !== 'AUTHENTICATED'}
-            className="w-full justify-center text-md font-semibold bg-orange-500 text-white p-2"
-            inline
-            rounded="full"
-          >
-            <MdAddShoppingCart /> 장바구니 추가
-          </Button>
+          <div className="grid grid-cols-1 gap-y-4 sm:order-1">
+            <ul className="space-y-2.5">{products}</ul>
+            <Button
+              type="button"
+              disabled={loginState !== 'AUTHENTICATED'}
+              className="w-full justify-center font-semibold bg-orange-500 text-white py-2"
+              inline
+              rounded="full"
+            >
+              <MdAddShoppingCart /> 장바구니 추가
+            </Button>
+          </div>
         </div>
       </PanelBody>
     </Panel>
