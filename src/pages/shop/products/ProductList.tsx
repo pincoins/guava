@@ -28,6 +28,8 @@ const ProductList = () => {
 
   const { loginState, sub } = useAppSelector((state: RootState) => state.auth);
 
+  const { isMobile } = useAppSelector((state: RootState) => state.ui);
+
   const resultFavorites = useFetchFavoritesQuery(sub || 0, {
     skip: loginState !== 'AUTHENTICATED',
   });
@@ -166,13 +168,13 @@ const ProductList = () => {
   }
 
   return (
-    <Panel rounded className="flex-1 grid grid-cols-1 gap-y-2 p-2 sm:p-0">
+    <Panel rounded className="flex-1 flex flex-col gap-y-2 p-2 sm:p-0">
       <PanelHeading>{category}</PanelHeading>
       <Divider />
-      <PanelBody className="grid grid-cols-1 gap-y-4">
+      <PanelBody className="flex flex-col gap-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-x-8 gap-y-4">
-          <div className="sm:order-2 sm:col-span-3 flex flex-col gap-y-4 items-center sm:items-start">
-            <ul className="marker:text-[#03353e] text-sm list-disc list-inside leading-loose break-keep bg-red-100 rounded-md px-4 py-2">
+          <div className="sm:order-2 sm:col-span-3 flex flex-col gap-y-2 items-center sm:items-start">
+            <ul className="marker:text-[#03353e] w-full text-sm list-disc list-inside leading-loose break-keep bg-red-100 rounded-md px-4 py-2">
               <li>일일 충전한도는 50만원입니다.</li>
               <li>
                 대한민국 구글플레이스토어의 게임과 상품만 구매할 수 있습니다.
@@ -189,6 +191,38 @@ const ProductList = () => {
                 불가합니다.
               </li>
             </ul>
+            {!isMobile && (
+              <ul className="marker:text-[#03353e] w-full text-sm list-disc list-inside leading-loose break-keep bg-gray-50 rounded-md px-4 py-2">
+                <li>상품권 안내</li>
+                <ul className="list-disc list-inside pl-4">
+                  <li>구글기프트카드</li>
+                  <li>발행회사: 구글코리아</li>
+                  <li>홈페이지: https://play.google.com/store</li>
+                  <li>고객센터: 080-234-0051</li>
+                  <li>
+                    상품권 번호 형식: 알파벳/숫자 20자리 또는 알파벳/숫자 16자리
+                    <ul className="list-disc list-inside pl-8">
+                      <li>1ABC-2DEF-3GHJ-4KLM-5NOP</li>
+                      <li>1ABC-2DEF-3GHJ-4KLM</li>
+                    </ul>
+                  </li>
+                </ul>
+              </ul>
+            )}
+          </div>
+          <div className="sm:order-1 flex flex-col gap-y-4">
+            <ul className="space-y-2.5">{products}</ul>
+            <Button
+              type="button"
+              disabled={loginState !== 'AUTHENTICATED'}
+              className="w-full justify-center font-semibold bg-orange-500 text-white py-2"
+              inline
+              rounded="full"
+            >
+              <MdAddShoppingCart /> 장바구니 추가
+            </Button>
+          </div>
+          {isMobile && (
             <ul className="marker:text-[#03353e] text-sm list-disc list-inside leading-loose break-keep bg-gray-50 rounded-md px-4 py-2">
               <li>상품권 안내</li>
               <ul className="list-disc list-inside pl-4">
@@ -205,19 +239,7 @@ const ProductList = () => {
                 </li>
               </ul>
             </ul>
-          </div>
-          <div className="sm:order-1 flex flex-col gap-y-4 pb-3 sm:pb-0 shadow sm:shadow-none">
-            <ul className="space-y-2.5">{products}</ul>
-            <Button
-              type="button"
-              disabled={loginState !== 'AUTHENTICATED'}
-              className="w-full justify-center font-semibold bg-orange-500 text-white py-2"
-              inline
-              rounded="full"
-            >
-              <MdAddShoppingCart /> 장바구니 추가
-            </Button>
-          </div>
+          )}
         </div>
       </PanelBody>
     </Panel>
