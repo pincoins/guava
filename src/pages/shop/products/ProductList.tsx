@@ -188,7 +188,7 @@ const ProductList = () => {
               불가합니다.
             </li>
           </ul>
-          <div className="grid grid-cols-1 gap-y-4 sm:order-1">
+          <div className="grid grid-cols-1 gap-y-4 mb-3 sm:mb-0 sm:order-1">
             <ul className="space-y-2.5">{products}</ul>
             <Button
               type="button"
