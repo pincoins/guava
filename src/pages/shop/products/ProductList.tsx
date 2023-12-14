@@ -41,7 +41,7 @@ const ProductList = () => {
   const resultProducts = useFetchProductsQuery({ slug: categorySlug });
 
   let products: JSX.Element | JSX.Element[] = (
-    <Skeleton className="h-40 w-full col-span-4" times={1} />
+    <Skeleton className="h-40 w-full" times={1} />
   );
 
   const [saveFavorites] = useSaveFavoritesMutation();
@@ -95,24 +95,25 @@ const ProductList = () => {
 
   if (resultCategory.isError) {
     category = (
-      <div className="col-span-4 text-center font-bold text-lg">
-        상품 분류 없음
-      </div>
+      <div className="text-center font-bold text-lg">상품 분류 없음</div>
     );
   } else if (resultCategory.isSuccess) {
     category = (
-      <div className="text-[#e88f2f] font-bold text-xl leading-none inline-flex items-center justify-center gap-x-3">
+      <div className="text-[#e88f2f] font-bold text-xl flex items-center justify-between gap-x-4">
         {resultCategory.data.title}
         <Button
+          type="button"
           onClick={handleToggleFavorites}
-          rounded="full"
           className={
             favorite
-              ? 'text-xs text-orange-500 bg-yellow-400 border-orange-500'
+              ? 'text-xs text-orange-500 bg-yellow-200 border-orange-500'
               : 'text-xs text-gray-500 bg-gray-100 border-gray-600'
           }
+          rounded="md"
+          inline
         >
           <MdOutlineStar />
+          즐겨찾기
         </Button>
       </div>
     );
@@ -130,23 +131,30 @@ const ProductList = () => {
             <div className="flex items-center">
               <input
                 type="checkbox"
-                className="rounded border-gray-700 text-blue-700 focus:ring-blue-700"
+                className="rounded border-green-950 text-green-800 focus:ring-green-900"
               />
             </div>
             <div className="grid grid-cols-1">
-              <label htmlFor={product.slug} className="font-bold text-sm">
+              <label
+                htmlFor={product.slug}
+                className="font-bold text-sm text-green-900"
+              >
                 {product.name} {product.subtitle}
               </label>
-              <p className="text-sm text-gray-700 inline-flex items-center">
-                {Intl.NumberFormat().format(product.sellingPrice)}원 (
-                {new Intl.NumberFormat('en-US', {
-                  style: 'percent',
-                  minimumFractionDigits: 1,
-                  maximumFractionDigits: 1,
-                }).format(
-                  (product.listPrice - product.sellingPrice) / product.listPrice
-                )}
-                % <MdArrowDownward />)
+              <p className="text-sm text-gray-700 inline-flex gap-x-2">
+                {Intl.NumberFormat().format(product.sellingPrice)}원
+                <span className="text-red-600 inline-flex items-center">
+                  (
+                  {new Intl.NumberFormat('en-US', {
+                    style: 'percent',
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1,
+                  }).format(
+                    (product.listPrice - product.sellingPrice) /
+                      product.listPrice
+                  )}
+                  % <MdArrowDownward />)
+                </span>
               </p>
             </div>
           </li>
@@ -156,38 +164,34 @@ const ProductList = () => {
   }
 
   return (
-    <Panel shadow rounded className="flex flex-col gap-y-2 px-2 py-4">
-      <PanelHeading className="gap-y-2">
-        {category}
-        <ul className="marker:text-[#03353e] text-sm list-disc leading-6 rounded-md bg-yellow-50 px-4 py-2">
-          <li>한국 구글플레이스토어의 게임과 상품만 구매할 수 있습니다.</li>
-          <li>
-            지메일 계정의 국가 설정을 대한민국으로 해야 충전 및 결제할 수
-            있습니다.
-          </li>
+    <Panel rounded className="flex flex-col gap-y-4 px-2 py-4">
+      <PanelHeading className="gap-y-2">{category}</PanelHeading>
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-x-8 gap-y-4">
+        <ul className="sm:order-2 sm:col-span-3 marker:text-[#03353e] text-sm list-disc list-inside leading-loose bg-yellow-100 rounded-md px-4 py-2">
           <li>일일 충전한도는 50만원입니다.</li>
           <li>
+            대한민국 구글플레이스토어의 게임과 상품만 구매할 수 있습니다. 구글
+            계정의 국가설정을 대한민국으로 해야 사용할 수 있습니다.
+          </li>
+          <li>
             구글코리아는 국내법을 따르지 않고 취소/환불을 지원하지 않아 계정
-            오류 발생 등 어떤 경우에도 환불 처리되지 않습니다.
+            오류 발생 등 어떤 경우에도 교환/환불 처리되지 않습니다.
           </li>
           <li>
-            현재 등록할 수 없는 카드라는 오류 또는 사용 후 게임 내 아이템 충전
-            시 구글에서 추가 정보를 요구하는 경우가 발생해도 절대 환불 처리가 안
-            됩니다.
-          </li>
-          <li>
-            구글은 이의제기를 해도 거절되면 그 이유를 알려주지도 않고 계속
-            거절하기 때문에 어떠한 대응도 안 됩니다.
+            카드 사용을 위해 구글에서 추가 정보를 요구하는 경우에 당사는
+            이의제기를 위한 소명자료를 제공합니다. 단, 이의제기 후 구글에서
+            거절할 경우 그 거절사유를 알려주지도 않아서 교환/환불이 불가합니다.
           </li>
         </ul>
-      </PanelHeading>
-
-      <ul className="space-y-2.5">{products}</ul>
+        <ul className="sm:order-1 space-y-2.5">{products}</ul>
+      </div>
       <div className="text-center">
         <Button
-          className="w-full justify-center text-md bg-orange-500 text-white p-4"
+          type="button"
+          disabled={loginState !== 'AUTHENTICATED'}
+          className="w-full justify-center text-md font-semibold bg-orange-500 text-white p-2"
           inline
-          rounded="md"
+          rounded="full"
         >
           <MdAddShoppingCart /> 장바구니 추가
         </Button>

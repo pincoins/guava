@@ -102,7 +102,15 @@ const Root = () => {
   });
 
   if (resultFavorites.isLoading || resultFavorites.isUninitialized) {
-    favorites = <Skeleton className="h-16 w-full" times={1} />;
+    if (loginState === 'UNAUTHENTICATED') {
+      favorites = (
+        <div className="col-span-4 px-2 py-1 text-center">
+          즐겨찾기가 비었습니다.
+        </div>
+      );
+    } else {
+      favorites = <Skeleton className="h-16 w-full" times={1} />;
+    }
   } else if (resultFavorites.isError) {
     favorites = <div>즐겨찾기를 가져오지 못했습니다.</div>;
   } else if (resultFavorites.isSuccess) {
