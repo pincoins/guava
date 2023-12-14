@@ -16,6 +16,8 @@ import {
 } from '../../../store/apis/favoritesApi';
 import Panel from '../../../widgets/panel/Panel';
 import PanelHeading from '../../../widgets/panel/PanelHeading';
+import Divider from '../../../widgets/Divider';
+import PanelBody from '../../../widgets/panel/PanelBody';
 
 const ProductList = () => {
   const { categorySlug: categorySlug } = useParams();
@@ -99,7 +101,7 @@ const ProductList = () => {
     );
   } else if (resultCategory.isSuccess) {
     category = (
-      <div className="text-[#e88f2f] font-bold text-xl flex items-center justify-between gap-x-4">
+      <div className="text-lg font-semibold text-[#e88f2f] flex items-center justify-between gap-x-4">
         {resultCategory.data.title}
         <Button
           type="button"
@@ -164,38 +166,42 @@ const ProductList = () => {
   }
 
   return (
-    <Panel rounded className="flex flex-col gap-y-4 px-2 py-4">
-      <PanelHeading className="gap-y-2">{category}</PanelHeading>
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-x-8 gap-y-4">
-        <ul className="sm:order-2 sm:col-span-3 marker:text-[#03353e] text-sm list-disc list-inside leading-loose bg-yellow-100 rounded-md px-4 py-2">
-          <li>일일 충전한도는 50만원입니다.</li>
-          <li>
-            대한민국 구글플레이스토어의 게임과 상품만 구매할 수 있습니다. 구글
-            계정의 국가설정을 대한민국으로 해야 사용할 수 있습니다.
-          </li>
-          <li>
-            구글코리아는 국내법을 따르지 않고 취소/환불을 지원하지 않아 계정
-            오류 발생 등 어떤 경우에도 교환/환불 처리되지 않습니다.
-          </li>
-          <li>
-            카드 사용을 위해 구글에서 추가 정보를 요구하는 경우에 당사는
-            이의제기를 위한 소명자료를 제공합니다. 단, 이의제기 후 구글에서
-            거절할 경우 그 거절사유를 알려주지도 않아서 교환/환불이 불가합니다.
-          </li>
-        </ul>
-        <ul className="sm:order-1 space-y-2.5">{products}</ul>
-      </div>
-      <div className="text-center">
-        <Button
-          type="button"
-          disabled={loginState !== 'AUTHENTICATED'}
-          className="w-full justify-center text-md font-semibold bg-orange-500 text-white p-2"
-          inline
-          rounded="full"
-        >
-          <MdAddShoppingCart /> 장바구니 추가
-        </Button>
-      </div>
+    <Panel rounded className="flex-1 grid grid-cols-1 gap-y-2 p-2 sm:p-0">
+      <PanelHeading>{category}</PanelHeading>
+      <Divider />
+      <PanelBody className="grid grid-cols-1 gap-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-x-8 gap-y-4">
+          <ul className="sm:order-2 sm:col-span-3 marker:text-[#03353e] text-sm list-disc list-inside leading-loose break-keep bg-yellow-100 rounded-md px-4 py-2">
+            <li>일일 충전한도는 50만원입니다.</li>
+            <li>
+              대한민국 구글플레이스토어의 게임과 상품만 구매할 수 있습니다. 구글
+              계정의 국가설정을 대한민국으로 해야 사용할 수 있습니다.
+            </li>
+            <li>
+              구글코리아는 국내법을 따르지 않고 취소/환불을 지원하지 않아 계정
+              오류 발생 등 어떤 경우에도 교환/환불 처리되지 않습니다.
+            </li>
+            <li>
+              카드 사용을 위해 구글에서 추가 정보를 요구하는 경우에 당사는
+              이의제기를 위한 소명자료를 제공합니다. 단, 이의제기 후 구글에서
+              거절할 경우 그 거절사유를 알려주지도 않아서 교환/환불이
+              불가합니다.
+            </li>
+          </ul>
+          <ul className="sm:order-1 space-y-2.5">{products}</ul>
+        </div>
+        <div className="text-center">
+          <Button
+            type="button"
+            disabled={loginState !== 'AUTHENTICATED'}
+            className="w-full justify-center text-md font-semibold bg-orange-500 text-white p-2"
+            inline
+            rounded="full"
+          >
+            <MdAddShoppingCart /> 장바구니 추가
+          </Button>
+        </div>
+      </PanelBody>
     </Panel>
   );
 };
