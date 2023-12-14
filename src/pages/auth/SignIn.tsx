@@ -99,7 +99,7 @@ const SignIn = () => {
       <Panel
         shadow
         rounded
-        className="flex flex-col w-full sm:w-1/2 gap-y-2 px-8 py-4"
+        className="flex flex-col w-full sm:w-1/2 gap-y-2 px-2 py-4"
       >
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#e88f2f] text-center">

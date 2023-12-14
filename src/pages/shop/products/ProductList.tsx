@@ -156,7 +156,7 @@ const ProductList = () => {
   }
 
   return (
-    <Panel shadow rounded className="flex flex-col gap-y-2 px-8 py-4">
+    <Panel shadow rounded className="flex flex-col gap-y-2 px-2 py-4">
       <PanelHeading className="gap-y-2">
         {category}
         <ul className="marker:text-[#03353e] text-sm list-disc leading-6 rounded-md bg-yellow-50 px-4 py-2">
