@@ -18,6 +18,14 @@ import Panel from '../../../widgets/panel/Panel';
 import PanelHeading from '../../../widgets/panel/PanelHeading';
 import Divider from '../../../widgets/Divider';
 import PanelBody from '../../../widgets/panel/PanelBody';
+import { ProductForm } from '../../../types';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+const schema = yup.object({
+  products: yup.array().of(yup.number().defined()).min(1).required(),
+});
 
 const ProductList = () => {
   const { categorySlug: categorySlug } = useParams();
@@ -49,6 +57,12 @@ const ProductList = () => {
   );
 
   const [saveFavorites] = useSaveFavoritesMutation();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<ProductForm>({ mode: 'onSubmit', resolver: yupResolver(schema) });
 
   const handleToggleFavorites = async () => {
     if (
@@ -136,6 +150,8 @@ const ProductList = () => {
               <input
                 type="checkbox"
                 className="rounded border-green-950 text-green-800 focus:ring-green-900"
+                value={product.productId}
+                {...register('products')}
               />
             </div>
             <div className="grid grid-cols-1">
@@ -167,6 +183,10 @@ const ProductList = () => {
     }
   }
 
+  const onValid: SubmitHandler<ProductForm> = async (data, _) => {
+    console.log(data);
+  };
+
   return (
     <Panel rounded className="flex-1 flex flex-col gap-y-2 p-2 sm:p-0">
       <PanelHeading>{category}</PanelHeading>
@@ -187,7 +207,7 @@ const ProductList = () => {
               <li>
                 카드 사용을 위해 구글에서 추가 정보를 요구하는 경우에 당사는
                 이의제기를 위한 소명자료를 제공합니다. 단, 이의제기 후 구글에서
-                거절할 경우 그 거절사유를 알려주지도 않아서 교환/환불이
+                거절할 경우 합당한 거절사유를 알려주지도 않아서 교환/환불이
                 불가합니다.
               </li>
             </ul>
@@ -210,10 +230,13 @@ const ProductList = () => {
               </ul>
             )}
           </div>
-          <div className="sm:order-1 flex flex-col gap-y-4">
+          <form
+            className="sm:order-1 flex flex-col gap-y-4"
+            onSubmit={handleSubmit(onValid)}
+          >
             <ul className="space-y-2.5">{products}</ul>
             <Button
-              type="button"
+              type="submit"
               disabled={loginState !== 'AUTHENTICATED'}
               className="w-full justify-center font-semibold bg-orange-500 text-white py-2"
               inline
@@ -221,7 +244,7 @@ const ProductList = () => {
             >
               <MdAddShoppingCart /> 장바구니 추가
             </Button>
-          </div>
+          </form>
           {isMobile && (
             <ul className="marker:text-[#03353e] text-sm list-disc list-inside leading-loose break-keep bg-gray-50 rounded-md px-4 py-2">
               <li>상품권 안내</li>

@@ -63,6 +63,10 @@ export interface SignUpForm {
   code?: string;
 }
 
+export interface ProductForm {
+  products: number[];
+}
+
 export type VerificationStatus = 'PENDING' | 'SENT' | 'COMPLETED' | 'ERROR';
 
 export type VerificationError =
