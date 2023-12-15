@@ -1,6 +1,6 @@
 import { useFetchProductsQuery } from '../../../store/apis/productApi';
 import Skeleton from '../../../widgets/Skeleton';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   MdAddShoppingCart,
   MdArrowDownward,
@@ -8,7 +8,7 @@ import {
 } from 'react-icons/md';
 import { useFetchCategoryQuery } from '../../../store/apis/categoryApi';
 import Button from '../../../widgets/Button';
-import { useAppSelector } from '../../../hooks/rtk-hooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/rtk-hooks';
 import { RootState } from '../../../store';
 import {
   useFetchFavoritesQuery,
@@ -22,6 +22,7 @@ import { ProductForm } from '../../../types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { addToCart } from '../../../store/slices/cartSlice';
 
 const schema = yup.object({
   products: yup.array().of(yup.number().defined()).min(1).required(),
@@ -39,7 +40,11 @@ const ProductList = () => {
   const { loginState, sub } = useAppSelector((state: RootState) => state.auth);
   const { isMobile } = useAppSelector((state: RootState) => state.ui);
 
+  const dispatch = useAppDispatch();
+
   // 3. 리액트 라우터 네비게이션 객체 가져오기
+  const navigate = useNavigate();
+
   // 4. RTK Query 객체 가져오기
   const resultFavorites = useFetchFavoritesQuery(sub || 0, {
     skip: loginState !== 'AUTHENTICATED',
@@ -72,7 +77,13 @@ const ProductList = () => {
   // 7. useEffect 호출
   // 8. onValid 폼 제출 핸들러 정의
   const onValid: SubmitHandler<ProductForm> = async (data, _) => {
-    console.log(data);
+    data.products.map((item) => {
+      const product = resultProducts.data?.find((i) => i.productId === item);
+
+      dispatch(addToCart(product));
+
+      navigate('/shop/cart');
+    });
   };
 
   // 9. 이벤트 핸들러 정의

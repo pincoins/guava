@@ -7,11 +7,13 @@ import { uiSlice } from './slices/uiSlice';
 import { productApi } from './apis/productApi';
 import { favoritesApi } from './apis/favoritesApi';
 import { saveState } from './storages';
+import { cartSlice } from './slices/cartSlice';
 
 export const store = configureStore({
   reducer: {
     ui: uiSlice.reducer,
     auth: authSlice.reducer,
+    cart: cartSlice.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
@@ -34,6 +36,9 @@ store.subscribe(() => {
     auth: {
       rememberMe: store.getState().auth.rememberMe,
       validUntil: store.getState().auth.validUntil,
+    },
+    cart: {
+      items: store.getState().cart.items,
     },
   });
 });
