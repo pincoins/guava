@@ -10,6 +10,7 @@ import { setCredentials, signOut } from '../slices/authSlice';
 import { RootState } from '../index';
 import { Mutex } from 'async-mutex';
 import { TokenResponse } from '../../types';
+import { clearCart } from '../slices/cartSlice';
 
 const mutex = new Mutex();
 
@@ -85,6 +86,7 @@ const baseQueryWithRetry: BaseQueryFn<
         } else {
           // refresh token is also expired or invalid.
           api.dispatch(signOut());
+          api.dispatch(clearCart());
         }
       } finally {
         // release must be called once the mutex should be released again.
