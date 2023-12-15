@@ -52,18 +52,19 @@ const schema = yup
   .required();
 
 const SignUp = () => {
-  // 1. 리덕스 스토어 객체 가져오기
-  // 2. 리액트 라우터 네비게이션 객체 가져오기
+  // 1. URL 파라미터 가져오기
+  // 2. 리덕스 스토어 객체 가져오기
+  // 3. 리액트 라우터 네비게이션 객체 가져오기
   const navigate = useNavigate();
 
-  // 3. RTK Query 객체 가져오기
+  // 4. RTK Query 객체 가져오기
   const [signUp] = useSignUpMutation();
 
   const [sendEmailVerification] = useSendEmailVerificationMutation();
 
   const [sendEmailCode] = useSendEmailCodeMutation();
 
-  // 4. 리액트 훅 폼 정의
+  // 5. 리액트 훅 폼 정의
   const formMethods = useForm<SignUpForm>({
     mode: 'onBlur',
     defaultValues: {
@@ -76,7 +77,7 @@ const SignUp = () => {
     resolver: yupResolver(schema),
   });
 
-  // 5. 주요 상태 선언 (useState, useReducer 및 커스텀 훅)
+  // 6. 주요 상태 선언 (useState, useReducer 및 커스텀 훅)
   const [reCaptcha, reCaptchaElement] = useGoogleRecaptcha();
 
   const [emailVerification, dispatchEmailVerification] = useEmailVerification();
@@ -123,34 +124,7 @@ const SignUp = () => {
     },
   });
 
-  // 6. onValid 폼 제출 핸들러
-  const onValid: SubmitHandler<SignUpForm> = async (data, _) => {
-    if (reCaptcha && reCaptcha.current) {
-      const captcha = await reCaptcha.current.executeAsync();
-
-      if (captcha) {
-        await signUp({
-          username: data.username,
-          fullName: data.fullName,
-          password: data.password,
-          captcha,
-        })
-          .unwrap()
-          .then((_) => {
-            sessionStorage.removeItem('emailVerified');
-            sessionStorage.removeItem('emailSentAt');
-            sessionStorage.removeItem('emailIsVerified');
-
-            navigate('/auth/sign-in');
-          })
-          .catch((rejected) => {
-            console.error(rejected);
-          });
-      }
-    }
-  };
-
-  // 7. useEffect
+  // 7. useEffect 호출
   useEffect(() => {
     const emailVerified = sessionStorage.getItem('emailVerified');
     const emailSentAt = sessionStorage.getItem('emailSentAt');
@@ -195,7 +169,34 @@ const SignUp = () => {
     }
   });
 
-  // 8. 이벤트 핸들러
+  // 8. onValid 폼 제출 핸들러 정의
+  const onValid: SubmitHandler<SignUpForm> = async (data, _) => {
+    if (reCaptcha && reCaptcha.current) {
+      const captcha = await reCaptcha.current.executeAsync();
+
+      if (captcha) {
+        await signUp({
+          username: data.username,
+          fullName: data.fullName,
+          password: data.password,
+          captcha,
+        })
+          .unwrap()
+          .then((_) => {
+            sessionStorage.removeItem('emailVerified');
+            sessionStorage.removeItem('emailSentAt');
+            sessionStorage.removeItem('emailIsVerified');
+
+            navigate('/auth/sign-in');
+          })
+          .catch((rejected) => {
+            console.error(rejected);
+          });
+      }
+    }
+  };
+
+  // 9. 이벤트 핸들러 정의
   const handleSendEmailVerification = async (
     _: React.MouseEvent<HTMLElement>
   ) => {
@@ -367,9 +368,9 @@ const SignUp = () => {
     throw new Error('Google reCAPTCHA element not found');
   };
 
-  // 9. 출력 데이터 구성
+  // 10. 출력 데이터 구성
 
-  // 10. JSX 반환
+  // 11. JSX 반환
   return (
     <Panel
       shadow

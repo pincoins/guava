@@ -28,16 +28,19 @@ const schema = yup.object({
 });
 
 const ProductList = () => {
+  // 1. URL 파라미터 가져오기
   const { categorySlug: categorySlug } = useParams();
 
   if (!categorySlug) {
     throw new Error('파라미터 없음 잘못된 요청');
   }
 
+  // 2. 리덕스 스토어 객체 가져오기
   const { loginState, sub } = useAppSelector((state: RootState) => state.auth);
-
   const { isMobile } = useAppSelector((state: RootState) => state.ui);
 
+  // 3. 리액트 라우터 네비게이션 객체 가져오기
+  // 4. RTK Query 객체 가져오기
   const resultFavorites = useFetchFavoritesQuery(sub || 0, {
     skip: loginState !== 'AUTHENTICATED',
   });
@@ -58,12 +61,21 @@ const ProductList = () => {
 
   const [saveFavorites] = useSaveFavoritesMutation();
 
+  // 5. 리액트 훅 폼 정의
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<ProductForm>({ mode: 'onSubmit', resolver: yupResolver(schema) });
 
+  // 6. 주요 상태 선언 (useState, useReducer 및 커스텀 훅)
+  // 7. useEffect 호출
+  // 8. onValid 폼 제출 핸들러 정의
+  const onValid: SubmitHandler<ProductForm> = async (data, _) => {
+    console.log(data);
+  };
+
+  // 9. 이벤트 핸들러 정의
   const handleToggleFavorites = async () => {
     if (
       loginState === 'AUTHENTICATED' &&
@@ -102,6 +114,7 @@ const ProductList = () => {
     }
   };
 
+  // 10. 출력 데이터 구성
   if (resultCategory.isSuccess && resultFavorites.isSuccess) {
     favorite = !!resultFavorites.data.items.find(
       (item) =>
@@ -183,10 +196,7 @@ const ProductList = () => {
     }
   }
 
-  const onValid: SubmitHandler<ProductForm> = async (data, _) => {
-    console.log(data);
-  };
-
+  // 11. JSX 반환
   return (
     <Panel rounded className="flex-1 flex flex-col gap-y-2 p-2 sm:p-0">
       <PanelHeading>{category}</PanelHeading>

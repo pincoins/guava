@@ -20,7 +20,8 @@ import { useFetchFavoritesQuery } from '../store/apis/favoritesApi';
 import { FavoritesItem } from '../types';
 
 const Root = () => {
-  // 1. 리덕스 스토어 객체 가져오기
+  // 1. URL 파라미터 가져오기
+  // 2. 리덕스 스토어 객체 가져오기
   const { rememberMe, accessToken, validUntil, expiresIn, loginState, sub } =
     useAppSelector((state: RootState) => state.auth);
 
@@ -28,12 +29,12 @@ const Root = () => {
 
   const dispatch = useAppDispatch();
 
-  // 2. 리액트 라우터 네비게이션 객체 가져오기
-  // 3. RTK Query 객체 가져오기
+  // 3. 리액트 라우터 네비게이션 객체 가져오기
+  // 4. RTK Query 객체 가져오기
   const [refresh] = useRefreshMutation();
 
-  // 4. 리액트 훅 폼 정의
-  // 5. 주요 상태 선언 (useState, useReducer 및 커스텀 훅) 및 함수 정의
+  // 5. 리액트 훅 폼 정의
+  // 6. 주요 상태 선언 (useState, useReducer 및 커스텀 훅) 및 함수 정의
   const pathname = noSidebarRoutes.includes(useLocation().pathname);
 
   const hasSidebar = !isMobile && !pathname;
@@ -44,8 +45,7 @@ const Root = () => {
     );
   }, [dispatch]);
 
-  // 6. onValid 폼 제출 핸들러
-  // 7. useEffect
+  // 7. useEffect 호출
   useEffect(() => {
     // 뷰 포트 가로 크기에 따라 반응형 모바일 여부 결정
     handleWindowResize();
@@ -92,8 +92,9 @@ const Root = () => {
     refresh,
   ]);
 
-  // 8. 이벤트 핸들러
-  // 9. 출력 데이터 구성
+  // 8. onValid 폼 제출 핸들러 정의
+  // 9. 이벤트 핸들러 정의
+  // 10. 출력 데이터 구성
 
   let favorites;
 
@@ -169,7 +170,7 @@ const Root = () => {
     }
   }
 
-  // 10. JSX 반환
+  // 11. JSX 반환
 
   // 사이트 기본 레이아웃
   // 고정 푸터 - 100vh;
