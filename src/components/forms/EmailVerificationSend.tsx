@@ -1,13 +1,9 @@
 import React, { Dispatch } from 'react';
-import {
-  VerificationAction,
-  VerificationState,
-} from '../../hooks/useEmailVerification';
 import { useFormContext } from 'react-hook-form';
 import className from 'classnames';
-import { SignUpForm } from '../../pages/auth/SignUp';
-import Button from '../../widgets/Button';
 import { MdOutlineMailLock } from 'react-icons/md';
+import { SignUpForm, VerificationAction, VerificationState } from '../../types';
+import Button from '../../widgets/Button';
 
 const EmailVerificationSend = ({
   state,

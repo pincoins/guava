@@ -1,7 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { TokenResponse } from '../models/interfaces';
+
 import { setCredentials, signOut } from '../slices/authSlice';
 import baseQueryWithRetry from './baseQueryWithRetry';
+import { TokenResponse } from '../../types';
+import { clearCart } from '../slices/cartSlice';
 
 const authApi = createApi({
   reducerPath: 'authApi',
@@ -86,6 +88,7 @@ const authApi = createApi({
       async onQueryStarted(args, { dispatch }) {
         try {
           dispatch(signOut());
+          dispatch(clearCart());
         } catch (error) {}
       },
     }),

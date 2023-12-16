@@ -93,13 +93,12 @@ const Footer = ({ ...rest }) => {
           </div>
         </ContainerFixed>
       </div>
-      <div className="bg-green-950 text-center text-sm">
+      <div className="bg-green-950 text-center text-sm py-8 sm:py-0">
         <div className="flex flex-col sm:flex-row gap-x-4 p-1 text-white text-center">
           <div className="flex-1 sm:text-right">
-            Copyright &copy; 2012-{new Date().getFullYear()}&nbsp;
-            {window.location.hostname}
+            Copyright &copy; 2012-{new Date().getFullYear()}
           </div>
-          <div className="flex-1 sm:text-left">All Rights Reserved.</div>
+          <div className="flex-1 sm:text-left">{window.location.hostname}</div>
         </div>
       </div>
     </footer>

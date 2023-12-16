@@ -9,8 +9,8 @@ import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { setCredentials, signOut } from '../slices/authSlice';
 import { RootState } from '../index';
 import { Mutex } from 'async-mutex';
-import { TokenResponse } from '../models/interfaces';
-import { pause } from '../../utils/pause';
+import { TokenResponse } from '../../types';
+import { clearCart } from '../slices/cartSlice';
 
 const mutex = new Mutex();
 
@@ -38,7 +38,7 @@ const baseQueryWithRetry: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  await pause(1000);
+  // await pause(1000);
 
   // wait until the mutex is available without locking it
   await mutex.waitForUnlock();
@@ -86,6 +86,7 @@ const baseQueryWithRetry: BaseQueryFn<
         } else {
           // refresh token is also expired or invalid.
           api.dispatch(signOut());
+          api.dispatch(clearCart());
         }
       } finally {
         // release must be called once the mutex should be released again.

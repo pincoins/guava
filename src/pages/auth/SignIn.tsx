@@ -14,11 +14,7 @@ import PanelHeading from '../../widgets/panel/PanelHeading';
 import Modal from '../../widgets/Modal';
 import PanelBody from '../../widgets/panel/PanelBody';
 import Divider from '../../widgets/Divider';
-
-export interface SignInForm {
-  username: string;
-  password: string;
-}
+import { SignInForm } from '../../types';
 
 const schema = yup
   .object({
@@ -34,15 +30,16 @@ const schema = yup
   .required();
 
 const SignIn = () => {
-  // 1. 리덕스 스토어 객체 가져오기
+  // 1. URL 파라미터 가져오기
+  // 2. 리덕스 스토어 객체 가져오기
 
-  // 2. 리액트 라우터 네비게이션 객체 가져오기
+  // 3. 리액트 라우터 네비게이션 객체 가져오기
   const navigate = useNavigate();
 
-  // 3. RTK Query 객체 가져오기
+  // 4. RTK Query 객체 가져오기
   const [signIn] = useSignInMutation();
 
-  // 4. 리액트 훅 폼 정의
+  // 5. 리액트 훅 폼 정의
   const {
     register,
     handleSubmit,
@@ -57,10 +54,13 @@ const SignIn = () => {
     resolver: yupResolver(schema),
   });
 
-  // 5. 주요 상태 선언 (useState, useReducer 및 커스텀 훅)
+  // 6. 주요 상태 선언 (useState, useReducer 및 커스텀 훅)
+  const [isOpen, setIsOpen] = useState(false);
   const [reCaptcha, reCaptchaElement] = useGoogleRecaptcha();
 
-  // 6. onValid 폼 제출 핸들러
+  // 7. useEffect 호출
+
+  // 8. onValid 폼 제출 핸들러 정의
   const onValid: SubmitHandler<SignInForm> = async (data, _) => {
     if (reCaptcha && reCaptcha.current) {
       const captcha = await reCaptcha.current.executeAsync();
@@ -83,10 +83,7 @@ const SignIn = () => {
     }
   };
 
-  // 7. useEffect
-  const [isOpen, setIsOpen] = useState(false);
-
-  // 8. 이벤트 핸들러
+  // 9. 이벤트 핸들러 정의
   const handleModalOpen = () => {
     setIsOpen(true);
   };
@@ -95,15 +92,14 @@ const SignIn = () => {
     setIsOpen(false);
   };
 
-  // 9. 출력 데이터 구성
-
-  // 10. JSX 반환
+  // 10. 출력 데이터 구성
+  // 11. JSX 반환
   return (
     <>
       <Panel
         shadow
         rounded
-        className="flex flex-col w-full sm:w-1/2 gap-y-2 px-8 py-4"
+        className="flex flex-col w-full sm:w-1/2 gap-y-2 px-2 py-4"
       >
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#e88f2f] text-center">

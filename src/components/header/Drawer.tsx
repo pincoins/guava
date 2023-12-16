@@ -24,38 +24,41 @@ const Drawer = ({
   const resultCategories = useFetchCategoriesQuery();
 
   let categories;
+
   if (resultCategories.isLoading) {
     categories = <Skeleton className="h-32 w-full" times={1} />;
-  } else if (resultCategories.error) {
+  } else if (resultCategories.isError) {
     categories = <div>상품분류정보를 가져오지 못했습니다.</div>;
-  } else if (resultCategories.data?.length === 0) {
-    categories = (
-      <div className="col-span-4 font-bold text-center">
-        구매 가능 상품이 없습니다.
-      </div>
-    );
-  } else {
-    categories = resultCategories.data?.map((category) => {
-      return (
-        <Link
-          key={category.slug}
-          to={`shop/products/${category.slug}`}
-          className="inline-flex gap-x-2 items-center border-b px-3 py-1"
-          onClick={onClose}
-        >
-          {<MdOutlineArrowRight />}
-          {category.title}
-        </Link>
+  } else if (resultCategories.isSuccess) {
+    if (resultCategories.data.length === 0) {
+      categories = (
+        <div className="col-span-4 font-bold text-center">
+          구매 가능 상품이 없습니다.
+        </div>
       );
-    });
+    } else {
+      categories = resultCategories.data.map((category) => {
+        return (
+          <Link
+            key={category.slug}
+            to={`shop/products/${category.slug}`}
+            className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+            onClick={onClose}
+          >
+            {<MdOutlineArrowRight />}
+            {category.title}
+          </Link>
+        );
+      });
+    }
   }
 
   return (
     <>
       <Button
         onClick={onOpen}
-        className="text-2xl border-green-950"
-        rounded="sm"
+        className="text-2xl bg-cyan-700 text-white p-3.5 shadow-lg"
+        rounded="full"
       >
         <MdOutlineMenu />
       </Button>

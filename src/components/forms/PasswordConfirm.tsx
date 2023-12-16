@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import className from 'classnames';
-import { SignUpForm } from '../../pages/auth/SignUp';
+import { SignUpForm } from '../../types';
 
 const PasswordConfirm = () => {
   const {

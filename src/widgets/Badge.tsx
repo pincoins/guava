@@ -37,9 +37,9 @@ const Badge = ({
 
     'ring-1 ring-inset p-1 ring-gray-200': !flat,
 
-    'border-sky-600': preset === 'primary',
-    'bg-sky-700 text-white': preset === 'primary' && !outline, // outline if undefined
-    'text-sky-700': outline && preset === 'primary',
+    'border-emerald-600': preset === 'primary',
+    'bg-emerald-700 text-white': preset === 'primary' && !outline, // outline if undefined
+    'text-emerald-700': outline && preset === 'primary',
 
     'border-slate-500': preset === 'secondary',
     'bg-slate-600 text-white': preset === 'secondary' && !outline,

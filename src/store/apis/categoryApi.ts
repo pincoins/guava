@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { Category } from '../models/interfaces';
 import baseQueryWithRetry from './baseQueryWithRetry';
+import { Category } from '../../types';
 
 const categoryApi = createApi({
   reducerPath: 'categoryApi',
@@ -14,9 +14,17 @@ const categoryApi = createApi({
         };
       },
     }),
+    fetchCategory: builder.query<Category, string>({
+      query: (slug: string) => {
+        return {
+          url: `/categories/${slug}`,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
-export const { useFetchCategoriesQuery } = categoryApi;
+export const { useFetchCategoriesQuery, useFetchCategoryQuery } = categoryApi;
 
 export { categoryApi };

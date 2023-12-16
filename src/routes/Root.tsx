@@ -16,24 +16,25 @@ import {
 } from 'react-icons/md';
 import { useFetchCategoriesQuery } from '../store/apis/categoryApi';
 import Skeleton from '../widgets/Skeleton';
+import { useFetchFavoritesQuery } from '../store/apis/favoritesApi';
+import { FavoritesItem } from '../types';
 
 const Root = () => {
-  // 1. 리덕스 스토어 객체 가져오기
-  const { rememberMe, accessToken, validUntil, expiresIn, loginState } =
+  // 1. URL 파라미터 가져오기
+  // 2. 리덕스 스토어 객체 가져오기
+  const { rememberMe, accessToken, validUntil, expiresIn, loginState, sub } =
     useAppSelector((state: RootState) => state.auth);
 
   const { isMobile } = useAppSelector((state: RootState) => state.ui);
 
   const dispatch = useAppDispatch();
 
-  // 2. 리액트 라우터 네비게이션 객체 가져오기
-  // 3. RTK Query 객체 가져오기
+  // 3. 리액트 라우터 네비게이션 객체 가져오기
+  // 4. RTK Query 객체 가져오기
   const [refresh] = useRefreshMutation();
 
-  const resultCategories = useFetchCategoriesQuery();
-
-  // 4. 리액트 훅 폼 정의
-  // 5. 주요 상태 선언 (useState, useReducer 및 커스텀 훅) 및 함수 정의
+  // 5. 리액트 훅 폼 정의
+  // 6. 주요 상태 선언 (useState, useReducer 및 커스텀 훅) 및 함수 정의
   const pathname = noSidebarRoutes.includes(useLocation().pathname);
 
   const hasSidebar = !isMobile && !pathname;
@@ -44,8 +45,7 @@ const Root = () => {
     );
   }, [dispatch]);
 
-  // 6. onValid 폼 제출 핸들러
-  // 7. useEffect
+  // 7. useEffect 호출
   useEffect(() => {
     // 뷰 포트 가로 크기에 따라 반응형 모바일 여부 결정
     handleWindowResize();
@@ -92,36 +92,85 @@ const Root = () => {
     refresh,
   ]);
 
-  // 8. 이벤트 핸들러
-  // 9. 출력 데이터 구성
-  let categories;
-  if (resultCategories.isLoading) {
-    categories = <Skeleton className="h-32 w-full" times={1} />;
-  } else if (resultCategories.error) {
-    categories = <div>상품분류정보를 가져오지 못했습니다.</div>;
-  } else if (resultCategories.data?.length === 0) {
-    categories = (
-      <div className="col-span-4 font-bold text-center">
-        구매 가능 상품이 없습니다.
-      </div>
-    );
-  } else {
-    categories = resultCategories.data?.map((category) => {
-      return (
-        <li key={category.slug}>
-          <Link
-            to={`shop/products/${category.slug}`}
-            className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
-          >
-            {<MdOutlineArrowRight />}
-            {category.title}
-          </Link>
-        </li>
+  // 8. onValid 폼 제출 핸들러 정의
+  // 9. 이벤트 핸들러 정의
+  // 10. 출력 데이터 구성
+
+  let favorites;
+
+  const resultFavorites = useFetchFavoritesQuery(sub || 0, {
+    skip: loginState !== 'AUTHENTICATED',
+  });
+
+  if (resultFavorites.isLoading || resultFavorites.isUninitialized) {
+    if (loginState === 'UNAUTHENTICATED') {
+      favorites = (
+        <div className="col-span-4 px-2 py-1 text-center">
+          즐겨찾기가 비었습니다.
+        </div>
       );
-    });
+    } else {
+      favorites = <Skeleton className="h-16 w-full" times={1} />;
+    }
+  } else if (resultFavorites.isError) {
+    favorites = <div>즐겨찾기를 가져오지 못했습니다.</div>;
+  } else if (resultFavorites.isSuccess) {
+    if (resultFavorites.data.items.length === 0) {
+      favorites = (
+        <div className="col-span-4 px-2 py-1 text-center">
+          즐겨찾기가 비었습니다.
+        </div>
+      );
+    } else {
+      favorites = resultFavorites.data.items.map((item: FavoritesItem) => {
+        return (
+          <li key={item.slug}>
+            <Link
+              to={`shop/products/${item.slug}`}
+              className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
+            >
+              {<MdOutlineArrowRight />}
+              {item.title}
+            </Link>
+          </li>
+        );
+      });
+    }
   }
 
-  // 10. JSX 반환
+  const resultCategories = useFetchCategoriesQuery();
+
+  let categories;
+
+  if (resultCategories.isLoading) {
+    categories = <Skeleton className="h-32 w-full" times={1} />;
+  } else if (resultCategories.isError) {
+    categories = <div>상품분류정보를 가져오지 못했습니다.</div>;
+  } else if (resultCategories.isSuccess) {
+    if (resultCategories.data.length === 0) {
+      categories = (
+        <div className="col-span-4 font-bold text-center">
+          구매 가능 상품이 없습니다.
+        </div>
+      );
+    } else {
+      categories = resultCategories.data.map((category) => {
+        return (
+          <li key={category.slug}>
+            <Link
+              to={`shop/products/${category.slug}`}
+              className="px-2 py-1 hover:bg-gray-50 inline-flex items-center"
+            >
+              {<MdOutlineArrowRight />}
+              {category.title}
+            </Link>
+          </li>
+        );
+      });
+    }
+  }
+
+  // 11. JSX 반환
 
   // 사이트 기본 레이아웃
   // 고정 푸터 - 100vh;
@@ -145,7 +194,7 @@ const Root = () => {
                     <MdOutlineStarBorder />
                     즐겨찾기
                   </div>
-                  <ul role="list">{categories}</ul>
+                  <ul role="list">{favorites}</ul>
                 </div>
                 <div className="f-none bg-gray-50">
                   <div className="font-bold text-green-950 bg-gray-300 px-2 py-1 inline-flex items-center w-full gap-x-2">

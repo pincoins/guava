@@ -13,39 +13,41 @@ const Home = () => {
   let categories;
   if (resultCategories.isLoading) {
     categories = <Skeleton className="h-32 w-full" times={6} />;
-  } else if (resultCategories.error) {
+  } else if (resultCategories.isError) {
     categories = <div>상품분류정보를 가져오지 못했습니다.</div>;
-  } else if (resultCategories.data?.length === 0) {
-    categories = (
-      <div className="col-span-4 font-bold text-center">
-        구매 가능 상품이 없습니다.
-      </div>
-    );
-  } else {
-    categories = resultCategories.data?.map((category) => {
-      return (
-        <div className="grid grid-cols-1 gap-y-1" key={category.slug}>
-          <div className="h-32 w-full overflow-hidden rounded-lg">
-            <Link to={`shop/products/${category.slug}`}>
-              <img
-                src="https://placehold.co/468x300/orange/white"
-                alt={category.title}
-                className="h-full w-full object-cover object-center"
-              />
-            </Link>
-          </div>
-          <h3 className="font-bold text-gray-900 text-center">
-            {category.title}
-          </h3>
-          <p className=" flex gap-x-2 text-sm font-semibold justify-center">
-            최대
-            <span className="inline-flex font-bold items-center text-red-600">
-              {category.discountRate}% <MdArrowDownward />
-            </span>
-          </p>
+  } else if (resultCategories.isSuccess) {
+    if (resultCategories.data.length === 0) {
+      categories = (
+        <div className="col-span-4 font-bold text-center">
+          구매 가능 상품이 없습니다.
         </div>
       );
-    });
+    } else {
+      categories = resultCategories.data.map((category) => {
+        return (
+          <div className="grid grid-cols-1 gap-y-1" key={category.slug}>
+            <div className="h-32 w-full overflow-hidden rounded-lg">
+              <Link to={`shop/products/${category.slug}`}>
+                <img
+                  src="https://placehold.co/468x300/orange/white"
+                  alt={category.title}
+                  className="h-full w-full object-cover object-center"
+                />
+              </Link>
+            </div>
+            <h3 className="font-bold text-gray-900 text-center">
+              {category.title}
+            </h3>
+            <p className=" flex gap-x-2 text-sm font-semibold justify-center">
+              최대
+              <span className="inline-flex font-bold items-center text-red-600">
+                {category.discountRate}% <MdArrowDownward />
+              </span>
+            </p>
+          </div>
+        );
+      });
+    }
   }
 
   return (

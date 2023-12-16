@@ -28,7 +28,12 @@ const Profile = () => {
               <dd className="mt-1 flex items-center leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 <span className="flex-grow">username@example.com</span>
                 <span className="ml-4 flex-shrink-0">
-                  <Button type="button" rounded="md" className="text-sm px-2">
+                  <Button
+                    type="button"
+                    className="text-sm px-2"
+                    preset="secondary"
+                    rounded="md"
+                  >
                     변경
                   </Button>
                 </span>
@@ -39,7 +44,12 @@ const Profile = () => {
               <dd className="mt-1 flex items-center leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 <span className="flex-grow">010-1234-1234</span>
                 <span className="ml-4 flex-shrink-0">
-                  <Button type="button" rounded="md" className="text-sm px-2">
+                  <Button
+                    type="button"
+                    className="text-sm px-2"
+                    preset="secondary"
+                    rounded="md"
+                  >
                     변경
                   </Button>
                 </span>
@@ -67,8 +77,9 @@ const Profile = () => {
                     <div className="ml-4 flex flex-shrink-0 space-x-1">
                       <Button
                         type="button"
-                        rounded="md"
                         className="text-sm px-2"
+                        preset="secondary"
+                        rounded="md"
                       >
                         변경
                       </Button>
@@ -77,8 +88,9 @@ const Profile = () => {
                       </span>
                       <Button
                         type="button"
-                        rounded="md"
+                        preset="danger"
                         className="text-sm px-2"
+                        rounded="md"
                       >
                         삭제
                       </Button>
@@ -102,8 +114,9 @@ const Profile = () => {
                     <div className="ml-4 flex flex-shrink-0 space-x-1">
                       <Button
                         type="button"
-                        rounded="md"
                         className="text-sm px-2"
+                        preset="secondary"
+                        rounded="md"
                       >
                         변경
                       </Button>
@@ -112,8 +125,9 @@ const Profile = () => {
                       </span>
                       <Button
                         type="button"
-                        rounded="md"
                         className="text-sm px-2"
+                        preset="danger"
+                        rounded="md"
                       >
                         삭제
                       </Button>
