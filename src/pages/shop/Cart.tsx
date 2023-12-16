@@ -20,6 +20,7 @@ import {
   clearCart,
   deleteCartItem,
   removeFromCart,
+  setCartItem,
 } from '../../store/slices/cartSlice';
 import { CartItem } from '../../types';
 
@@ -61,6 +62,13 @@ const Cart = () => {
 
   const handleRemoveItem = (item: CartItem) => {
     dispatch(removeFromCart(item));
+  };
+
+  const handleSetItem = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    item: CartItem
+  ) => {
+    dispatch(setCartItem({ ...item, quantity: e.target.value }));
   };
 
   // 10. 출력 데이터 구성
@@ -120,9 +128,12 @@ const Cart = () => {
                   <input
                     type="number"
                     id={item.slug}
-                    className="w-14 sm:w-24 border-0 py-1.5 text-black text-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-700 text-center"
                     value={item.quantity}
+                    onChange={(e) => {
+                      handleSetItem(e, item);
+                    }}
                     placeholder="0"
+                    className="w-14 sm:w-24 border-0 py-1.5 text-black text-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-700 text-center"
                   />
                 </div>
                 <button
