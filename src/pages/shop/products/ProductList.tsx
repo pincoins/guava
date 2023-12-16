@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import {
   MdAddShoppingCart,
   MdArrowDownward,
+  MdError,
   MdOutlineStar,
 } from 'react-icons/md';
 import { useFetchCategoryQuery } from '../../../store/apis/categoryApi';
@@ -181,7 +182,12 @@ const ProductList = () => {
     products = <div>상품 목록을 가져오지 못했습니다.</div>;
   } else if (resultProducts.isSuccess) {
     if (resultProducts.data.length === 0) {
-      products = <div className="font-bold">구매 가능 상품이 없습니다.</div>;
+      products = (
+        <div className="flex items-center text-red-500 justify-center gap-x-2">
+          <MdError />
+          구매 가능 상품이 없습니다.
+        </div>
+      );
     } else {
       products = resultProducts.data.map((product) => {
         return (

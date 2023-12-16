@@ -5,14 +5,30 @@ import Divider from '../../widgets/Divider';
 import PanelBody from '../../widgets/panel/PanelBody';
 import Button from '../../widgets/Button';
 import Modal from '../../widgets/Modal';
-import { MdAdd, MdClear, MdDeleteForever, MdRemove } from 'react-icons/md';
-import { useAppSelector } from '../../hooks/rtk-hooks';
+import {
+  MdAdd,
+  MdAddShoppingCart,
+  MdClear,
+  MdDelete,
+  MdError,
+  MdRemove,
+} from 'react-icons/md';
+import { useAppDispatch, useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
+import {
+  addToCart,
+  clearCart,
+  deleteCartItem,
+  removeFromCart,
+} from '../../store/slices/cartSlice';
+import { CartItem } from '../../types';
 
 const Cart = () => {
   // 1. URL 파라미터 가져오기
   // 2. 리덕스 스토어 객체 가져오기
   const { items } = useAppSelector((state: RootState) => state.cart);
+
+  const dispatch = useAppDispatch();
 
   // 3. 리액트 라우터 네비게이션 객체 가져오기
   // 4. RTK Query 객체 가져오기
@@ -31,17 +47,35 @@ const Cart = () => {
     setIsOpen(false);
   };
 
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+
+  const handleDeleteItem = (item: CartItem) => {
+    dispatch(deleteCartItem(item));
+  };
+
+  const handleAddItem = (item: CartItem) => {
+    dispatch(addToCart(item));
+  };
+
+  const handleRemoveItem = (item: CartItem) => {
+    dispatch(removeFromCart(item));
+  };
+
   // 10. 출력 데이터 구성
   const cartItems = items.map((item) => {
-    console.log(item);
     return (
-      <>
+      <React.Fragment key={item.productId}>
         <div className="grid grid-cols-1 text-sm">
           <div className="flex justify-between">
             <div className="flex gap-x-4">
               <div>
                 <button
                   type="button"
+                  onClick={() => {
+                    handleDeleteItem(item);
+                  }}
                   className="inline-flex rounded-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                 >
                   <MdClear className="h-5 w-5 text-gray-400" />
@@ -70,11 +104,14 @@ const Cart = () => {
             </div>
             <div className="flex flex-col gap-y-2 items-center">
               <label
-                htmlFor="google"
+                htmlFor={item.slug}
                 className="flex text-sm font-medium leading-6 text-black justify-center"
               >
                 <button
                   type="button"
+                  onClick={() => {
+                    handleRemoveItem(item);
+                  }}
                   className="inline-flex items-center rounded-l-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                 >
                   <MdRemove className="h-5 w-5 text-red-500" />
@@ -82,8 +119,7 @@ const Cart = () => {
                 <div className="flex focus-within:z-10 -ml-px">
                   <input
                     type="number"
-                    name="google"
-                    id="google"
+                    id={item.slug}
                     className="w-14 sm:w-24 border-0 py-1.5 text-black text-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-700 text-center"
                     value={item.quantity}
                     placeholder="0"
@@ -91,6 +127,9 @@ const Cart = () => {
                 </div>
                 <button
                   type="button"
+                  onClick={() => {
+                    handleAddItem(item);
+                  }}
                   className="-ml-px inline-flex rounded-r-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                 >
                   <MdAdd className="h-5 w-5 text-blue-800" />
@@ -104,7 +143,7 @@ const Cart = () => {
           </div>
         </div>
         <Divider />
-      </>
+      </React.Fragment>
     );
   });
 
@@ -117,20 +156,50 @@ const Cart = () => {
             장바구니
             <Button
               type="button"
+              onClick={handleClearCart}
               className="text-xs text-gray-500 bg-gray-100 border-gray-600"
               rounded="md"
               inline
             >
-              <MdDeleteForever />
-              비우기
+              <MdDelete />
+              전체삭제
             </Button>
           </div>
         </PanelHeading>
         <Divider />
-        <PanelBody className="grid grid-cols-1 gap-x-8 gap-y-4">
-          <div className="flex flex-col w-full sm:w-1/2 gap-y-4">
-            {cartItems}
-          </div>
+        <PanelBody className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+          {items.length > 0 && (
+            <div className="flex flex-col gap-y-4">
+              {cartItems}
+              <div className="flex justify-around font-bold text-center">
+                <span>최종 결제금액</span>
+                <span>
+                  {Intl.NumberFormat().format(
+                    items.reduce(
+                      (sum, b) => sum + b.quantity * b.sellingPrice,
+                      0
+                    )
+                  )}
+                  원
+                </span>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full justify-center font-semibold bg-orange-500 text-white py-2"
+                inline
+                rounded="full"
+              >
+                <MdAddShoppingCart /> 주문완료
+              </Button>
+            </div>
+          )}
+          {items.length === 0 && (
+            <div className="flex items-center text-red-500 justify-center sm:justify-start gap-x-2">
+              <MdError />
+              장바구니가 비었습니다.
+            </div>
+          )}
         </PanelBody>
       </Panel>
       <Modal

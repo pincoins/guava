@@ -26,6 +26,17 @@ export interface Product {
   maximumStockLevel: number;
 }
 
+export interface CartItem {
+  categoryId: number;
+  productId: number;
+  slug: string;
+  name: string;
+  subtitle: string;
+  listPrice: number;
+  sellingPrice: number;
+  quantity: number;
+}
+
 export interface FavoritesItem {
   id: number;
   slug: string;

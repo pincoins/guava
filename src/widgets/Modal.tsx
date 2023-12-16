@@ -46,20 +46,24 @@ const Modal = ({
           >
             <div className="fixed inset-0 overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-4 text-center">
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="font-bold leading-6 text-red-600 inline-flex items-center gap-x-2"
+                    className="font-bold text-red-600 inline-flex items-center gap-x-1"
                   >
                     <MdWarning /> {title}
                   </Dialog.Title>
-                  <div className="mt-2">
+                  <div className="mt-2 justify-start">
                     <ul
                       role="list"
-                      className="text-sm list-disc space-y-1 pl-9"
+                      className="text-sm list-disc list-insde space-y-1 pl-5"
                     >
                       {messages.map((m, index) => {
-                        return <li key={index}>{m}</li>;
+                        return (
+                          <li key={index} className="text-left">
+                            {m}
+                          </li>
+                        );
                       })}
                     </ul>
                   </div>
