@@ -306,8 +306,8 @@ const ProductList = () => {
         </PanelBody>
       </Panel>
       <Modal
-        title={'상품권 선택 안 함'}
-        messages={['최소 1매 이상 선택해야 합니다.']}
+        title={'구매 권종 없음'}
+        messages={['구매하실 상품권을 선택해주세요.']}
         isOpen={isOpen}
         onClose={handleModalClose}
       />
