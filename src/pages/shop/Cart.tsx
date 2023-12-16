@@ -186,16 +186,17 @@ const Cart = () => {
 
               <Button
                 type="submit"
-                className="w-full justify-center font-semibold bg-orange-500 text-white py-2"
+                className="w-full justify-center font-semibold py-2"
+                preset="primary"
                 inline
-                rounded="full"
+                rounded="md"
               >
                 <MdAddShoppingCart /> 주문완료
               </Button>
             </div>
           )}
           {items.length === 0 && (
-            <div className="flex items-center text-red-500 justify-center sm:justify-start gap-x-2">
+            <div className="flex items-center font-bold text-red-500 justify-center sm:justify-start gap-x-2">
               <MdError />
               장바구니가 비었습니다.
             </div>

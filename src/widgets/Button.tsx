@@ -45,10 +45,10 @@ const Button = ({
     'bg-white': outline,
     'justify-center': center,
 
-    'border-sky-600 hover:bg-sky-600 hover:text-white hover:border-sky-500':
+    'border-emerald-600 hover:bg-emerald-600 hover:text-white hover:border-emerald-500':
       preset === 'primary',
-    'bg-sky-700 text-white': preset === 'primary' && !outline,
-    'text-sky-700': outline && preset === 'primary',
+    'bg-emerald-700 text-white': preset === 'primary' && !outline,
+    'text-emerald-700': outline && preset === 'primary',
 
     'border-slate-500 hover:bg-slate-500 hover:text-white hover:border-slate-400':
       preset === 'secondary',

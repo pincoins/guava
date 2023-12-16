@@ -251,7 +251,7 @@ const ProductList = () => {
                 <li>
                   카드 사용을 위해 구글에서 추가 정보를 요구하는 경우에 당사는
                   이의제기를 위한 소명자료를 제공합니다. 단, 이의제기 후
-                  구글에서 거절할 경우 합당한 거절사유를 알려주지도 않아서
+                  구글에서 거절할 경우에는 합당한 거절사유를 알려주지 않아
                   교환/환불이 불가합니다.
                 </li>
               </ul>
@@ -283,9 +283,10 @@ const ProductList = () => {
               <Button
                 type="submit"
                 disabled={loginState !== 'AUTHENTICATED' || isSubmitting}
-                className="w-full justify-center font-semibold bg-orange-500 text-white py-2"
+                className="w-full justify-center font-semibold py-2"
+                preset="primary"
                 inline
-                rounded="full"
+                rounded="md"
               >
                 <MdAddShoppingCart /> 장바구니 추가
               </Button>
