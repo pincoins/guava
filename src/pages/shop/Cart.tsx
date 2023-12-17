@@ -26,6 +26,7 @@ import { CartForm, CartItem } from '../../types';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import className from 'classnames';
 
 const schema = yup.object({
   products: yup
@@ -60,6 +61,7 @@ const Cart = () => {
     formState: { errors, isSubmitting },
     getValues,
     setValue,
+    setError,
     clearErrors,
   } = useForm<CartForm>({
     mode: 'onBlur',
@@ -106,29 +108,34 @@ const Cart = () => {
   };
 
   const handleAddItem = (item: CartItem, index: number) => {
-    setValue(
-      `products.${index}.quantity`,
-      +getValues(`products.${index}.quantity`) + 1
-    );
+    setValue(`products.${index}.quantity`, item.quantity + 1);
     dispatch(addToCart(item));
   };
 
   const handleRemoveItem = (item: CartItem, index: number) => {
-    setValue(
-      `products.${index}.quantity`,
-      +getValues(`products.${index}.quantity`) - 1
-    );
-    dispatch(removeFromCart(item));
+    if (item.quantity > 1) {
+      setValue(`products.${index}.quantity`, item.quantity - 1);
+      dispatch(removeFromCart(item));
+    }
   };
 
   const handleSetItem = (
     e: React.ChangeEvent<HTMLInputElement>,
-    item: CartItem
+    item: CartItem,
+    index: number
   ) => {
-    if (e.target.value.trim().length === 0 || +e.target.value > 0) {
-      dispatch(setCartItem({ ...item, quantity: e.target.value }));
+    if (e.target.value.trim().length === 0) {
+      dispatch(setCartItem({ ...item, quantity: 0 }));
+      setError(`products.${index}.quantity`, {
+        type: 'INVALID_QUANTITY',
+        message: '반드시 1매 이상 선택해야 합니다.',
+      });
+    } else if (+e.target.value > 0) {
+      dispatch(setCartItem({ ...item, quantity: +e.target.value }));
     }
   };
+
+  console.log('errors', errors.products);
 
   // 10. 출력 데이터 구성
   const cartItems = fields.map((field, index) => {
@@ -194,11 +201,27 @@ const Cart = () => {
                       {...register(`products.${index}.quantity`, {
                         required: true,
                         onChange: (e) => {
-                          handleSetItem(e, item);
+                          if (
+                            errors &&
+                            errors.products &&
+                            errors.products[index]?.quantity
+                          ) {
+                            clearErrors(`products.${index}.quantity`);
+                          }
+                          handleSetItem(e, item, index);
                         },
                       })}
                       placeholder="0"
-                      className="w-14 sm:w-24 border-0 py-1.5 text-black text-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-700 text-center"
+                      className={className(
+                        'w-14 sm:w-24 border-0 py-1.5 text-black text-sm ring-1 ring-inset focus:ring-2 focus:ring-inset text-center',
+                        !(
+                          errors &&
+                          errors.products &&
+                          errors.products[index]?.quantity
+                        )
+                          ? 'text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-gray-700'
+                          : 'text-red-900 ring-red-500 placeholder:text-red-300 focus:ring-red-500 bg-red-400'
+                      )}
                       defaultValue={field.quantity}
                     />
                     <input
@@ -214,7 +237,16 @@ const Cart = () => {
                     onClick={() => {
                       handleAddItem(item, index);
                     }}
-                    className="-ml-px inline-flex rounded-r-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    className={className(
+                      'inline-flex rounded-r-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50',
+                      !(
+                        errors &&
+                        errors.products &&
+                        errors.products[index]?.quantity
+                      )
+                        ? '-ml-px'
+                        : ''
+                    )}
                   >
                     <MdAdd className="h-5 w-5 text-blue-800" />
                   </button>
