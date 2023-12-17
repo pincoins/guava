@@ -22,7 +22,26 @@ import {
   removeFromCart,
   setCartItem,
 } from '../../store/slices/cartSlice';
-import { CartItem } from '../../types';
+import { CartForm, CartItem } from '../../types';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+const schema = yup.object({
+  products: yup
+    .array()
+    .of(
+      yup
+        .object({
+          productId: yup.number().positive().defined(),
+          quantity: yup.number().positive().defined(),
+        })
+        .defined()
+    )
+    .min(1)
+    .defined()
+    .required(),
+});
 
 const Cart = () => {
   // 1. URL 파라미터 가져오기
@@ -34,11 +53,35 @@ const Cart = () => {
   // 3. 리액트 라우터 네비게이션 객체 가져오기
   // 4. RTK Query 객체 가져오기
   // 5. 리액트 훅 폼 정의
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    getValues,
+    setValue,
+    clearErrors,
+  } = useForm<CartForm>({
+    mode: 'onBlur',
+    defaultValues: {
+      products: items.map((item) => {
+        return {
+          productId: item.productId,
+          quantity: item.quantity,
+        };
+      }),
+    },
+    resolver: yupResolver(schema),
+  });
+
   // 6. 주요 상태 선언 (useState, useReducer 및 커스텀 훅)
   const [isOpen, setIsOpen] = useState(false);
 
   // 7. useEffect 호출
   // 8. onValid 폼 제출 핸들러 정의
+  const onValid: SubmitHandler<CartForm> = async (data, _) => {
+    console.log(data);
+  };
+
   // 9. 이벤트 핸들러 정의
   const handleModalOpen = () => {
     setIsOpen(true);
@@ -56,11 +99,13 @@ const Cart = () => {
     dispatch(deleteCartItem(item));
   };
 
-  const handleAddItem = (item: CartItem) => {
+  const handleAddItem = (item: CartItem, index: number) => {
+    setValue(`products.${index}.quantity`, item.quantity + 1);
     dispatch(addToCart(item));
   };
 
-  const handleRemoveItem = (item: CartItem) => {
+  const handleRemoveItem = (item: CartItem, index: number) => {
+    setValue(`products.${index}.quantity`, item.quantity - 1);
     dispatch(removeFromCart(item));
   };
 
@@ -68,11 +113,13 @@ const Cart = () => {
     e: React.ChangeEvent<HTMLInputElement>,
     item: CartItem
   ) => {
-    dispatch(setCartItem({ ...item, quantity: e.target.value }));
+    if (e.target.value.trim().length === 0 || +e.target.value > 0) {
+      dispatch(setCartItem({ ...item, quantity: e.target.value }));
+    }
   };
 
   // 10. 출력 데이터 구성
-  const cartItems = items.map((item) => {
+  const cartItems = items.map((item, index) => {
     return (
       <React.Fragment key={item.productId}>
         <div className="grid grid-cols-1 text-sm">
@@ -112,13 +159,13 @@ const Cart = () => {
             </div>
             <div className="flex flex-col gap-y-2 items-center">
               <label
-                htmlFor={item.slug}
+                htmlFor={`products.${index}.quantity`}
                 className="flex text-sm font-medium leading-6 text-black justify-center"
               >
                 <button
                   type="button"
                   onClick={() => {
-                    handleRemoveItem(item);
+                    handleRemoveItem(item, index);
                   }}
                   className="inline-flex items-center rounded-l-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                 >
@@ -127,19 +174,26 @@ const Cart = () => {
                 <div className="flex focus-within:z-10 -ml-px">
                   <input
                     type="number"
-                    id={item.slug}
-                    value={item.quantity}
-                    onChange={(e) => {
-                      handleSetItem(e, item);
-                    }}
+                    {...register(`products.${index}.quantity`, {
+                      required: true,
+                      onChange: (e) => {
+                        handleSetItem(e, item);
+                      },
+                    })}
                     placeholder="0"
                     className="w-14 sm:w-24 border-0 py-1.5 text-black text-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-700 text-center"
+                  />
+                  <input
+                    type="hidden"
+                    {...register(`products.${index}.productId`, {
+                      required: true,
+                    })}
                   />
                 </div>
                 <button
                   type="button"
                   onClick={() => {
-                    handleAddItem(item);
+                    handleAddItem(item, index);
                   }}
                   className="-ml-px inline-flex rounded-r-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                 >
@@ -180,7 +234,10 @@ const Cart = () => {
         <Divider />
         <PanelBody className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
           {items.length > 0 && (
-            <div className="flex flex-col gap-y-4">
+            <form
+              onSubmit={handleSubmit(onValid)}
+              className="flex flex-col gap-y-4"
+            >
               {cartItems}
               <div className="flex justify-around font-bold text-center">
                 <span>최종 결제금액</span>
@@ -204,7 +261,7 @@ const Cart = () => {
               >
                 <MdAddShoppingCart /> 주문완료
               </Button>
-            </div>
+            </form>
           )}
           {items.length === 0 && (
             <div className="flex items-center font-bold text-red-500 justify-center sm:justify-start gap-x-2">
@@ -215,8 +272,8 @@ const Cart = () => {
         </PanelBody>
       </Panel>
       <Modal
-        title={'상품권 선택 안 함'}
-        messages={['상품권은 최소 1종 이상 선택해야 합니다.']}
+        title={'구매 상품권 없음'}
+        messages={['최소 1매 이상 선택해야 합니다.']}
         isOpen={isOpen}
         onClose={handleModalClose}
       />

@@ -37,6 +37,13 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface CartForm {
+  products: {
+    productId: number;
+    quantity: number;
+  }[];
+}
+
 export interface FavoritesItem {
   id: number;
   slug: string;
