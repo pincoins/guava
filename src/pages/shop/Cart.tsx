@@ -108,7 +108,7 @@ const Cart = () => {
   const handleAddItem = (item: CartItem, index: number) => {
     setValue(
       `products.${index}.quantity`,
-      getValues(`products.${index}.quantity`) + 1
+      +getValues(`products.${index}.quantity`) + 1
     );
     dispatch(addToCart(item));
   };
@@ -116,7 +116,7 @@ const Cart = () => {
   const handleRemoveItem = (item: CartItem, index: number) => {
     setValue(
       `products.${index}.quantity`,
-      getValues(`products.${index}.quantity`) - 1
+      +getValues(`products.${index}.quantity`) - 1
     );
     dispatch(removeFromCart(item));
   };
