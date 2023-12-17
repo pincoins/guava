@@ -59,7 +59,6 @@ const Cart = () => {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-    getValues,
     setValue,
     setError,
     clearErrors,
@@ -76,7 +75,7 @@ const Cart = () => {
     resolver: yupResolver(schema),
   });
 
-  const { fields, remove } = useFieldArray({
+  const { fields } = useFieldArray({
     control,
     name: 'products',
   });
@@ -191,7 +190,7 @@ const Cart = () => {
                     onClick={() => {
                       handleRemoveItem(item, index);
                     }}
-                    className="inline-flex items-center rounded-l-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    className="inline-flex items-center rounded-l-md p-2 font-bold border border-gray-300 hover:bg-gray-50"
                   >
                     <MdRemove className="h-5 w-5 text-red-500" />
                   </button>
@@ -238,14 +237,14 @@ const Cart = () => {
                       handleAddItem(item, index);
                     }}
                     className={className(
-                      'inline-flex rounded-r-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50',
+                      'inline-flex rounded-r-md p-2 font-bold border border-gray-300 hover:bg-gray-50',
                       !(
                         errors &&
                         errors.products &&
                         errors.products[index]?.quantity
                       )
                         ? '-ml-px'
-                        : ''
+                        : 'border-l-0'
                     )}
                   >
                     <MdAdd className="h-5 w-5 text-blue-800" />
