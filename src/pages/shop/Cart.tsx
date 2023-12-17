@@ -23,7 +23,7 @@ import {
   setCartItem,
 } from '../../store/slices/cartSlice';
 import { CartForm, CartItem } from '../../types';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -55,6 +55,7 @@ const Cart = () => {
   // 5. 리액트 훅 폼 정의
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
     getValues,
@@ -71,6 +72,11 @@ const Cart = () => {
       }),
     },
     resolver: yupResolver(schema),
+  });
+
+  const { fields, remove } = useFieldArray({
+    control,
+    name: 'products',
   });
 
   // 6. 주요 상태 선언 (useState, useReducer 및 커스텀 훅)
@@ -100,12 +106,18 @@ const Cart = () => {
   };
 
   const handleAddItem = (item: CartItem, index: number) => {
-    setValue(`products.${index}.quantity`, item.quantity + 1);
+    setValue(
+      `products.${index}.quantity`,
+      getValues(`products.${index}.quantity`) + 1
+    );
     dispatch(addToCart(item));
   };
 
   const handleRemoveItem = (item: CartItem, index: number) => {
-    setValue(`products.${index}.quantity`, item.quantity - 1);
+    setValue(
+      `products.${index}.quantity`,
+      getValues(`products.${index}.quantity`) - 1
+    );
     dispatch(removeFromCart(item));
   };
 
@@ -119,97 +131,107 @@ const Cart = () => {
   };
 
   // 10. 출력 데이터 구성
-  const cartItems = items.map((item, index) => {
-    return (
-      <React.Fragment key={item.productId}>
-        <div className="grid grid-cols-1 text-sm">
-          <div className="flex justify-between">
-            <div className="flex gap-x-4">
-              <div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleDeleteItem(item);
-                  }}
-                  className="inline-flex rounded-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                >
-                  <MdClear className="h-5 w-5 text-gray-400" />
-                </button>
-              </div>
-              <div className="flex flex-col gap-y-1">
-                <p className="font-bold">
-                  {item.name} <br />
-                  {item.subtitle} (
-                  {new Intl.NumberFormat('en-US', {
-                    style: 'percent',
-                    minimumFractionDigits: 1,
-                    maximumFractionDigits: 1,
-                  }).format(
-                    (item.listPrice - item.sellingPrice) / item.listPrice
-                  )}
-                  )
-                </p>
-                <p className="flex gap-x-2">
-                  <span>{Intl.NumberFormat().format(item.sellingPrice)}원</span>
-                  <span className="text-gray-400 line-through">
-                    ({Intl.NumberFormat().format(item.listPrice)}원)
-                  </span>
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col gap-y-2 items-center">
-              <label
-                htmlFor={`products.${index}.quantity`}
-                className="flex text-sm font-medium leading-6 text-black justify-center"
-              >
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleRemoveItem(item, index);
-                  }}
-                  className="inline-flex items-center rounded-l-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                >
-                  <MdRemove className="h-5 w-5 text-red-500" />
-                </button>
-                <div className="flex focus-within:z-10 -ml-px">
-                  <input
-                    type="number"
-                    {...register(`products.${index}.quantity`, {
-                      required: true,
-                      onChange: (e) => {
-                        handleSetItem(e, item);
-                      },
-                    })}
-                    placeholder="0"
-                    className="w-14 sm:w-24 border-0 py-1.5 text-black text-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-700 text-center"
-                  />
-                  <input
-                    type="hidden"
-                    {...register(`products.${index}.productId`, {
-                      required: true,
-                    })}
-                  />
+  const cartItems = fields.map((field, index) => {
+    const item = items.find((i) => i.productId === field.productId);
+
+    if (item && field) {
+      return (
+        <React.Fragment key={field.id}>
+          <div className="grid grid-cols-1 text-sm">
+            <div className="flex justify-between">
+              <div className="flex gap-x-4">
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleDeleteItem(item);
+                    }}
+                    className="inline-flex rounded-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >
+                    <MdClear className="h-5 w-5 text-gray-400" />
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleAddItem(item, index);
-                  }}
-                  className="-ml-px inline-flex rounded-r-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                <div className="flex flex-col gap-y-1">
+                  <p className="font-bold">
+                    {item.name} <br />
+                    {item.subtitle} (
+                    {new Intl.NumberFormat('en-US', {
+                      style: 'percent',
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    }).format(
+                      (item.listPrice - item.sellingPrice) / item.listPrice
+                    )}
+                    )
+                  </p>
+                  <p className="flex gap-x-2">
+                    <span>
+                      {Intl.NumberFormat().format(item.sellingPrice)}원
+                    </span>
+                    <span className="text-gray-400 line-through">
+                      ({Intl.NumberFormat().format(item.listPrice)}원)
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-y-2 items-center">
+                <label
+                  htmlFor={`products.${index}.quantity`}
+                  className="flex text-sm font-medium leading-6 text-black justify-center"
                 >
-                  <MdAdd className="h-5 w-5 text-blue-800" />
-                </button>
-              </label>
-              <span className="font-bold">
-                {Intl.NumberFormat().format(item.sellingPrice * item.quantity)}
-                원
-              </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleRemoveItem(item, index);
+                    }}
+                    className="inline-flex items-center rounded-l-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >
+                    <MdRemove className="h-5 w-5 text-red-500" />
+                  </button>
+                  <div className="flex focus-within:z-10 -ml-px">
+                    <input
+                      type="number"
+                      {...register(`products.${index}.quantity`, {
+                        required: true,
+                        onChange: (e) => {
+                          handleSetItem(e, item);
+                        },
+                      })}
+                      placeholder="0"
+                      className="w-14 sm:w-24 border-0 py-1.5 text-black text-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-700 text-center"
+                      defaultValue={field.quantity}
+                    />
+                    <input
+                      type="hidden"
+                      {...register(`products.${index}.productId`, {
+                        required: true,
+                      })}
+                      defaultValue={field.productId}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleAddItem(item, index);
+                    }}
+                    className="-ml-px inline-flex rounded-r-md p-2 font-bold ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >
+                    <MdAdd className="h-5 w-5 text-blue-800" />
+                  </button>
+                </label>
+                <span className="font-bold">
+                  {Intl.NumberFormat().format(
+                    item.sellingPrice * item.quantity
+                  )}
+                  원
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-        <Divider />
-      </React.Fragment>
-    );
+          <Divider />
+        </React.Fragment>
+      );
+    }
   });
 
   // 11. JSX 반환
