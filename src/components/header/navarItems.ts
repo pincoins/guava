@@ -5,7 +5,6 @@ import {
   MdPerson,
   MdPersonAdd,
   MdSendToMobile,
-  MdShoppingBag,
 } from 'react-icons/md';
 
 const authenticated = [
@@ -41,21 +40,15 @@ const unauthenticated = [
 const menu = [
   {
     id: 1,
-    title: '장바구니',
-    to: '/shop/cart',
-    icon: MdShoppingBag,
+    title: '주문/발송',
+    to: '/shop/orders',
+    icon: MdSendToMobile,
   },
   {
     id: 2,
     title: '고객센터',
     to: '/help/faq',
     icon: MdInfoOutline,
-  },
-  {
-    id: 3,
-    title: '주문/발송',
-    to: '/shop/orders',
-    icon: MdSendToMobile,
   },
 ];
 

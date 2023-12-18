@@ -4,7 +4,11 @@ import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import { Dialog, Transition } from '@headlessui/react';
 import { Link } from 'react-router-dom';
-import { MdOutlineArrowRight, MdOutlineMenu } from 'react-icons/md';
+import {
+  MdOutlineArrowRight,
+  MdOutlineMenu,
+  MdShoppingBag,
+} from 'react-icons/md';
 import DrawerHeading from './DrawerHeading';
 import { authenticated, menu, unauthenticated } from './navarItems';
 import { useFetchCategoriesQuery } from '../../store/apis/categoryApi';
@@ -20,6 +24,8 @@ const Drawer = ({
   onClose: () => void;
 } & ComponentPropsWithoutRef<'div'>) => {
   const { loginState } = useAppSelector((state: RootState) => state.auth);
+
+  const { items } = useAppSelector((state: RootState) => state.cart);
 
   const resultCategories = useFetchCategoriesQuery();
 
@@ -131,6 +137,17 @@ const Drawer = ({
                       </Link>
                     );
                   })}
+                <Link
+                  to="/shop/cart"
+                  className="inline-flex gap-x-2 items-center border-b px-3 py-1"
+                  onClick={onClose}
+                >
+                  <MdShoppingBag />
+                  장바구니
+                  <span className="inline-flex items-center justify-center px-1 text-sm text-white bg-[#e88f2f] rounded-full">
+                    {items.length}
+                  </span>
+                </Link>
                 {menu.map((item) => {
                   return (
                     <Link

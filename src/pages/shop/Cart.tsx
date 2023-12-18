@@ -23,7 +23,12 @@ import {
   setCartItem,
 } from '../../store/slices/cartSlice';
 import { CartForm, CartItem } from '../../types';
-import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import {
+  SubmitErrorHandler,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import className from 'classnames';
@@ -87,6 +92,10 @@ const Cart = () => {
   // 8. onValid 폼 제출 핸들러 정의
   const onValid: SubmitHandler<CartForm> = async (data, _) => {
     console.log(data);
+  };
+
+  const onInvalid: SubmitErrorHandler<CartForm> = async () => {
+    handleModalOpen();
   };
 
   // 9. 이벤트 핸들러 정의
@@ -288,7 +297,7 @@ const Cart = () => {
         <PanelBody className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
           {items.length > 0 && (
             <form
-              onSubmit={handleSubmit(onValid)}
+              onSubmit={handleSubmit(onValid, onInvalid)}
               className="flex flex-col gap-y-4"
             >
               {cartItems}
@@ -307,6 +316,7 @@ const Cart = () => {
 
               <Button
                 type="submit"
+                disabled={isSubmitting}
                 className="w-full justify-center font-semibold py-2"
                 preset="primary"
                 inline

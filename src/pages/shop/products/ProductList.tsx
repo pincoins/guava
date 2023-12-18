@@ -191,38 +191,38 @@ const ProductList = () => {
     } else {
       products = resultProducts.data.map((product) => {
         return (
-          <li key={product.productId} className="flex gap-x-4 pl-4 sm:pl-0">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                className="rounded border-green-950 text-green-800 focus:ring-green-900"
-                value={product.productId}
-                {...register('products')}
-              />
-            </div>
-            <div className="grid grid-cols-1">
-              <label
-                htmlFor={product.slug}
-                className="font-bold text-sm text-green-900"
-              >
-                {product.name} &middot; {product.subtitle}
-              </label>
-              <p className="text-sm text-gray-700 inline-flex gap-x-2">
-                {Intl.NumberFormat().format(product.sellingPrice)}원
-                <span className="inline-flex items-center">
-                  (
-                  {new Intl.NumberFormat('en-US', {
-                    style: 'percent',
-                    minimumFractionDigits: 1,
-                    maximumFractionDigits: 1,
-                  }).format(
-                    (product.listPrice - product.sellingPrice) /
-                      product.listPrice
-                  )}
-                  <MdArrowDownward />)
+          <li key={product.productId}>
+            <label className="flex gap-x-4 pl-4 sm:pl-0">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="rounded border-green-950 text-green-800 focus:ring-green-900"
+                  value={product.productId}
+                  {...register('products')}
+                />
+              </div>
+              <div className="grid grid-cols-1">
+                <span className="font-bold text-sm text-green-900">
+                  {product.name} &middot; {product.subtitle}
                 </span>
-              </p>
-            </div>
+                <p className="text-sm text-gray-700 inline-flex gap-x-2">
+                  {' '}
+                  <span className="inline-flex items-center">
+                    (
+                    {new Intl.NumberFormat('en-US', {
+                      style: 'percent',
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    }).format(
+                      (product.listPrice - product.sellingPrice) /
+                        product.listPrice
+                    )}
+                    <MdArrowDownward />)
+                  </span>
+                  {Intl.NumberFormat().format(product.sellingPrice)}원
+                </p>
+              </div>
+            </label>
           </li>
         );
       });

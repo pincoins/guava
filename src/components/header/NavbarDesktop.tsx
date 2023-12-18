@@ -4,9 +4,12 @@ import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import ContainerFixed from '../../widgets/ContainerFixed';
 import { authenticated, menu, unauthenticated } from './navarItems';
+import { MdShoppingBag } from 'react-icons/md';
 
 const NavbarDesktop = ({ ...rest }) => {
   const { loginState } = useAppSelector((state: RootState) => state.auth);
+
+  const { items } = useAppSelector((state: RootState) => state.cart);
 
   const classes = className(rest.className, 'grid grid-cols-1');
 
@@ -29,6 +32,16 @@ const NavbarDesktop = ({ ...rest }) => {
               </span>
             </Link>
             <div className="flex-none flex gap-x-4">
+              <Link
+                to="/shop/cart"
+                className="inline-flex gap-x-1 items-center"
+              >
+                <MdShoppingBag />
+                장바구니
+                <span className="inline-flex items-center justify-center px-1 text-sm text-white bg-[#e88f2f] rounded-full">
+                  {items.length}
+                </span>
+              </Link>
               {menu.map((item) => {
                 return (
                   <Link
