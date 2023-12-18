@@ -47,8 +47,7 @@ const NavbarMobile = ({ ...rest }) => {
               <MdShoppingBag />
               장바구니
               <span className="inline-flex items-center justify-center px-1 text-sm text-white bg-[#e88f2f] rounded-full">
-                {items.length} {loginState}
-                {loginState === ('AUTHENTICATED' || 'EXPIRED') ? '1' : '0'}
+                {items.length}
               </span>
             </Link>
             {loginState === 'UNAUTHENTICATED' && (
@@ -60,7 +59,7 @@ const NavbarMobile = ({ ...rest }) => {
                 로그인
               </Link>
             )}
-            {loginState === ('AUTHENTICATED' || 'EXPIRED') &&
+            {(loginState === 'AUTHENTICATED' || loginState === 'EXPIRED') &&
               authenticated.map((item) => {
                 return (
                   <Link

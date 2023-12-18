@@ -67,7 +67,7 @@ const NavbarDesktop = ({ ...rest }) => {
                     </Link>
                   );
                 })}
-              {loginState === ('AUTHENTICATED' || 'EXPIRED') &&
+              {(loginState === 'AUTHENTICATED' || loginState === 'EXPIRED') &&
                 authenticated.map((item) => {
                   return (
                     <Link
