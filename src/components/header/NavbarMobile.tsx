@@ -47,7 +47,7 @@ const NavbarMobile = ({ ...rest }) => {
               <MdShoppingBag />
               장바구니
               <span className="inline-flex items-center justify-center px-1 text-sm text-white bg-[#e88f2f] rounded-full">
-                {items.length}
+                {items.length} {loginState}
               </span>
             </Link>
             {loginState === 'UNAUTHENTICATED' && (
