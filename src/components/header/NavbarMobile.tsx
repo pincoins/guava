@@ -42,14 +42,7 @@ const NavbarMobile = ({ ...rest }) => {
               </span>
             </Link>
           </div>
-          <div className="flex gap-x-4 items-center">
-            <Link to="/shop/cart" className="inline-flex gap-x-1 items-center">
-              <MdShoppingBag />
-              장바구니
-              <span className="inline-flex items-center justify-center px-1 text-sm text-white bg-[#e88f2f] rounded-full">
-                {items.length}
-              </span>
-            </Link>
+          <div className="flex gap-x-6 items-center">
             {loginState === 'UNAUTHENTICATED' && (
               <Link
                 to="/auth/sign-in"
@@ -59,18 +52,30 @@ const NavbarMobile = ({ ...rest }) => {
                 로그인
               </Link>
             )}
-            {(loginState === 'AUTHENTICATED' || loginState === 'EXPIRED') &&
-              authenticated.map((item) => {
-                return (
-                  <Link
-                    key={item.id}
-                    to={item.to}
-                    className="inline-flex gap-x-1 items-center"
-                  >
-                    {<item.icon />}
-                  </Link>
-                );
-              })}
+            {(loginState === 'AUTHENTICATED' || loginState === 'EXPIRED') && (
+              <>
+                {authenticated.map((item) => {
+                  return (
+                    <Link
+                      key={item.id}
+                      to={item.to}
+                      className="inline-flex gap-x-1 items-center"
+                    >
+                      {<item.icon />}
+                    </Link>
+                  );
+                })}
+                <Link
+                  to="/shop/cart"
+                  className="inline-flex gap-x-1 items-center"
+                >
+                  <MdShoppingBag />
+                  <span className="inline-flex items-center justify-center px-1 text-sm text-white bg-[#e88f2f] rounded-full">
+                    {items.length}
+                  </span>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
