@@ -70,14 +70,12 @@ const Cart = () => {
   } = useForm<CartForm>({
     mode: 'onBlur',
     defaultValues: {
-      products: items
-        .filter((item) => item.quantity > 0)
-        .map((item) => {
-          return {
-            productId: item.productId,
-            quantity: item.quantity,
-          };
-        }),
+      products: items.map((item) => {
+        return {
+          productId: item.productId,
+          quantity: item.quantity,
+        };
+      }),
     },
     resolver: yupResolver(schema),
   });
@@ -337,8 +335,11 @@ const Cart = () => {
         </PanelBody>
       </Panel>
       <Modal
-        title={'구매 상품권 없음'}
-        messages={['최소 1매 이상 선택해야 합니다.']}
+        title={'구매 상품권 선택 오류'}
+        messages={[
+          '최소 1매 이상 선택해야 합니다.',
+          '구매하지 않는 상품권은 장바구니에서 삭제해주세요.',
+        ]}
         isOpen={isOpen}
         onClose={handleModalClose}
       />
