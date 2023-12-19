@@ -27,13 +27,7 @@ export interface Product {
 }
 
 export interface CartItem {
-  categoryId: number;
   productId: number;
-  slug: string;
-  name: string;
-  subtitle: string;
-  listPrice: number;
-  sellingPrice: number;
   quantity: number;
 }
 

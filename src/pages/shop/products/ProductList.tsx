@@ -83,11 +83,19 @@ const ProductList = () => {
   // 8. onValid 폼 제출 핸들러 정의
   const onValid: SubmitHandler<ProductForm> = async (data, _) => {
     data.products.map((item) => {
-      const product = resultProducts.data?.find((i) => i.productId === item);
+      if (resultProducts.isSuccess) {
+        const product = resultProducts.data.find((i) => i.productId === item);
 
-      dispatch(addToCart(product));
+        if (product) {
+          dispatch(
+            addToCart({
+              productId: product.productId,
+            })
+          );
 
-      navigate('/shop/cart');
+          navigate('/shop/cart');
+        }
+      }
     });
   };
 
