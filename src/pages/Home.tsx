@@ -54,7 +54,7 @@ const Home = () => {
     <div className="grid grid-cols-6 p-2 sm:p-0 sm:justify-center gap-x-4 gap-y-4 sm:gap-y-8">
       <Panel className="col-span-6 gap-y-2">
         <PanelHeading>
-          <h3 className="text-lg font-semibold text-[#e88f2f]">
+          <h3 className="text-lg font-semibold text-[#1d915c]">
             오늘의 최저가 상품권
           </h3>
         </PanelHeading>
@@ -67,7 +67,7 @@ const Home = () => {
       </Panel>
       <Panel className="col-span-6 sm:col-span-4 gap-y-2">
         <PanelHeading>
-          <h3 className="text-lg font-semibold text-[#e88f2f]">
+          <h3 className="text-lg font-semibold text-[#1d915c]">
             상품권 금융사기 예방 수칙
           </h3>
         </PanelHeading>
@@ -105,7 +105,7 @@ const Home = () => {
       </Panel>
       <Panel className="col-span-6 sm:col-span-3 gap-y-2">
         <PanelHeading>
-          <h3 className="text-lg font-semibold text-[#e88f2f]">공지사항</h3>
+          <h3 className="text-lg font-semibold text-[#1d915c]">공지사항</h3>
         </PanelHeading>
         <Divider className="mt-1 mb-2" />
         <PanelBody>
@@ -180,7 +180,7 @@ const Home = () => {
       </Panel>
       <Panel className="col-span-6 sm:col-span-3 gap-y-2">
         <PanelHeading>
-          <h3 className="text-lg font-semibold text-[#e88f2f]">이용후기</h3>
+          <h3 className="text-lg font-semibold text-[#1d915c]">이용후기</h3>
         </PanelHeading>
         <Divider className="mt-1 mb-2" />
         <PanelBody>

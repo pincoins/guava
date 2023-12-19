@@ -11,7 +11,7 @@ const Footer = ({ ...rest }) => {
 
   return (
     <footer className={classes}>
-      <div className="bg-green-50 text-green-950">
+      <div className="bg-[#ebf2ea] text-green-950">
         <ContainerFixed className="grid grid-cols-1 gap-y-1.5 px-2 py-2 sm:px-0">
           <div className="flex-1 flex flex-col sm:flex-row justify-between gap-y-2 items-center">
             <div className="inline-flex flex-wrap gap-x-4 gap-y-2">
@@ -62,7 +62,7 @@ const Footer = ({ ...rest }) => {
               </Button>
             </div>
           </div>
-          <div className="text-lime-500 text-lg font-bold sm:p-0">
+          <div className="text-[#87b842] text-lg font-bold sm:p-0">
             주식회사 핀코인
           </div>
           <div className="flex flex-col sm:flex-row gap-y-1 gap-x-4 text-sm">

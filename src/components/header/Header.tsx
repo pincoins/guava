@@ -15,7 +15,7 @@ const Header = ({ ...rest }) => {
   // z-index: 20 모바일 서랍 메뉴에서 사용 중
   const classes = className(
     rest.className,
-    'bg-green-50 shadow-sm shadow-green-600/20 z-10'
+    'bg-[#ebf2ea] shadow-sm shadow-green-600/20 z-10'
   );
 
   return (

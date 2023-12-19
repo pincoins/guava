@@ -158,14 +158,14 @@ const ProductList = () => {
     );
   } else if (resultCategory.isSuccess) {
     category = (
-      <div className="text-lg font-semibold text-[#e88f2f] flex items-center justify-between gap-x-4">
+      <div className="text-lg font-semibold text-[#1d915c] flex items-center justify-between gap-x-4">
         {resultCategory.data.title}
         <Button
           type="button"
           onClick={handleToggleFavorites}
           className={
             favorite
-              ? 'text-xs text-orange-500 bg-yellow-200 border-orange-500'
+              ? 'text-xs text-rose-600 bg-yellow-200 border-rose-600'
               : 'text-xs text-gray-500 bg-gray-100 border-gray-600'
           }
           rounded="md"
@@ -191,38 +191,38 @@ const ProductList = () => {
     } else {
       products = resultProducts.data.map((product) => {
         return (
-          <li key={product.productId} className="flex gap-x-4 pl-4 sm:pl-0">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                className="rounded border-green-950 text-green-800 focus:ring-green-900"
-                value={product.productId}
-                {...register('products')}
-              />
-            </div>
-            <div className="grid grid-cols-1">
-              <label
-                htmlFor={product.slug}
-                className="font-bold text-sm text-green-900"
-              >
-                {product.name} &middot; {product.subtitle}
-              </label>
-              <p className="text-sm text-gray-700 inline-flex gap-x-2">
-                {Intl.NumberFormat().format(product.sellingPrice)}원
-                <span className="inline-flex items-center">
-                  (
-                  {new Intl.NumberFormat('en-US', {
-                    style: 'percent',
-                    minimumFractionDigits: 1,
-                    maximumFractionDigits: 1,
-                  }).format(
-                    (product.listPrice - product.sellingPrice) /
-                      product.listPrice
-                  )}
-                  <MdArrowDownward />)
+          <li key={product.productId}>
+            <label className="flex gap-x-4 pl-4 sm:pl-0">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="rounded border-green-950 text-green-800 focus:ring-green-900"
+                  value={product.productId}
+                  {...register('products')}
+                />
+              </div>
+              <div className="grid grid-cols-1">
+                <span className="font-bold text-sm text-green-900">
+                  {product.name} &middot; {product.subtitle}
                 </span>
-              </p>
-            </div>
+                <p className="text-sm text-gray-700 inline-flex gap-x-2">
+                  {' '}
+                  <span className="inline-flex items-center">
+                    (
+                    {new Intl.NumberFormat('en-US', {
+                      style: 'percent',
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    }).format(
+                      (product.listPrice - product.sellingPrice) /
+                        product.listPrice
+                    )}
+                    <MdArrowDownward />)
+                  </span>
+                  {Intl.NumberFormat().format(product.sellingPrice)}원
+                </p>
+              </div>
+            </label>
           </li>
         );
       });

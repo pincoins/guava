@@ -11,6 +11,7 @@ export default {
       },
       animation: {
         shimmer: 'shimmer 1.5s infinite',
+        'bounce-short': 'bounce 1s ease-in-out 3', // bounce 3회 후 멈춤
       },
     },
     typography: {
