@@ -61,7 +61,7 @@ const ProductList = () => {
     <Skeleton className="h-12 w-full" times={1} />
   );
 
-  const resultProducts = useFetchProductsQuery({ slug: categorySlug });
+  const resultProducts = useFetchProductsQuery(categorySlug);
 
   let products: JSX.Element | JSX.Element[] = (
     <Skeleton className="h-40 w-full" times={1} />
