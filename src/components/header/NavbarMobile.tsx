@@ -70,7 +70,7 @@ const NavbarMobile = ({ ...rest }) => {
                   className="relative inline-flex gap-x-1 items-center"
                 >
                   <MdShoppingBag />
-                  <span className="absolute -top-2 -end-2 inline-flex items-center justify-center px-1 text-xs text-white bg-[#e88f2f] rounded-full">
+                  <span className="absolute -top-2 -end-2 inline-flex items-center justify-center px-1 text-xs text-white bg-[#e88f2f] rounded-full animate-bounce-short">
                     {items.length}
                   </span>
                 </Link>
