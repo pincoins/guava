@@ -67,10 +67,10 @@ const NavbarMobile = ({ ...rest }) => {
                 })}
                 <Link
                   to="/shop/cart"
-                  className="inline-flex gap-x-1 items-center"
+                  className="relative inline-flex gap-x-1 items-center"
                 >
                   <MdShoppingBag />
-                  <span className="inline-flex items-center justify-center px-1 text-sm text-white bg-[#e88f2f] rounded-full">
+                  <span className="absolute -top-2 -end-2 inline-flex items-center justify-center px-1 text-xs text-white bg-[#e88f2f] rounded-full">
                     {items.length}
                   </span>
                 </Link>

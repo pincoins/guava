@@ -34,11 +34,11 @@ const NavbarDesktop = ({ ...rest }) => {
             <div className="flex-none flex gap-x-4">
               <Link
                 to="/shop/cart"
-                className="inline-flex gap-x-1 items-center"
+                className="relative inline-flex gap-x-1 items-center"
               >
                 <MdShoppingBag />
                 장바구니
-                <span className="inline-flex items-center justify-center px-1 text-sm text-white bg-[#e88f2f] rounded-full">
+                <span className="absolute -top-1 -end-2 inline-flex items-center justify-center px-1 text-sm text-white bg-[#e88f2f] rounded-full">
                   {items.length}
                 </span>
               </Link>
