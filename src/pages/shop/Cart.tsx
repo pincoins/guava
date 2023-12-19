@@ -70,12 +70,14 @@ const Cart = () => {
   } = useForm<CartForm>({
     mode: 'onBlur',
     defaultValues: {
-      products: items.map((item) => {
-        return {
-          productId: item.productId,
-          quantity: item.quantity,
-        };
-      }),
+      products: items
+        .filter((item) => item.quantity > 0)
+        .map((item) => {
+          return {
+            productId: item.productId,
+            quantity: item.quantity,
+          };
+        }),
     },
     resolver: yupResolver(schema),
   });
