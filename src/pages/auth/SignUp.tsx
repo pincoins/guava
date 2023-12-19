@@ -378,7 +378,7 @@ const SignUp = () => {
       className="flex flex-col w-full sm:w-1/2 gap-y-2 px-2 py-4"
     >
       <PanelHeading>
-        <h3 className="text-lg font-semibold text-[#e88f2f] text-center">
+        <h3 className="text-lg font-semibold text-[#1d915c] text-center">
           회원가입
         </h3>
         <p className="text-sm text-gray-500 text-center">

@@ -102,7 +102,7 @@ const SignIn = () => {
         className="flex flex-col w-full sm:w-1/2 gap-y-2 px-2 py-4"
       >
         <PanelHeading>
-          <h3 className="text-lg font-semibold text-[#e88f2f] text-center">
+          <h3 className="text-lg font-semibold text-[#1d915c] text-center">
             로그인
           </h3>
         </PanelHeading>

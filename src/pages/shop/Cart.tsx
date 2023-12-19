@@ -279,7 +279,7 @@ const Cart = () => {
     <>
       <Panel rounded className="flex-1 flex flex-col gap-y-2 p-2 sm:p-0">
         <PanelHeading>
-          <div className="text-lg font-semibold text-[#e88f2f] flex items-center justify-between gap-x-4">
+          <div className="text-lg font-semibold text-[#1d915c] flex items-center justify-between gap-x-4">
             장바구니
             <Button
               type="button"

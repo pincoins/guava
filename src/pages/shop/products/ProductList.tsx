@@ -158,14 +158,14 @@ const ProductList = () => {
     );
   } else if (resultCategory.isSuccess) {
     category = (
-      <div className="text-lg font-semibold text-[#e88f2f] flex items-center justify-between gap-x-4">
+      <div className="text-lg font-semibold text-[#1d915c] flex items-center justify-between gap-x-4">
         {resultCategory.data.title}
         <Button
           type="button"
           onClick={handleToggleFavorites}
           className={
             favorite
-              ? 'text-xs text-orange-500 bg-yellow-200 border-orange-500'
+              ? 'text-xs text-rose-600 bg-yellow-200 border-rose-600'
               : 'text-xs text-gray-500 bg-gray-100 border-gray-600'
           }
           rounded="md"
