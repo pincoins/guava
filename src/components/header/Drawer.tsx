@@ -109,7 +109,7 @@ const Drawer = ({
                     핀코인
                   </Link>
                 </DrawerHeading>
-                {loginState === 'AUTHENTICATED' &&
+                {(loginState === 'AUTHENTICATED' || loginState === 'EXPIRED') &&
                   authenticated.map((item) => {
                     return (
                       <Link
