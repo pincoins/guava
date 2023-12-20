@@ -148,6 +148,7 @@ const NavbarMobile = ({ ...rest }) => {
             {(loginState === 'AUTHENTICATED' || loginState === 'EXPIRED') && (
               <Link
                 to="/auth/profile"
+                onClick={handleToggleFab}
                 className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center rounded-full shadow-lg bottom-[125px] right-[10px]"
               >
                 <MdOutlineSettings />
