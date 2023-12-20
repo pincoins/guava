@@ -41,6 +41,7 @@ const NavbarMobile = ({ ...rest }) => {
                 {process.env.SITE_TITLE}
               </span>
             </Link>
+            {loginState}
           </div>
           <div className="flex gap-x-6 items-center">
             {loginState === 'UNAUTHENTICATED' && (
