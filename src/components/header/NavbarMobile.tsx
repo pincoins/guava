@@ -5,7 +5,9 @@ import Drawer from './Drawer';
 import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import {
+  MdAdd,
   MdArrowDropDown,
+  MdClose,
   MdLogin,
   MdPerson,
   MdShoppingBag,
@@ -13,6 +15,7 @@ import {
 import { authenticated } from './navarItems';
 import { Menu, Transition } from '@headlessui/react';
 import classNames from 'classnames';
+import Button from '../../widgets/Button';
 
 const NavbarMobile = ({ ...rest }) => {
   const { loginState } = useAppSelector((state: RootState) => state.auth);
@@ -21,14 +24,20 @@ const NavbarMobile = ({ ...rest }) => {
 
   const classes = className(rest.className, 'py-1 px-3');
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [drawerIsOpen, setDrawerIsOpen] = useState(false);
+
+  const [fabIsOpen, setFabIsOpen] = useState(false);
 
   const handleDrawerOpen = () => {
-    setIsOpen(true);
+    setDrawerIsOpen(true);
   };
 
   const handleDrawerClose = () => {
-    setIsOpen(false);
+    setDrawerIsOpen(false);
+  };
+
+  const handleToggleFab = () => {
+    setFabIsOpen(!fabIsOpen);
   };
 
   // 모바일 메뉴 (fixed)
@@ -114,10 +123,60 @@ const NavbarMobile = ({ ...rest }) => {
       </div>
       <div className="fixed bottom-6 left-6">
         <Drawer
-          isOpen={isOpen}
+          isOpen={drawerIsOpen}
           onOpen={handleDrawerOpen}
           onClose={handleDrawerClose}
         />
+      </div>
+      <div className="fixed bottom-6 right-6">
+        <Button
+          onClick={handleToggleFab}
+          className="text-2xl bg-cyan-300 text-white w-14 h-14 inline-flex justify-center items-center"
+          rounded="full"
+          flat
+        >
+          {!fabIsOpen && <MdAdd />}
+          {fabIsOpen && <MdClose />}
+        </Button>
+        {fabIsOpen && (
+          <div className="">
+            <Button
+              className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center shadow-lg bottom-[125px] right-[10px]"
+              rounded="full"
+              flat
+            >
+              <MdAdd />
+            </Button>
+            <Button
+              className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center shadow-lg bottom-[116px] right-[54px]"
+              rounded="full"
+              flat
+            >
+              <MdAdd />
+            </Button>
+            <Button
+              className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center shadow-lg bottom-[91px] right-[91px]"
+              rounded="full"
+              flat
+            >
+              <MdAdd />
+            </Button>
+            <Button
+              className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center shadow-lg bottom-[54px] right-[116px]"
+              rounded="full"
+              flat
+            >
+              <MdAdd />
+            </Button>
+            <Button
+              className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center shadow-lg bottom-[10px] right-[125px]"
+              rounded="full"
+              flat
+            >
+              <MdAdd />
+            </Button>
+          </div>
+        )}
       </div>
     </>
   );
