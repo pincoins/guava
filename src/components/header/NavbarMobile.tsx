@@ -8,8 +8,13 @@ import {
   MdAdd,
   MdArrowDropDown,
   MdClose,
+  MdInfoOutline,
   MdLogin,
+  MdLogout,
+  MdOutlineSettings,
   MdPerson,
+  MdPersonAdd,
+  MdSendToMobile,
   MdShoppingBag,
 } from 'react-icons/md';
 import { authenticated } from './navarItems';
@@ -139,42 +144,63 @@ const NavbarMobile = ({ ...rest }) => {
           {fabIsOpen && <MdClose />}
         </Button>
         {fabIsOpen && (
-          <div className="">
-            <Button
-              className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center shadow-lg bottom-[125px] right-[10px]"
-              rounded="full"
-              flat
+          <div className="/auth/profile">
+            {(loginState === 'AUTHENTICATED' || loginState === 'EXPIRED') && (
+              <Link
+                to=""
+                className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center rounded-full shadow-lg bottom-[125px] right-[10px]"
+              >
+                <MdOutlineSettings />
+              </Link>
+            )}
+            {loginState === 'UNAUTHENTICATED' && (
+              <Link
+                to="/auth/sign-in"
+                onClick={handleToggleFab}
+                className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center rounded-full shadow-lg bottom-[125px] right-[10px]"
+              >
+                <MdLogin />
+              </Link>
+            )}
+            <Link
+              to="/shop/cart"
+              onClick={handleToggleFab}
+              className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center rounded-full shadow-lg bottom-[116px] right-[54px]"
             >
-              <MdAdd />
-            </Button>
-            <Button
-              className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center shadow-lg bottom-[116px] right-[54px]"
-              rounded="full"
-              flat
+              <MdShoppingBag />
+            </Link>
+            <Link
+              to="/shop/orders"
+              onClick={handleToggleFab}
+              className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center rounded-full shadow-lg bottom-[91px] right-[91px]"
             >
-              <MdAdd />
-            </Button>
-            <Button
-              className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center shadow-lg bottom-[91px] right-[91px]"
-              rounded="full"
-              flat
+              <MdSendToMobile />
+            </Link>
+            <Link
+              to="/help/faq"
+              onClick={handleToggleFab}
+              className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center rounded-full shadow-lg bottom-[54px] right-[116px]"
             >
-              <MdAdd />
-            </Button>
-            <Button
-              className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center shadow-lg bottom-[54px] right-[116px]"
-              rounded="full"
-              flat
-            >
-              <MdAdd />
-            </Button>
-            <Button
-              className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center shadow-lg bottom-[10px] right-[125px]"
-              rounded="full"
-              flat
-            >
-              <MdAdd />
-            </Button>
+              <MdInfoOutline />
+            </Link>
+            {(loginState === 'AUTHENTICATED' || loginState === 'EXPIRED') && (
+              <Link
+                to="/auth/sign-out"
+                onClick={handleToggleFab}
+                className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center rounded-full shadow-lg bottom-[10px] right-[125px]"
+              >
+                <MdLogout />
+              </Link>
+            )}
+            {loginState === 'UNAUTHENTICATED' && (
+              <Link
+                to="/auth/sign-up"
+                onClick={handleToggleFab}
+                className="absolute text-sm bg-sky-500 text-black w-9 h-9 inline-flex justify-center items-center rounded-full shadow-lg bottom-[10px] right-[125px]"
+              >
+                <MdPersonAdd />
+              </Link>
+            )}
           </div>
         )}
       </div>
