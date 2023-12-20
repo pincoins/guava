@@ -143,9 +143,18 @@ const NavbarMobile = ({ ...rest }) => {
           {!fabIsOpen && <MdAdd />}
           {fabIsOpen && <MdClose />}
         </Button>
-        {fabIsOpen && (
-          <div>
-            {(loginState === 'AUTHENTICATED' || loginState === 'EXPIRED') && (
+
+        <div>
+          {(loginState === 'AUTHENTICATED' || loginState === 'EXPIRED') && (
+            <Transition
+              show={fabIsOpen}
+              enter="transition ease-in-out duration-75 transform"
+              enterFrom="translate-y-[115px]"
+              enterTo="translate-y-0"
+              leave="transition ease-in-out duration-700 transform"
+              leaveFrom="translate-y-0"
+              leaveTo="translate-y-[115px]"
+            >
               <Link
                 to="/auth/profile"
                 onClick={handleToggleFab}
@@ -153,8 +162,18 @@ const NavbarMobile = ({ ...rest }) => {
               >
                 <MdOutlineSettings />
               </Link>
-            )}
-            {loginState === 'UNAUTHENTICATED' && (
+            </Transition>
+          )}
+          {loginState === 'UNAUTHENTICATED' && (
+            <Transition
+              show={fabIsOpen}
+              enter="transition ease-in-out duration-75 transform"
+              enterFrom="translate-y-[115px]"
+              enterTo="translate-y-0"
+              leave="transition ease-in-out duration-700 transform"
+              leaveFrom="translate-y-0"
+              leaveTo="translate-y-[115px]"
+            >
               <Link
                 to="/auth/sign-in"
                 onClick={handleToggleFab}
@@ -162,7 +181,17 @@ const NavbarMobile = ({ ...rest }) => {
               >
                 <MdLogin />
               </Link>
-            )}
+            </Transition>
+          )}
+          <Transition
+            show={fabIsOpen}
+            enter="transition ease-in-out duration-150 transform"
+            enterFrom="translate-y-[106px] translate-x-[44px]"
+            enterTo="translate-y-0 -translate-x-0"
+            leave="transition ease-in-out duration-500 transform"
+            leaveFrom="translate-y-0 -translate-x-0"
+            leaveTo="translate-y-[106px] translate-x-[44px]"
+          >
             <Link
               to="/shop/cart"
               onClick={handleToggleFab}
@@ -170,6 +199,16 @@ const NavbarMobile = ({ ...rest }) => {
             >
               <MdShoppingBag />
             </Link>
+          </Transition>
+          <Transition
+            show={fabIsOpen}
+            enter="transition ease-in-out duration-300 transform"
+            enterFrom="translate-y-[81px] translate-x-[81px]"
+            enterTo="translate-y-0 -translate-x-0"
+            leave="transition ease-in-out duration-300 transform"
+            leaveFrom="translate-y-0 -translate-x-0"
+            leaveTo="translate-y-[81px] translate-x-[81px]"
+          >
             <Link
               to="/shop/orders"
               onClick={handleToggleFab}
@@ -177,6 +216,16 @@ const NavbarMobile = ({ ...rest }) => {
             >
               <MdSendToMobile />
             </Link>
+          </Transition>
+          <Transition
+            show={fabIsOpen}
+            enter="transition ease-in-out duration-500 transform"
+            enterFrom="translate-y-[44px] translate-x-[106px]"
+            enterTo="translate-y-0 -translate-x-0"
+            leave="transition ease-in-out duration-150 transform"
+            leaveFrom="translate-y-0 -translate-x-0"
+            leaveTo="translate-y-[44px] translate-x-[106px]"
+          >
             <Link
               to="/help/faq"
               onClick={handleToggleFab}
@@ -184,7 +233,17 @@ const NavbarMobile = ({ ...rest }) => {
             >
               <MdInfoOutline />
             </Link>
-            {(loginState === 'AUTHENTICATED' || loginState === 'EXPIRED') && (
+          </Transition>
+          {(loginState === 'AUTHENTICATED' || loginState === 'EXPIRED') && (
+            <Transition
+              show={fabIsOpen}
+              enter="transition ease-in-out duration-700 transform"
+              enterFrom="translate-x-[115px]"
+              enterTo="-translate-x-0"
+              leave="transition ease-in-out duration-75 transform"
+              leaveFrom="-translate-x-0"
+              leaveTo="translate-x-[115px]"
+            >
               <Link
                 to="/auth/sign-out"
                 onClick={handleToggleFab}
@@ -192,8 +251,18 @@ const NavbarMobile = ({ ...rest }) => {
               >
                 <MdLogout />
               </Link>
-            )}
-            {loginState === 'UNAUTHENTICATED' && (
+            </Transition>
+          )}
+          {loginState === 'UNAUTHENTICATED' && (
+            <Transition
+              show={fabIsOpen}
+              enter="transition ease-in-out duration-700 transform"
+              enterFrom="translate-x-[115px]"
+              enterTo="-translate-x-0"
+              leave="transition ease-in-out duration-75 transform"
+              leaveFrom="-translate-x-0"
+              leaveTo="translate-x-[115px]"
+            >
               <Link
                 to="/auth/sign-up"
                 onClick={handleToggleFab}
@@ -201,9 +270,9 @@ const NavbarMobile = ({ ...rest }) => {
               >
                 <MdPersonAdd />
               </Link>
-            )}
-          </div>
-        )}
+            </Transition>
+          )}
+        </div>
       </div>
     </>
   );
