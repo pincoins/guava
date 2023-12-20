@@ -2,7 +2,7 @@ import {
   MdInfoOutline,
   MdLogin,
   MdLogout,
-  MdPerson,
+  MdOutlineSettings,
   MdPersonAdd,
   MdSendToMobile,
 } from 'react-icons/md';
@@ -12,7 +12,7 @@ const authenticated = [
     id: 1,
     title: '마이페이지',
     to: '/auth/profile',
-    icon: MdPerson,
+    icon: MdOutlineSettings,
   },
   {
     id: 2,
