@@ -78,24 +78,19 @@ const NavbarMobile = ({ ...rest }) => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute -right-8 z-10 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="absolute -right-8 z-10 mt-2 w-28 origin-top-right divide-y divide-gray-300 rounded-md bg-stone-50 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       {authenticated.map((item) => {
                         return (
                           <div className="py-1" key={item.id}>
                             <Menu.Item>
-                              {({ active }) => (
-                                <Link
-                                  to={item.to}
-                                  className={classNames(
-                                    active
-                                      ? 'bg-gray-100 text-gray-900'
-                                      : 'text-gray-700',
-                                    'group flex gap-x-2 items-center px-4 py-2 text-sm'
-                                  )}
-                                >
-                                  {<item.icon />} {item.title}
-                                </Link>
-                              )}
+                              <Link
+                                to={item.to}
+                                className={classNames(
+                                  'group flex gap-x-2 items-center px-2 py-1 text-sm font-bold text-black'
+                                )}
+                              >
+                                {<item.icon />} {item.title}
+                              </Link>
                             </Menu.Item>
                           </div>
                         );
