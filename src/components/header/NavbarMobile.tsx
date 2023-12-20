@@ -6,20 +6,16 @@ import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import {
   MdAdd,
-  MdArrowDropDown,
   MdClose,
   MdInfoOutline,
   MdLogin,
   MdLogout,
   MdOutlineSettings,
-  MdPerson,
   MdPersonAdd,
   MdSendToMobile,
   MdShoppingBag,
 } from 'react-icons/md';
-import { authenticated } from './navarItems';
-import { Menu, Transition } from '@headlessui/react';
-import classNames from 'classnames';
+import { Transition } from '@headlessui/react';
 import Button from '../../widgets/Button';
 
 const NavbarMobile = ({ ...rest }) => {
@@ -74,54 +70,15 @@ const NavbarMobile = ({ ...rest }) => {
               </Link>
             )}
             {(loginState === 'AUTHENTICATED' || loginState === 'EXPIRED') && (
-              <>
-                <Menu as="div" className="relative inline-block text-left">
-                  <div className="flex items-center">
-                    <Menu.Button className="inline-flex w-full justify-center gap-x-0.5">
-                      <MdPerson />
-                      <MdArrowDropDown />
-                    </Menu.Button>
-                  </div>
-
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute -right-8 z-10 mt-2 w-28 origin-top-right divide-y divide-gray-300 rounded-md bg-stone-50 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      {authenticated.map((item) => {
-                        return (
-                          <div className="py-1" key={item.id}>
-                            <Menu.Item>
-                              <Link
-                                to={item.to}
-                                className={classNames(
-                                  'group flex gap-x-2 items-center px-2 py-1 text-sm font-bold text-black'
-                                )}
-                              >
-                                {<item.icon />} {item.title}
-                              </Link>
-                            </Menu.Item>
-                          </div>
-                        );
-                      })}
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-                <Link
-                  to="/shop/cart"
-                  className="relative inline-flex gap-x-1 items-center"
-                >
-                  <MdShoppingBag />
-                  <span className="absolute -top-2 -end-2 inline-flex items-center justify-center px-1 text-xs text-white bg-[#e88f2f] rounded-full animate-bounce-short">
-                    {items.length}
-                  </span>
-                </Link>
-              </>
+              <Link
+                to="/shop/cart"
+                className="relative inline-flex gap-x-1 items-center"
+              >
+                <MdShoppingBag />
+                <span className="absolute -top-2 -end-2 inline-flex items-center justify-center px-1 text-xs text-white bg-[#e88f2f] rounded-full animate-bounce-short">
+                  {items.length}
+                </span>
+              </Link>
             )}
           </div>
         </div>
