@@ -1,16 +1,22 @@
 import className from 'classnames';
-import { Link } from 'react-router-dom';
-import { Fragment, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 import Drawer from './Drawer';
 import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import { MdLogin, MdShoppingBag } from 'react-icons/md';
 import Fab from './Fab';
+import { fabRoutes } from '../../routes/fabRoutes';
 
 const NavbarMobile = ({ ...rest }) => {
   const { loginState } = useAppSelector((state: RootState) => state.auth);
 
   const { items } = useAppSelector((state: RootState) => state.cart);
+
+  const pathname =
+    fabRoutes.filter((route) => {
+      return useLocation().pathname.startsWith(route);
+    }).length > 0;
 
   const classes = className(rest.className, 'py-1 px-3');
 
@@ -79,9 +85,11 @@ const NavbarMobile = ({ ...rest }) => {
           onClose={handleDrawerClose}
         />
       </div>
-      <div className="fixed bottom-6 right-6">
-        <Fab isOpen={fabIsOpen} toggle={handleFabToggle} />
-      </div>
+      {pathname && (
+        <div className="fixed bottom-6 right-6">
+          <Fab isOpen={fabIsOpen} toggle={handleFabToggle} />
+        </div>
+      )}
     </>
   );
 };
