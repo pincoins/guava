@@ -29,9 +29,13 @@ const Home = () => {
             <div className="h-32 w-full overflow-hidden rounded-lg">
               <Link to={`shop/products/${category.slug}`}>
                 <img
-                  src="https://placehold.co/468x300/orange/white"
+                  src={
+                    category.image && category.image.trim().length > 0
+                      ? category.image
+                      : 'https://placehold.co/468x300/orange/white'
+                  }
                   alt={category.title}
-                  className="h-full w-full object-cover object-center"
+                  className="h-full w-full object-cover object-center rounded-lg border border-black"
                 />
               </Link>
             </div>
