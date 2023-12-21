@@ -63,7 +63,7 @@ const Drawer = ({
     <>
       <Button
         onClick={onOpen}
-        className="text-2xl bg-cyan-500 text-white w-14 h-14 inline-flex justify-center items-center shadow-lg"
+        className="text-2xl bg-teal-500 text-white w-14 h-14 inline-flex justify-center items-center shadow-lg"
         rounded="full"
         flat
       >
