@@ -17,7 +17,10 @@ export default {
     typography: {
       DEFAULT: {
         // this is for prose class
-        css: {},
+        css: {
+          ul: { listStyleType: 'disc', listStylePosition: 'inside' },
+          'li > * > li': { paddingLeft: '0.75rem' },
+        },
       },
     },
   },

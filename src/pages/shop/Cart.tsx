@@ -32,6 +32,7 @@ import {
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import className from 'classnames';
+import { useFetchCartItemsQuery } from '../../store/apis/productApi';
 
 const schema = yup.object({
   products: yup
@@ -58,6 +59,10 @@ const Cart = () => {
 
   // 3. 리액트 라우터 네비게이션 객체 가져오기
   // 4. RTK Query 객체 가져오기
+  const resultProducts = useFetchCartItemsQuery(
+    items.map((item) => item.productId)
+  );
+
   // 5. 리액트 훅 폼 정의
   const {
     register,
@@ -145,9 +150,15 @@ const Cart = () => {
 
   console.log('errors', errors.products);
 
+  const productsWithQuantity = resultProducts.data?.map((item, index) =>
+    Object.assign({}, item, items[index])
+  );
+
   // 10. 출력 데이터 구성
   const cartItems = fields.map((field, index) => {
-    const item = items.find((i) => i.productId === field.productId);
+    const item = productsWithQuantity?.find(
+      (i) => i.productId === field.productId
+    );
 
     if (item && field) {
       return (
@@ -304,12 +315,13 @@ const Cart = () => {
               <div className="flex justify-around font-bold text-center">
                 <span>최종 결제금액</span>
                 <span>
-                  {Intl.NumberFormat().format(
-                    items.reduce(
-                      (sum, b) => sum + b.quantity * b.sellingPrice,
-                      0
-                    )
-                  )}
+                  {productsWithQuantity &&
+                    Intl.NumberFormat().format(
+                      productsWithQuantity.reduce(
+                        (sum, b) => sum + b.quantity * b.sellingPrice,
+                        0
+                      )
+                    )}
                   원
                 </span>
               </div>
@@ -335,8 +347,11 @@ const Cart = () => {
         </PanelBody>
       </Panel>
       <Modal
-        title={'구매 상품권 없음'}
-        messages={['최소 1매 이상 선택해야 합니다.']}
+        title={'구매 상품권 선택 오류'}
+        messages={[
+          '최소 1매 이상 선택해야 합니다.',
+          '구매하지 않는 상품권은 장바구니에서 삭제해주세요.',
+        ]}
         isOpen={isOpen}
         onClose={handleModalClose}
       />

@@ -26,6 +26,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { addToCart } from '../../../store/slices/cartSlice';
 import Modal from '../../../widgets/Modal';
 import { useState } from 'react';
+import Markdown from 'react-markdown';
 
 const schema = yup.object({
   products: yup.array().of(yup.number().defined()).min(1).required(),
@@ -61,7 +62,7 @@ const ProductList = () => {
     <Skeleton className="h-12 w-full" times={1} />
   );
 
-  const resultProducts = useFetchProductsQuery({ slug: categorySlug });
+  const resultProducts = useFetchProductsQuery(categorySlug);
 
   let products: JSX.Element | JSX.Element[] = (
     <Skeleton className="h-40 w-full" times={1} />
@@ -83,11 +84,19 @@ const ProductList = () => {
   // 8. onValid 폼 제출 핸들러 정의
   const onValid: SubmitHandler<ProductForm> = async (data, _) => {
     data.products.map((item) => {
-      const product = resultProducts.data?.find((i) => i.productId === item);
+      if (resultProducts.isSuccess) {
+        const product = resultProducts.data.find((i) => i.productId === item);
 
-      dispatch(addToCart(product));
+        if (product) {
+          dispatch(
+            addToCart({
+              productId: product.productId,
+            })
+          );
 
-      navigate('/shop/cart');
+          navigate('/shop/cart');
+        }
+      }
     });
   };
 
@@ -206,7 +215,6 @@ const ProductList = () => {
                   {product.name} &middot; {product.subtitle}
                 </span>
                 <p className="text-sm text-gray-700 inline-flex gap-x-2">
-                  {' '}
                   <span className="inline-flex items-center">
                     (
                     {new Intl.NumberFormat('en-US', {
@@ -238,41 +246,14 @@ const ProductList = () => {
         <PanelBody className="flex flex-col gap-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-x-8 gap-y-4">
             <div className="sm:order-2 sm:col-span-3 flex flex-col gap-y-2 items-center sm:items-start">
-              <ul className="marker:text-[#03353e] w-full text-sm list-disc list-inside leading-loose break-keep bg-red-100 rounded-md px-4 py-2">
-                <li>일일 충전한도는 50만원입니다.</li>
-                <li>
-                  대한민국 구글플레이스토어의 게임과 상품만 구매할 수 있습니다.
-                  구글 계정의 국가설정을 대한민국으로 해야 사용할 수 있습니다.
-                </li>
-                <li>
-                  구글코리아는 국내법을 따르지 않고 취소/환불을 지원하지 않아
-                  계정 오류 발생 등 어떤 경우에도 교환/환불 처리되지 않습니다.
-                </li>
-                <li>
-                  카드 사용을 위해 구글에서 추가 정보를 요구하는 경우에 당사는
-                  이의제기를 위한 소명자료를 제공합니다. 단, 이의제기 후
-                  구글에서 거절할 경우에는 합당한 거절사유를 알려주지 않아
-                  교환/환불이 불가합니다.
-                </li>
-              </ul>
+              <Markdown className="w-full text-sm leading-loose break-keep bg-red-100 rounded-md px-4 py-2 prose">
+                {resultCategory.data?.description}
+              </Markdown>
+
               {!isMobile && (
-                <ul className="marker:text-[#03353e] w-full text-sm list-disc list-inside leading-loose break-keep bg-gray-50 rounded-md px-4 py-2">
-                  <li>상품권 안내</li>
-                  <ul className="list-disc list-inside pl-4">
-                    <li>구글기프트카드</li>
-                    <li>발행회사: 구글코리아</li>
-                    <li>홈페이지: https://play.google.com/store</li>
-                    <li>고객센터: 080-234-0051</li>
-                    <li>
-                      상품권 번호 형식: 알파벳/숫자 20자리 또는 알파벳/숫자
-                      16자리
-                      <ul className="list-disc list-inside pl-8">
-                        <li>1ABC-2DEF-3GHJ-4KLM-5NOP</li>
-                        <li>1ABC-2DEF-3GHJ-4KLM</li>
-                      </ul>
-                    </li>
-                  </ul>
-                </ul>
+                <Markdown className="w-full text-sm leading-loose break-keep bg-gray-50 rounded-md px-4 py-2 prose">
+                  {resultCategory.data?.subDescription}
+                </Markdown>
               )}
             </div>
             <form
@@ -292,22 +273,9 @@ const ProductList = () => {
               </Button>
             </form>
             {isMobile && (
-              <ul className="marker:text-[#03353e] text-sm list-disc list-inside leading-loose break-keep bg-gray-50 rounded-md px-4 py-2">
-                <li>상품권 안내</li>
-                <ul className="list-disc list-inside pl-4">
-                  <li>구글기프트카드</li>
-                  <li>발행회사: 구글코리아</li>
-                  <li>홈페이지: https://play.google.com/store</li>
-                  <li>고객센터: 080-234-0051</li>
-                  <li>
-                    상품권 번호 형식: 알파벳/숫자 20자리 또는 알파벳/숫자 16자리
-                    <ul className="list-disc list-inside pl-8">
-                      <li>1ABC-2DEF-3GHJ-4KLM-5NOP</li>
-                      <li>1ABC-2DEF-3GHJ-4KLM</li>
-                    </ul>
-                  </li>
-                </ul>
-              </ul>
+              <Markdown className="w-full text-sm leading-loose break-keep bg-gray-50 rounded-md px-4 py-2 prose">
+                {resultCategory.data?.subDescription}
+              </Markdown>
             )}
           </div>
         </PanelBody>

@@ -6,13 +6,24 @@ const productApi = createApi({
   reducerPath: 'productApi',
   baseQuery: baseQueryWithRetry,
   endpoints: (builder) => ({
-    fetchProducts: builder.query<Product[], { slug: string }>({
-      query: (category: { slug: string }) => {
+    fetchProducts: builder.query<Product[], string>({
+      query: (slug: string) => {
         return {
           url: '/products',
           method: 'GET',
           params: {
-            categorySlug: category.slug,
+            categorySlug: slug,
+          },
+        };
+      },
+    }),
+    fetchCartItems: builder.query<Product[], number[]>({
+      query: (products: number[]) => {
+        return {
+          url: '/products',
+          method: 'GET',
+          params: {
+            products: products.toString(),
           },
         };
       },
@@ -20,6 +31,6 @@ const productApi = createApi({
   }),
 });
 
-export const { useFetchProductsQuery } = productApi;
+export const { useFetchProductsQuery, useFetchCartItemsQuery } = productApi;
 
 export { productApi };
