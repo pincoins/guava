@@ -26,7 +26,7 @@ const Home = () => {
       categories = resultCategories.data.map((category) => {
         return (
           <div className="grid grid-cols-1 gap-y-1" key={category.slug}>
-            <div className="h-32 w-full overflow-hidden rounded-lg">
+            <div className="h-[105px] sm:h-[116px] w-full overflow-hidden rounded-lg">
               <Link to={`shop/products/${category.slug}`}>
                 <img
                   src={
@@ -35,7 +35,7 @@ const Home = () => {
                       : 'https://placehold.co/468x300/orange/white'
                   }
                   alt={category.title}
-                  className="h-full w-full object-cover object-center rounded-lg border border-black"
+                  className="h-full w-full object-fill object-center rounded-lg border border-black"
                 />
               </Link>
             </div>
