@@ -14,9 +14,8 @@ const NavbarMobile = ({ ...rest }) => {
   const { items } = useAppSelector((state: RootState) => state.cart);
 
   const pathname =
-    fabRoutes.filter((route) => {
-      return useLocation().pathname.startsWith(route);
-    }).length > 0;
+    fabRoutes.filter((route) => useLocation().pathname.startsWith(route))
+      .length > 0;
 
   const classes = className(rest.className, 'py-1 px-3');
 
