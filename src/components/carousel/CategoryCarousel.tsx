@@ -10,7 +10,7 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   const [carouselTransform, setCarouselTransform] =
     useState('translateX(-100%)');
   const [carouselTransition, setCarouselTransition] = useState(
-    'transform 500ms ease-in-out'
+    'transform 150ms ease-in-out'
   );
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
       setCurrentIndex(index);
 
       setCarouselTransition(''); // 애니메이션 효과: ease-in-out 트랜지션 없애기
-    }, 500);
+    }, 150);
   };
 
   const handleMove = (direction: number) => {
@@ -49,7 +49,7 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
 
     setCurrentIndex((prev) => prev + direction);
 
-    setCarouselTransition('transform 500ms ease-in-out'); // 애니메이션 효과: ease-in-out 트랜지션 설정
+    setCarouselTransition('transform 150ms ease-in-out'); // 애니메이션 효과: ease-in-out 트랜지션 설정
   };
 
   return (
