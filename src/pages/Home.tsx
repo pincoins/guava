@@ -6,16 +6,10 @@ import Divider from '../widgets/Divider';
 import { useFetchCategoriesQuery } from '../store/apis/categoryApi';
 import Skeleton from '../widgets/Skeleton';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import Button from '../widgets/Button';
+import CategoryCarousel from '../components/carousel/CategoryCarousel';
 
 const Home = () => {
   const resultCategories = useFetchCategoriesQuery();
-
-  const [currCarousel, setCurrCarousel] = useState(1);
-  const [carouselTransition, setCarouselTransition] = useState(
-    'transform 500ms ease-in-out'
-  );
 
   let categories;
   let carouselCategories;
@@ -69,17 +63,7 @@ const Home = () => {
         );
       });
       carouselCategories = (
-        <>
-          <div className="w-full shrink-0">
-            <img src="https://via.placeholder.com/640x480/green" alt="" />
-          </div>
-          <div className="w-full shrink-0">
-            <img src="https://via.placeholder.com/640x480/yellow" alt="" />
-          </div>
-          <div className="w-full shrink-0">
-            <img src="https://via.placeholder.com/640x480/orange" alt="" />
-          </div>
-        </>
+        <CategoryCarousel categories={resultCategories.data} />
       );
     }
   }
@@ -92,15 +76,7 @@ const Home = () => {
         </PanelHeading>
         <Divider className="mt-1 mb-2" />
         <PanelBody>
-          <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-6 sm:gap-x-8 sm:gap-y-8">
-            <div className="flex flex-row flex-nowrap overflow-hidden">
-              {carouselCategories}
-            </div>
-          </div>
-          <div>
-            <Button>L</Button>
-            <Button>R</Button>
-          </div>
+          <div className="">{carouselCategories}</div>
         </PanelBody>
       </Panel>
       <Panel className="col-span-6 gap-y-2">
