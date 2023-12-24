@@ -7,6 +7,9 @@ import Button from '../../widgets/Button';
 const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   const [currentIndex, setCurrentIndex] = useState(1);
   const [currentList, setCurrentList] = useState(categories);
+  const [carouselTransition, setCarouselTransition] = useState(
+    'transform 500ms ease-in-out'
+  );
 
   useEffect(() => {
     // 컴포넌트 렌더링 시점에 넘겨 받은 카테고리로 새 리스트를 구성
@@ -21,7 +24,7 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   }, [categories]);
 
   useEffect(() => {
-    // TODO: 애니메이션 효과: x축 이동
+    //  애니메이션 효과: x축 이동
   }, [currentIndex]);
 
   const moveToNthSlide = (index: number) => {
@@ -29,7 +32,8 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
     setTimeout(() => {
       setCurrentIndex(index);
 
-      // TODO: 애니메이션 효과: ease-in-out 트랜지션 없애기
+      //  애니메이션 효과: ease-in-out 트랜지션 없애기
+      setCarouselTransition('');
     }, 500);
   };
 
@@ -44,7 +48,8 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
 
     setCurrentIndex((prev) => prev + direction);
 
-    // TODO: 애니메이션 효과: ease-in-out 트랜지션 주기
+    //  애니메이션 효과: ease-in-out 트랜지션 주기
+    setCarouselTransition('transform 500ms ease-in-out');
   };
 
   console.log(currentList);
@@ -56,6 +61,7 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
           className={'flex'}
           style={{
             transform: `translateX(-${currentIndex * 100}%)`,
+            transition: carouselTransition,
           }}
         >
           {currentList.map((category, index) => (
