@@ -148,8 +148,6 @@ const Cart = () => {
     }
   };
 
-  console.log('errors', errors.products);
-
   const productsWithQuantity = resultProducts.data?.map((item, index) =>
     Object.assign({}, item, items[index])
   );

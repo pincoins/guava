@@ -6,18 +6,35 @@ import Divider from '../widgets/Divider';
 import { useFetchCategoriesQuery } from '../store/apis/categoryApi';
 import Skeleton from '../widgets/Skeleton';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import Button from '../widgets/Button';
 
 const Home = () => {
   const resultCategories = useFetchCategoriesQuery();
 
+  const [currCarousel, setCurrCarousel] = useState(1);
+  const [carouselTransition, setCarouselTransition] = useState(
+    'transform 500ms ease-in-out'
+  );
+
   let categories;
+  let carouselCategories;
+
   if (resultCategories.isLoading) {
     categories = <Skeleton className="h-32 w-full" times={6} />;
+    carouselCategories = <Skeleton className="h-32 w-full" times={6} />;
   } else if (resultCategories.isError) {
     categories = <div>상품분류정보를 가져오지 못했습니다.</div>;
+    carouselCategories = <div>상품분류정보를 가져오지 못했습니다.</div>;
   } else if (resultCategories.isSuccess) {
     if (resultCategories.data.length === 0) {
       categories = (
+        <div className="col-span-4 font-bold text-center">
+          구매 가능 상품이 없습니다.
+        </div>
+      );
+
+      carouselCategories = (
         <div className="col-span-4 font-bold text-center">
           구매 가능 상품이 없습니다.
         </div>
@@ -26,12 +43,16 @@ const Home = () => {
       categories = resultCategories.data.map((category) => {
         return (
           <div className="grid grid-cols-1 gap-y-1" key={category.slug}>
-            <div className="h-32 w-full overflow-hidden rounded-lg">
+            <div className="h-[105px] sm:h-[116px] w-full overflow-hidden rounded-lg">
               <Link to={`shop/products/${category.slug}`}>
                 <img
-                  src="https://placehold.co/468x300/orange/white"
+                  src={
+                    category.image && category.image.trim().length > 0
+                      ? category.image
+                      : 'https://placehold.co/468x300/orange/white'
+                  }
                   alt={category.title}
-                  className="h-full w-full object-cover object-center"
+                  className="h-full w-full object-fill object-center rounded-lg border border-black"
                 />
               </Link>
             </div>
@@ -47,11 +68,41 @@ const Home = () => {
           </div>
         );
       });
+      carouselCategories = (
+        <>
+          <div className="w-full shrink-0">
+            <img src="https://via.placeholder.com/640x480/green" alt="" />
+          </div>
+          <div className="w-full shrink-0">
+            <img src="https://via.placeholder.com/640x480/yellow" alt="" />
+          </div>
+          <div className="w-full shrink-0">
+            <img src="https://via.placeholder.com/640x480/orange" alt="" />
+          </div>
+        </>
+      );
     }
   }
 
   return (
     <div className="grid grid-cols-6 p-2 sm:p-0 sm:justify-center gap-x-4 gap-y-4 sm:gap-y-8">
+      <Panel className="col-span-6 gap-y-2">
+        <PanelHeading>
+          <h3 className="text-lg font-semibold text-[#1d915c]">carousel</h3>
+        </PanelHeading>
+        <Divider className="mt-1 mb-2" />
+        <PanelBody>
+          <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-6 sm:gap-x-8 sm:gap-y-8">
+            <div className="flex flex-row flex-nowrap overflow-hidden">
+              {carouselCategories}
+            </div>
+          </div>
+          <div>
+            <Button>L</Button>
+            <Button>R</Button>
+          </div>
+        </PanelBody>
+      </Panel>
       <Panel className="col-span-6 gap-y-2">
         <PanelHeading>
           <h3 className="text-lg font-semibold text-[#1d915c]">

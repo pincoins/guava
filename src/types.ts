@@ -5,6 +5,7 @@ export interface Category {
   description: string;
   subDescription: string;
   discountRate: number;
+  image: string;
   status: string;
 }
 

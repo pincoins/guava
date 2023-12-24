@@ -13,10 +13,10 @@ const NavbarMobile = ({ ...rest }) => {
 
   const { items } = useAppSelector((state: RootState) => state.cart);
 
-  const pathname =
-    fabRoutes.filter((route) => {
-      return useLocation().pathname.startsWith(route);
-    }).length > 0;
+  const pathname = useLocation().pathname;
+
+  const isFab =
+    fabRoutes.filter((route) => pathname.startsWith(route)).length > 0;
 
   const classes = className(rest.className, 'py-1 px-3');
 
@@ -85,7 +85,7 @@ const NavbarMobile = ({ ...rest }) => {
           onClose={handleDrawerClose}
         />
       </div>
-      {pathname && (
+      {isFab && (
         <div className="fixed bottom-6 right-6">
           <Fab isOpen={fabIsOpen} toggle={handleFabToggle} />
         </div>
