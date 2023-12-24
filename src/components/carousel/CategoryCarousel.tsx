@@ -7,6 +7,8 @@ import Button from '../../widgets/Button';
 const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   const [currentIndex, setCurrentIndex] = useState(1);
   const [currentList, setCurrentList] = useState(categories);
+  const [carouselTransform, setCarouselTransform] =
+    useState('translateX(-100%)');
   const [carouselTransition, setCarouselTransition] = useState(
     'transform 500ms ease-in-out'
   );
@@ -24,7 +26,7 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   }, [categories]);
 
   useEffect(() => {
-    //  애니메이션 효과: x축 이동
+    setCarouselTransform(`translateX(-${currentIndex * 100}%)`); // 애니메이션 효과: x축 이동
   }, [currentIndex]);
 
   const moveToNthSlide = (index: number) => {
@@ -32,8 +34,7 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
     setTimeout(() => {
       setCurrentIndex(index);
 
-      //  애니메이션 효과: ease-in-out 트랜지션 없애기
-      setCarouselTransition('');
+      setCarouselTransition(''); // 애니메이션 효과: ease-in-out 트랜지션 없애기
     }, 500);
   };
 
@@ -48,11 +49,8 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
 
     setCurrentIndex((prev) => prev + direction);
 
-    //  애니메이션 효과: ease-in-out 트랜지션 주기
-    setCarouselTransition('transform 500ms ease-in-out');
+    setCarouselTransition('transform 500ms ease-in-out'); // 애니메이션 효과: ease-in-out 트랜지션 설정
   };
-
-  console.log(currentList);
 
   return (
     <>
@@ -60,7 +58,7 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
         <div
           className={'flex'}
           style={{
-            transform: `translateX(-${currentIndex * 100}%)`,
+            transform: carouselTransform,
             transition: carouselTransition,
           }}
         >
