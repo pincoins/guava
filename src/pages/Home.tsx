@@ -75,9 +75,7 @@ const Home = () => {
           <h3 className="text-lg font-semibold text-[#1d915c]">carousel</h3>
         </PanelHeading>
         <Divider className="mt-1 mb-2" />
-        <PanelBody>
-          <div className="">{carouselCategories}</div>
-        </PanelBody>
+        <PanelBody>{carouselCategories}</PanelBody>
       </Panel>
       <Panel className="col-span-6 gap-y-2">
         <PanelHeading>
