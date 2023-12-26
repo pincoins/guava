@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { TouchEventHandler, useEffect, useState } from 'react';
 import { Category } from '../../types';
 import { Link } from 'react-router-dom';
 import {
@@ -23,9 +23,12 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   );
 
   const AUTO_PLAY = true;
-  const INTERVAL_LENGTH = 2000;
-  const BLOCK_SIZE = isMobile ? 4 : 6;
+  const INTERVAL_LENGTH = 5000;
+  const BLOCK_SIZE = isMobile ? 2 : 6;
   const NUMBER_OF_SLIDES = Math.ceil(categories.length / BLOCK_SIZE);
+
+  let touchStartX: number;
+  let touchEndX: number;
 
   useEffect(() => {
     const slides = [];
@@ -71,6 +74,30 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
     setCarouselTransition('transform 150ms ease-in-out'); // 애니메이션 효과: ease-in-out 트랜지션 설정
   };
 
+  const handleTouchStart: TouchEventHandler<HTMLDivElement> = (e) => {
+    touchStartX = e.nativeEvent.touches[0].clientX;
+  };
+
+  const handleTouchMove: TouchEventHandler<HTMLDivElement> = (e) => {
+    const currTouchX = e.nativeEvent.changedTouches[0].clientX;
+
+    setCarouselTransform(
+      `translateX(calc(-${currentIndex}00% - ${
+        (touchStartX - currTouchX) * 2 || 0
+      }px))`
+    );
+  };
+
+  const handleTouchEnd: TouchEventHandler<HTMLDivElement> = (e) => {
+    touchEndX = e.nativeEvent.changedTouches[0].clientX;
+
+    if (touchStartX >= touchEndX) {
+      handleMove(1);
+    } else {
+      handleMove(-1);
+    }
+  };
+
   const next = () => {
     if (currentIndex + 1 === NUMBER_OF_SLIDES + 1) {
       setTimeout(() => {
@@ -95,6 +122,9 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
       <div className="overflow-hidden">
         <div
           className={'flex'}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
           style={{
             transform: carouselTransform,
             transition: carouselTransition,
