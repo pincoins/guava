@@ -1,25 +1,20 @@
 import Panel from '../widgets/panel/Panel';
 import PanelHeading from '../widgets/panel/PanelHeading';
 import PanelBody from '../widgets/panel/PanelBody';
-import { MdArrowDownward } from 'react-icons/md';
 import Divider from '../widgets/Divider';
 import { useFetchCategoriesQuery } from '../store/apis/categoryApi';
 import Skeleton from '../widgets/Skeleton';
-import { Link } from 'react-router-dom';
 import CategoryCarousel from '../components/carousel/CategoryCarousel';
 
 const Home = () => {
   const resultCategories = useFetchCategoriesQuery();
 
   let categories;
-  let carouselCategories;
 
   if (resultCategories.isLoading) {
     categories = <Skeleton className="h-32 w-full" times={6} />;
-    carouselCategories = <Skeleton className="h-32 w-full" times={6} />;
   } else if (resultCategories.isError) {
     categories = <div>상품분류정보를 가져오지 못했습니다.</div>;
-    carouselCategories = <div>상품분류정보를 가져오지 못했습니다.</div>;
   } else if (resultCategories.isSuccess) {
     if (resultCategories.data.length === 0) {
       categories = (
@@ -27,44 +22,8 @@ const Home = () => {
           구매 가능 상품이 없습니다.
         </div>
       );
-
-      carouselCategories = (
-        <div className="col-span-4 font-bold text-center">
-          구매 가능 상품이 없습니다.
-        </div>
-      );
     } else {
-      categories = resultCategories.data.map((category) => {
-        return (
-          <div className="grid grid-cols-1 gap-y-1" key={category.slug}>
-            <div className="h-[105px] sm:h-[116px] w-full overflow-hidden rounded-lg">
-              <Link to={`shop/products/${category.slug}`}>
-                <img
-                  src={
-                    category.image && category.image.trim().length > 0
-                      ? category.image
-                      : 'https://placehold.co/468x300/orange/white'
-                  }
-                  alt={category.title}
-                  className="h-full w-full object-fill object-center rounded-lg border border-black"
-                />
-              </Link>
-            </div>
-            <h3 className="font-bold text-gray-900 text-center">
-              {category.title}
-            </h3>
-            <p className=" flex gap-x-2 text-sm font-semibold justify-center">
-              최대
-              <span className="inline-flex font-bold items-center text-red-600">
-                {category.discountRate}% <MdArrowDownward />
-              </span>
-            </p>
-          </div>
-        );
-      });
-      carouselCategories = (
-        <CategoryCarousel categories={resultCategories.data} />
-      );
+      categories = <CategoryCarousel categories={resultCategories.data} />;
     }
   }
 
@@ -72,23 +31,12 @@ const Home = () => {
     <div className="grid grid-cols-6 p-2 sm:p-0 sm:justify-center gap-x-4 gap-y-4 sm:gap-y-8">
       <Panel className="col-span-6 gap-y-2">
         <PanelHeading>
-          <h3 className="text-lg font-semibold text-[#1d915c]">carousel</h3>
-        </PanelHeading>
-        <Divider className="mt-1 mb-2" />
-        <PanelBody>{carouselCategories}</PanelBody>
-      </Panel>
-      <Panel className="col-span-6 gap-y-2">
-        <PanelHeading>
           <h3 className="text-lg font-semibold text-[#1d915c]">
             오늘의 최저가 상품권
           </h3>
         </PanelHeading>
         <Divider className="mt-1 mb-2" />
-        <PanelBody>
-          <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:grid-cols-6 sm:gap-x-8 sm:gap-y-8">
-            {categories}
-          </div>
-        </PanelBody>
+        <PanelBody className="flex flex-col gap-y-4">{categories}</PanelBody>
       </Panel>
       <Panel className="col-span-6 sm:col-span-4 gap-y-2">
         <PanelHeading>
