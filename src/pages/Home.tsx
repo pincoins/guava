@@ -12,7 +12,7 @@ const Home = () => {
   let categories;
 
   if (resultCategories.isLoading) {
-    categories = <Skeleton className="h-32 w-full" times={6} />;
+    categories = <Skeleton className="h-32 w-full" times={2} />;
   } else if (resultCategories.isError) {
     categories = <div>상품분류정보를 가져오지 못했습니다.</div>;
   } else if (resultCategories.isSuccess) {
