@@ -22,13 +22,17 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
     'transform 150ms ease-in-out'
   );
 
-  const AUTO_PLAY = true;
-  const INTERVAL_LENGTH = 2000;
-  const BLOCK_SIZE = isMobile ? 4 : 6;
-  const NUMBER_OF_SLIDES = Math.ceil(categories.length / BLOCK_SIZE);
+  const CAROUSEL_AUTOPLAY = process.env.CAROUSEL_AUTOPLAY === 'true';
+  const CAROUSEL_INTERVAL = parseInt(process.env.CAROUSEL_INTERVAL || '3000');
+  const CAROUSEL_BLOCK_SIZE = isMobile
+    ? parseInt(process.env.CAROUSEL_BLOCK_SIZE_MOBILE || '4')
+    : parseInt(process.env.CAROUSEL_BLOCK_SIZE_DESKTOP || '6');
+  const CAROUSEL_SLIDE_SIZE = Math.ceil(
+    categories.length / CAROUSEL_BLOCK_SIZE
+  );
 
   const next = useCallback(() => {
-    if (currentIndex === NUMBER_OF_SLIDES) {
+    if (currentIndex === CAROUSEL_SLIDE_SIZE) {
       setTimeout(() => {
         setCurrentIndex(1);
 
@@ -41,7 +45,7 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
     });
 
     setCarouselTransition('transform 150ms ease-in-out'); // 애니메이션 효과: ease-in-out 트랜지션 설정
-  }, [NUMBER_OF_SLIDES, currentIndex]);
+  }, [CAROUSEL_SLIDE_SIZE, currentIndex]);
 
   const moveToNthSlide = (index: number) => {
     // 트랜지션이 일어나기 기다렸다가 종료되면 바로 트랜지션 없애고 실제 슬라이드로 바로 이동
@@ -55,19 +59,30 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   useEffect(() => {
     const slides = [];
 
-    if (categories.length !== 0 && NUMBER_OF_SLIDES !== 0) {
-      for (let i = 0; i < NUMBER_OF_SLIDES; i++) {
-        slides.push(categories.slice(i * BLOCK_SIZE, (i + 1) * BLOCK_SIZE));
+    if (categories.length !== 0 && CAROUSEL_SLIDE_SIZE !== 0) {
+      for (let i = 0; i < CAROUSEL_SLIDE_SIZE; i++) {
+        slides.push(
+          categories.slice(
+            i * CAROUSEL_BLOCK_SIZE,
+            (i + 1) * CAROUSEL_BLOCK_SIZE
+          )
+        );
       }
       // 컴포넌트 렌더링 시점에 넘겨 받은 카테고리로 새 리스트를 구성
       // 첫 레코드 앞에 끝 레코드, 끝 레코드 앞에 첫 레코드 삽입하여 자연스러운 순환 가능
-      setCurrentList([slides[NUMBER_OF_SLIDES - 1], ...slides, slides[0]]);
+      setCurrentList([slides[CAROUSEL_SLIDE_SIZE - 1], ...slides, slides[0]]);
 
-      if (!AUTO_PLAY) return;
-      const interval = setInterval(next, INTERVAL_LENGTH);
+      if (!CAROUSEL_AUTOPLAY) return;
+      const interval = setInterval(next, CAROUSEL_INTERVAL);
       return () => clearInterval(interval);
     }
-  }, [categories, BLOCK_SIZE, NUMBER_OF_SLIDES, AUTO_PLAY, next]);
+  }, [
+    categories,
+    CAROUSEL_BLOCK_SIZE,
+    CAROUSEL_SLIDE_SIZE,
+    CAROUSEL_AUTOPLAY,
+    next,
+  ]);
 
   useEffect(() => {
     setCarouselTransform(`translateX(-${currentIndex * 100}%)`); // 애니메이션 효과: x축 이동
@@ -76,10 +91,10 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   const handleMove = (direction: number) => {
     const newIndex = currentIndex + direction; // +1: next / -1: prev
 
-    if (newIndex === NUMBER_OF_SLIDES + 1) {
+    if (newIndex === CAROUSEL_SLIDE_SIZE + 1) {
       moveToNthSlide(1);
     } else if (newIndex === 0) {
-      moveToNthSlide(NUMBER_OF_SLIDES);
+      moveToNthSlide(CAROUSEL_SLIDE_SIZE);
     }
 
     setCurrentIndex((prev) => prev + direction);
@@ -144,7 +159,7 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
           <MdArrowLeft />
         </Button>
         <div className="flex gap-x-1">
-          {Array.from({ length: NUMBER_OF_SLIDES }, (_, i) => i + 1).map(
+          {Array.from({ length: CAROUSEL_SLIDE_SIZE }, (_, i) => i + 1).map(
             (_, index) => {
               return (
                 <Button
