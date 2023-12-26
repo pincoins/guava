@@ -23,7 +23,7 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   );
 
   const AUTO_PLAY = true;
-  const INTERVAL_LENGTH = 5000;
+  const INTERVAL_LENGTH = 3000;
   const BLOCK_SIZE = isMobile ? 2 : 6;
   const NUMBER_OF_SLIDES = Math.ceil(categories.length / BLOCK_SIZE);
 
