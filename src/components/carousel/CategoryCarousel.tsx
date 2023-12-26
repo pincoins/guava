@@ -22,7 +22,9 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
     'transform 150ms ease-in-out'
   );
 
-  const BLOCK_SIZE = isMobile ? 4 : 6;
+  const AUTO_PLAY = true;
+  const INTERVAL_LENGTH = 2000;
+  const BLOCK_SIZE = isMobile ? 2 : 6;
   const NUMBER_OF_SLIDES = Math.ceil(categories.length / BLOCK_SIZE);
 
   useEffect(() => {
@@ -34,11 +36,18 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
       }
       // 컴포넌트 렌더링 시점에 넘겨 받은 카테고리로 새 리스트를 구성
       // 첫 레코드 앞에 끝 레코드, 끝 레코드 앞에 첫 레코드 삽입하여 자연스러운 순환 가능
-      setCurrentList([slides[0], ...slides, slides[NUMBER_OF_SLIDES - 1]]);
+      const newList = [slides[NUMBER_OF_SLIDES - 1], ...slides, slides[0]];
+      console.log(newList);
+      setCurrentList(newList);
+
+      if (!AUTO_PLAY) return;
+      const interval = setInterval(next, INTERVAL_LENGTH);
+      return () => clearInterval(interval);
     }
-  }, [categories, BLOCK_SIZE, NUMBER_OF_SLIDES]);
+  }, [categories, BLOCK_SIZE, NUMBER_OF_SLIDES, AUTO_PLAY]);
 
   useEffect(() => {
+    console.log('currentIndex', currentIndex);
     setCarouselTransform(`translateX(-${currentIndex * 100}%)`); // 애니메이션 효과: x축 이동
   }, [currentIndex]);
 
@@ -61,6 +70,25 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
     }
 
     setCurrentIndex((prev) => prev + direction);
+
+    setCarouselTransition('transform 150ms ease-in-out'); // 애니메이션 효과: ease-in-out 트랜지션 설정
+  };
+
+  const next = () => {
+    if (currentIndex + 1 === NUMBER_OF_SLIDES + 1) {
+      setTimeout(() => {
+        setCurrentIndex(1);
+
+        setCarouselTransition(''); // 애니메이션 효과: ease-in-out 트랜지션 없애기
+      }, 150);
+    }
+
+    setCurrentIndex((prev) => {
+      if (prev === NUMBER_OF_SLIDES) {
+        return 1;
+      }
+      return prev + 1;
+    });
 
     setCarouselTransition('transform 150ms ease-in-out'); // 애니메이션 효과: ease-in-out 트랜지션 설정
   };
