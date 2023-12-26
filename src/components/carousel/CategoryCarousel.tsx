@@ -10,7 +10,7 @@ import {
 import Button from '../../widgets/Button';
 import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
-
+import className from 'classnames';
 const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   const { isMobile } = useAppSelector((state: RootState) => state.ui);
 
@@ -23,12 +23,12 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   );
 
   const AUTO_PLAY = true;
-  const INTERVAL_LENGTH = 3000;
-  const BLOCK_SIZE = isMobile ? 4 : 6;
+  const INTERVAL_LENGTH = 2000;
+  const BLOCK_SIZE = isMobile ? 2 : 6;
   const NUMBER_OF_SLIDES = Math.ceil(categories.length / BLOCK_SIZE);
 
   const next = useCallback(() => {
-    if (currentIndex + 1 === NUMBER_OF_SLIDES + 1) {
+    if (currentIndex === NUMBER_OF_SLIDES) {
       setTimeout(() => {
         setCurrentIndex(1);
 
@@ -37,9 +37,6 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
     }
 
     setCurrentIndex((prev) => {
-      if (prev === NUMBER_OF_SLIDES) {
-        return 1;
-      }
       return prev + 1;
     });
 
@@ -153,11 +150,10 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
                 <Button
                   type="button"
                   onClick={() => moveToNthSlide(index + 1)}
-                  className={
-                    currentIndex === index + 1
-                      ? 'text-[#1d915c]'
-                      : 'text-[#ebf2ea]'
-                  }
+                  className={className('items-center', {
+                    'text-[#1d915c]': currentIndex === index + 1,
+                    'text-[#ebf2ea]': currentIndex !== index + 1,
+                  })}
                   flat
                   key={index}
                 >
