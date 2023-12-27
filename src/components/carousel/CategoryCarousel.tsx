@@ -112,16 +112,6 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
     touchStartX = e.nativeEvent.touches[0].clientX;
   };
 
-  const handleTouchMove: TouchEventHandler<HTMLDivElement> = (e) => {
-    const currTouchX = e.nativeEvent.changedTouches[0].clientX;
-
-    setCarouselTransform(
-      `translateX(calc(-${currentIndex}00% - ${
-        (touchStartX - currTouchX) * 2 || 0
-      }px))`
-    ); // 애니메이션 효과: x축 이동
-  };
-
   const handleTouchEnd: TouchEventHandler<HTMLDivElement> = (e) => {
     touchEndX = e.nativeEvent.changedTouches[0].clientX;
 
@@ -130,6 +120,16 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
     } else {
       handleMove(-1);
     }
+  };
+
+  const handleTouchMove: TouchEventHandler<HTMLDivElement> = (e) => {
+    const currentTouchX = e.nativeEvent.changedTouches[0].clientX;
+
+    setCarouselTransform(
+      `translateX(calc(-${currentIndex}00% - ${
+        (touchStartX - currentTouchX) * 2 || 0
+      }px))`
+    ); // 애니메이션 효과: x축 이동
   };
 
   return (
