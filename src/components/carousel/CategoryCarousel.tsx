@@ -12,44 +12,52 @@ import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import className from 'classnames';
 
-// 일부러 좌표값은 컴포넌트 밖에 두어서 상태 관리 되지 않ㅇ므
+// 일부러 좌표값은 컴포넌트 밖에 두어서 상태 관리 되지 않음
 let touchStartX: number;
 let touchEndX: number;
 
 const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
-  const { isMobile } = useAppSelector((state: RootState) => state.ui);
-
-  const [currentIndex, setCurrentIndex] = useState(1);
-  const [currentList, setCurrentList] = useState<Category[][]>([]);
-  const [carouselTransform, setCarouselTransform] =
-    useState('translateX(-100%)');
-  const [carouselTransition, setCarouselTransition] = useState(
-    'transform 150ms ease-in-out'
-  );
-
   const CAROUSEL_AUTOPLAY = process.env.CAROUSEL_AUTOPLAY === 'true';
   const CAROUSEL_INTERVAL = parseInt(process.env.CAROUSEL_INTERVAL || '3000');
-  const CAROUSEL_BLOCK_SIZE = isMobile
+  const CAROUSEL_TIMEOUT = parseInt(process.env.CAROUSEL_TIMEOUT || '150');
+  const CAROUSEL_BLOCK_SIZE = useAppSelector((state: RootState) => state.ui)
+    .isMobile
     ? parseInt(process.env.CAROUSEL_BLOCK_SIZE_MOBILE || '4')
     : parseInt(process.env.CAROUSEL_BLOCK_SIZE_DESKTOP || '6');
   const CAROUSEL_SLIDE_SIZE = Math.ceil(
     categories.length / CAROUSEL_BLOCK_SIZE
   );
 
+  const [currentIndex, setCurrentIndex] = useState(1);
+  const [currentList, setCurrentList] = useState<Category[][]>([]);
+  const [carouselAnimation, setCarouselAnimation] = useState<{
+    transform: string;
+    transition: string;
+  }>({
+    transform: 'translateX(-100%)',
+    transition: `transform ${CAROUSEL_TIMEOUT}ms ease-in-out`,
+  });
+
   const next = useCallback(() => {
     if (currentIndex === CAROUSEL_SLIDE_SIZE) {
       setTimeout(() => {
         setCurrentIndex(1);
-
-        setCarouselTransition(''); // 애니메이션 효과: ease-in-out 트랜지션 없애기
-      }, 150);
+        setCarouselAnimation((prev) => {
+          return { ...prev, transition: '' };
+        });
+      }, CAROUSEL_TIMEOUT);
     }
 
     setCurrentIndex((prev) => {
       return prev + 1;
     });
 
-    setCarouselTransition('transform 150ms ease-in-out'); // 애니메이션 효과: ease-in-out 트랜지션 설정
+    setCarouselAnimation((prev) => {
+      return {
+        ...prev,
+        transition: `transform ${CAROUSEL_TIMEOUT}ms ease-in-out`,
+      };
+    });
   }, [CAROUSEL_SLIDE_SIZE, currentIndex]);
 
   const moveToNthSlide = (index: number) => {
@@ -57,8 +65,10 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
     setTimeout(() => {
       setCurrentIndex(index);
 
-      setCarouselTransition(''); // 애니메이션 효과: ease-in-out 트랜지션 없애기
-    }, 150);
+      setCarouselAnimation((prev) => {
+        return { ...prev, transition: '' };
+      });
+    }, CAROUSEL_TIMEOUT);
   };
 
   useEffect(() => {
@@ -91,7 +101,9 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   ]);
 
   useEffect(() => {
-    setCarouselTransform(`translateX(-${currentIndex * 100}%)`); // 애니메이션 효과: x축 이동
+    setCarouselAnimation((prev) => {
+      return { ...prev, transform: `translateX(-${currentIndex * 100}%)` };
+    });
   }, [currentIndex]);
 
   const handleMove = (direction: number) => {
@@ -105,7 +117,12 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
 
     setCurrentIndex((prev) => prev + direction);
 
-    setCarouselTransition('transform 150ms ease-in-out'); // 애니메이션 효과: ease-in-out 트랜지션 설정
+    setCarouselAnimation((prev) => {
+      return {
+        ...prev,
+        transform: `transform ${CAROUSEL_TIMEOUT}ms ease-in-out`,
+      };
+    });
   };
 
   const handleTouchStart: TouchEventHandler<HTMLDivElement> = (e) => {
@@ -125,11 +142,14 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   const handleTouchMove: TouchEventHandler<HTMLDivElement> = (e) => {
     const currentTouchX = e.nativeEvent.changedTouches[0].clientX;
 
-    setCarouselTransform(
-      `translateX(calc(-${currentIndex}00% - ${
-        (touchStartX - currentTouchX) * 2 || 0
-      }px))`
-    ); // 애니메이션 효과: x축 이동
+    setCarouselAnimation((prev) => {
+      return {
+        ...prev,
+        transform: `translateX(calc(-${currentIndex}00% - ${
+          (touchStartX - currentTouchX) * 2 || 0
+        }px))`,
+      };
+    });
   };
 
   return (
@@ -140,10 +160,7 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
-          style={{
-            transform: carouselTransform,
-            transition: carouselTransition,
-          }}
+          style={carouselAnimation}
         >
           {currentList.map((slide, index) => {
             return (
