@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { TouchEventHandler, useCallback, useEffect, useState } from 'react';
 import { Category } from '../../types';
 import { Link } from 'react-router-dom';
 import {
@@ -30,6 +30,9 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   const CAROUSEL_SLIDE_SIZE = Math.ceil(
     categories.length / CAROUSEL_BLOCK_SIZE
   );
+
+  let touchStartX: number;
+  let touchEndX: number;
 
   const next = useCallback(() => {
     if (currentIndex === CAROUSEL_SLIDE_SIZE) {
@@ -103,11 +106,38 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
     setCarouselTransition('transform 150ms ease-in-out'); // 애니메이션 효과: ease-in-out 트랜지션 설정
   };
 
+  const handleTouchStart: TouchEventHandler<HTMLDivElement> = (e) => {
+    touchStartX = e.nativeEvent.touches[0].clientX;
+  };
+
+  const handleTouchMove: TouchEventHandler<HTMLDivElement> = (e) => {
+    const currTouchX = e.nativeEvent.changedTouches[0].clientX;
+
+    setCarouselTransform(
+      `translateX(calc(-${currentIndex}00% - ${
+        (touchStartX - currTouchX) * 2 || 0
+      }px))`
+    ); // 애니메이션 효과: x축 이동
+  };
+
+  const handleTouchEnd: TouchEventHandler<HTMLDivElement> = (e) => {
+    touchEndX = e.nativeEvent.changedTouches[0].clientX;
+
+    if (touchStartX >= touchEndX) {
+      handleMove(1);
+    } else {
+      handleMove(-1);
+    }
+  };
+
   return (
     <>
       <div className="overflow-hidden">
         <div
           className={'flex'}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
           style={{
             transform: carouselTransform,
             transition: carouselTransition,
