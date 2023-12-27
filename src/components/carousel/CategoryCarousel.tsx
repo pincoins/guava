@@ -81,6 +81,7 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
     CAROUSEL_BLOCK_SIZE,
     CAROUSEL_SLIDE_SIZE,
     CAROUSEL_AUTOPLAY,
+    CAROUSEL_INTERVAL,
     next,
   ]);
 
