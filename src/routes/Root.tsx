@@ -80,7 +80,7 @@ const Root = () => {
 
     // useEffect() 의존성 변경 감지 후 자동 로그인 시도
     if (loginState === 'EXPIRED') {
-      refresh();
+      refresh(); // 리프레시 실패 시 로그아웃처리 된다.
     }
   }, [
     rememberMe,

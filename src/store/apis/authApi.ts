@@ -75,7 +75,10 @@ const authApi = createApi({
               expiresIn,
             })
           );
-        } catch (error) {}
+        } catch (error) {
+          console.error(error);
+          dispatch(signOut());
+        }
       },
     }),
     signOut: builder.mutation<void, void>({
