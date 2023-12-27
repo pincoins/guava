@@ -11,6 +11,11 @@ import Button from '../../widgets/Button';
 import { useAppSelector } from '../../hooks/rtk-hooks';
 import { RootState } from '../../store';
 import className from 'classnames';
+
+// 일부러 좌표값은 컴포넌트 밖에 두어서 상태 관리 되지 않ㅇ므
+let touchStartX: number;
+let touchEndX: number;
+
 const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   const { isMobile } = useAppSelector((state: RootState) => state.ui);
 
@@ -30,9 +35,6 @@ const CategoryCarousel = ({ categories }: { categories: Category[] }) => {
   const CAROUSEL_SLIDE_SIZE = Math.ceil(
     categories.length / CAROUSEL_BLOCK_SIZE
   );
-
-  let touchStartX: number;
-  let touchEndX: number;
 
   const next = useCallback(() => {
     if (currentIndex === CAROUSEL_SLIDE_SIZE) {
