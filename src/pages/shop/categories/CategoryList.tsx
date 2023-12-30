@@ -1,5 +1,5 @@
-import { useFetchCategoriesQuery } from '../../store/apis/categoryApi';
-import { Category } from '../../types';
+import { useFetchCategoriesQuery } from '../../../store/apis/categoryApi';
+import { Category } from '../../../types';
 
 const CategoryList = () => {
   const { data, error, isLoading } = useFetchCategoriesQuery();

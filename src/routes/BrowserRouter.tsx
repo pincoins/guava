@@ -16,7 +16,7 @@ import Terms from '../pages/help/Terms';
 import Home from '../pages/Home';
 import NotFound from '../pages/NotFound';
 import Cart from '../pages/shop/Cart';
-import CategoryList from '../pages/dashboard/CategoryList';
+import CategoryList from '../pages/shop/categories/CategoryList';
 import OrderDetail from '../pages/shop/orders/OrderDetail';
 import OrderList from '../pages/shop/orders/OrderList';
 import ProductDetail from '../pages/shop/products/ProductDetail';
@@ -27,12 +27,13 @@ import RoleManagerRoute from './RoleManagerRoute';
 import Root from './Root';
 import RootBoundary from './RootBoundary';
 import RootDashboard from './RootDashboard';
+import CategoryDetail from '../pages/shop/categories/CategoryDetail';
 
 const BrowserRouter = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Root />} errorElement={<RootBoundary />}>
-        <Route index={true} element={<Home />} />
+        <Route index element={<Home />} />
         <Route path="auth">
           <Route element={<PrivateRoute />}>
             <Route path="profile" element={<Profile />} />
@@ -46,13 +47,21 @@ const BrowserRouter = createBrowserRouter(
         <Route path="shop">
           <Route element={<PrivateRoute />}>
             <Route path="orders">
-              <Route index={true} element={<OrderList />} />
+              <Route index element={<OrderList />} />
               <Route path=":order" element={<OrderDetail />} />
             </Route>
           </Route>
           <Route path="products">
             <Route path=":categorySlug" element={<ProductList />} />
             <Route path=":slug" element={<ProductDetail />} />
+          </Route>
+          <Route path="categories">
+            <Route element={<PrivateRoute />}>
+              <Route element={<RoleManagerRoute />}>
+                <Route index element={<CategoryList />} />
+                <Route path=":slug" element={<CategoryDetail />} />
+              </Route>
+            </Route>
           </Route>
           <Route path="cart" element={<Cart />} />
         </Route>
@@ -75,7 +84,7 @@ const BrowserRouter = createBrowserRouter(
       >
         <Route element={<PrivateRoute />}>
           <Route element={<RoleManagerRoute />}>
-            <Route index={true} element={<Home />} />
+            <Route index element={<Home />} />
             <Route path="categories" element={<CategoryList />} />
           </Route>
         </Route>

@@ -8,8 +8,10 @@
   "license": "ISC",
   "scripts": {
     "start": "npm run dev -- --open",
-    "dev": "NODE_ENV=development webpack serve",
-    "build": "NODE_ENV=production webpack",
+    "start:win": "npm run dev:win -- --open",
+    "dev": "NODE_ENV=development && webpack serve",
+    "dev:win": "set NODE_ENV=development&&webpack serve",
+    "build": "NODE_ENV=production && webpack",
     "test": "jest --env=jsdom",
     "lint": "eslint './src/**/*.{ts,tsx,json}'",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx,json}'"

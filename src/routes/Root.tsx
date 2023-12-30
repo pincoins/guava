@@ -106,7 +106,7 @@ const Root = () => {
     if (loginState === 'UNAUTHENTICATED') {
       favorites = (
         <div className="col-span-4 px-2 py-1 text-center">
-          즐겨찾기가 비었습니다.
+          비어있습니다.
         </div>
       );
     } else {
@@ -118,7 +118,7 @@ const Root = () => {
     if (resultFavorites.data.items.length === 0) {
       favorites = (
         <div className="col-span-4 px-2 py-1 text-center">
-          즐겨찾기가 비었습니다.
+          비어있습니다.
         </div>
       );
     } else {
